@@ -34,7 +34,6 @@ console.log('Builder is running in', process.env.NODE_ENV, 'mode.');
 
 module.exports = {
     context: path.resolve(cfg.path.app),
-    debug: true,
     watch: flags.watch,
     entry: {
         vendor: `app/vendor.js`,
@@ -42,12 +41,12 @@ module.exports = {
         main: `app/pages/main/entry.js`
     },
     output: {
-        path: cfg.path.build,
+        path: path.resolve(__dirname, cfg.path.build),
         // publicPath: cfg.path.build,
         filename: '[name].js',
         library: '[name]'
     },
-    devtool: flags.sourcemaps ? "cheap-source-map" : null,
+    devtool: flags.sourcemaps ? "cheap-source-map" : false,
     devServer: {
         port: cfg.webserver.port,
         host: cfg.webserver.host,
@@ -57,37 +56,49 @@ module.exports = {
             aggregateTimeout: 300,
             poll: 1000
         },
-        outputPath: cfg.path.build,
+        // outputPath: cfg.path.build,
         contentBase: cfg.path.src,
         stats: 'minimal',
     },
     resolve: {
-        root: path.resolve(cfg.path.app),
+        modules: [
+            path.join(__dirname, "src"),
+            "node_modules"
+        ],
         // Tell webpack to look for required files in bower and node
-        modulesDirectories: ['../bower_components', '../node_modules'],
-        extensions: ['', '.js', '.coffee', '.json']
+        // modulesDirectories: ['../bower_components', '../node_modules'],
+        // extensions: ['', '.js', '.coffee', '.json']
     },
-    resolveLoader: {
-        root: path.resolve('./node_modules'),
-        // modulesDirectories: ['node_modules'],
-        extensions: ['', '.js']
-    },
+    // resolveLoader: {
+    //     root: path.resolve('./node_modules'),
+    //     // modulesDirectories: ['node_modules'],
+    //     extensions: ['', '.js']
+    // },
     module: {
-        loaders: [
+        rules: [
             { test: /\.js$/, loader: "babel-loader", exclude: [/node_modules/, /bower_components/], query: { presets: ['es2015', 'stage-2'] } },
             // { test: /\.coffee$/, loader: "coffee-loader" },
             { test: /\.(pug|jade)$/, loader: "pug-loader" },
-            { test: /\.css$/,       loader: "style!css-loader"},
-            { test: /\.styl$/,      loader: "style!css-loader!stylus" },
-            { test: /\.font\.(js|json)$/, loader: "style!css!fontgen" },
-            { test: /\.(jpeg|jpg|png|gif)$/i, loader: "file-loader?name=/[path][name].[ext]"},
-            { test: /\.(woff|svg|ttf|eot)([\?]?.*)$/, loader: "file-loader?name=[path][name].[ext]"},
+            { test: /\.css$/, use: ["style-loader", "css-loader"] },
+            { test: /\.styl$/, use: ["style-loader", "css-loader", "stylus-loader"] },
+            { test: /\.font\.(js|json)$/, use: ["style-loader", "css-loader", "fontgen-loader"] },
+            {
+                test: /\.(jpeg|jpg|png|gif |woff|svg|ttf|eot)$/i,
+                loader: "file-loader",
+                options: {
+                    name: "/[path][name].[ext]"
+                }
+            },
         ],
         noParse: /\.min\.js$/
     },
     plugins: [
         flags.notify ? new WebpackNotifierPlugin({excludeWarnings: true}) : new Function(),
         flags.clean ? new CleanWebpackPlugin([cfg.path.build]) : new Function(),
+
+        new webpack.LoaderOptionsPlugin({
+            debug: true
+        }),
 
         new HtmlWebpackPlugin({
             filename: 'index.html',
@@ -101,10 +112,10 @@ module.exports = {
             chunks: ['vendor', 'main']
         }),
 
-        new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
-        new webpack.ResolverPlugin(
-            new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(".bower.json", ["main"])
-        ),
+        // new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
+        // new webpack.ResolverPlugin(
+        //     new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(".bower.json", ["main"])
+        // ),
 
         new webpack.DefinePlugin({
             'NODE_ENV': JSON.stringify(process.env.NODE_ENV)
