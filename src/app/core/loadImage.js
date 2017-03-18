@@ -7,3 +7,8 @@ export default function loadImage(src) {
         img.src = src;
     })
 }
+
+// --- requires babel-polyfill ---
+// export async function loadImageSync(src) {
+//     return await loadImage(src);
+// }

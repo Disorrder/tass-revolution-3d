@@ -9,13 +9,13 @@ export default class Controller {
     constructor() {
         this.photos = photoNames;
         this.photosElem = $('#photos');
-        console.log(photoCtx, photoNames, photoCtx(this.photos[0]));
 
         this.initGui();
         setTimeout(() => this.onStart(), 1000);
     }
 
     initGui() {
+        if (!window.dat) return;
         this.gui = new dat.GUI();
         this.gui.add(this, 'addImage');
     }
