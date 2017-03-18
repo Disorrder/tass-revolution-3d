@@ -109,7 +109,13 @@ module.exports = {
             filename: 'main.html',
             template: 'app/pages/main/main.pug',
             inject: 'head',
-            chunks: ['vendor', 'main']
+            chunks: ['vendor', 'main'],
+            chunksSortMode(a, b) {
+                var chunks = ['vendor', 'main'];
+                var i = chunks.indexOf(a.names[0]);
+                var j = chunks.indexOf(b.names[0]);
+                return i - j;
+            }
         }),
 
         // new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
