@@ -81,20 +81,7 @@ export default class Controller {
 
         var position;
         for (let i = 0; i < 5; i++) {
-            // -- v1 --
-            // let last = _.last(this.trains);
-            // if (last) {
-            //     position = last.object3D.position.clone();
-            //     position.z += trainParams.distance + wagonParams.width;
-            // } else {
-            //     position = new THREE.Vector3();
-            // }
-
-            // -- v2 --
-            // position = new THREE.Vector3(_.random(-1,1,true), 0.7, 0+(i*trainParams.dz));
-
-            // -- v3 --
-            position = [_.random(-15,-5,true), 0.7, 0+(i*trainParams.dz)];
+            position = [_.random(-15,-5,true), 0.7, 0 + (i*trainParams.dz)];
             let train = $('<a-entity>').attr({
                 id: `train-${i}`,
                 className: 'train',
@@ -104,7 +91,7 @@ export default class Controller {
             this.trains.push(train[0]);
 
             for (let j = 0; j < _.random(8, 12); j++) {
-                position = [0+(j*wagonParams.dx), 0, 0];
+                position = [0 + (j*wagonParams.dx), 0, 0];
                 let wagon = $('<a-box>').attr({
                     className: 'wagon',
                     position: position.join(' '),
