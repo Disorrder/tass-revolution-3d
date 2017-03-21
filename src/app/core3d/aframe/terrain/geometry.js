@@ -8,7 +8,7 @@ AFRAME.registerGeometry('terrain', {
             type: 'number',
             default: 1
         },
-        depth: { // y
+        height: { // y
             type: 'number',
             default: 1
         },
@@ -34,7 +34,7 @@ AFRAME.registerGeometry('terrain', {
     getGeometry() {
         var geometry = new THREE.PlaneGeometry(
             this.data.width,
-            this.data.depth,
+            this.data.height,
             this.data.segmentsWidth,
             this.data.segmentsHeight
         );

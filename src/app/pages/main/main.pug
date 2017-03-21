@@ -12,9 +12,25 @@ block scene
 
     a-sky(color="#000")
     a-light(type="ambient" color="#445451")
-    a-light(type="point" intensity="1" position="2 4 4")
-    a-plane(position="0 -0.01 0" rotation="-90 0 0" width="50" height="50" segments-width="50" segments-height="50" material="color: red; wireframe: true")
-    //- a-plane(src="#groundTexture" position="0 -0.01 0" rotation="-90 0 0" width="3000" height="3000")
+    a-light(type="point" position="2 4 4" intensity="0.2")
+    a-terrain(position="0 -0.01 0" width="80" height="80" _src="#groundTexture" color="#555" wireframe="false" _shader="flat" shadow="recieve: true; cast: true;")
+
+    a-entity#bg1(position="-25 0 0")
+        //- a-light(type="point" position="-8 1.6 -13.3" intensity="1" penumbra="0.5" distance="100" decay="2"
+        //-     light="castShadow: true"
+        //-     geometry="primitive: sphere; radius: 0.5"
+        //- )
+        a-entity(
+            position="-8 1.6 -13.3"
+            light="type: point; castShadow: true;"
+        )
+        a-sphere(color='#555' position='0 -3.02 17.43' scale='4 5.78 15' shadow="cast: true; receive: true")
+        a-sphere(color='#555' position='-4.76 -2.25 0' scale='4 5.96 13' shadow="cast: true; receive: true")
+        a-sphere(color='#555' position='0 -3.47 -16.74' scale='4 6 15' shadow="cast: true; receive: true")
+
+    a-entity#trains(position="-7 0 -33" rotation="0 10 0")
+        //- a-entity.train(ng-repeat="train in page.trains" position="{{train.position}}")
+            a-box.wagon(ng-repeat="wagon in train.wagons" position="{{wagon.position}}" width="3" height="1.2")
 
     a-text(value="Revolution 3D" font="mozillavr" color="#BBB" position="-0.9 0.24 -3" rotation="-45 0 0" scale="1.5 1.5 1.5")
 

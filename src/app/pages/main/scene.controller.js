@@ -11,7 +11,8 @@ export default class Controller {
         this.photosElem = $('#photos');
 
         this.initGui();
-        setTimeout(() => this.onStart(), 1000);
+        // setTimeout(() => this.onStart(), 1000);
+        this.generateTrains();
     }
 
     initGui() {
@@ -61,5 +62,59 @@ export default class Controller {
         anim[_.random(anim.length-1)](image);
         // fadeIn(image);
         return image;
+    }
+
+    generateTrains() {
+        this.trains = [];
+        // TODO: clean up #trains?
+        var trainParams = {
+            distance: 0.5,
+            get dz() { return this.distance + wagonParams.width; }
+        };
+        var wagonParams = {
+            width: 3,
+            height: 1.2,
+            depth: 1,
+            distance: 0.3,
+            get dx() { return this.width + this.distance; }
+        };
+
+        var position;
+        for (let i = 0; i < 5; i++) {
+            // -- v1 --
+            // let last = _.last(this.trains);
+            // if (last) {
+            //     position = last.object3D.position.clone();
+            //     position.z += trainParams.distance + wagonParams.width;
+            // } else {
+            //     position = new THREE.Vector3();
+            // }
+
+            // -- v2 --
+            // position = new THREE.Vector3(_.random(-1,1,true), 0.7, 0+(i*trainParams.dz));
+
+            // -- v3 --
+            position = [_.random(-15,-5,true), 0.7, 0+(i*trainParams.dz)];
+            let train = $('<a-entity>').attr({
+                id: `train-${i}`,
+                className: 'train',
+                position: position.join(' '),
+            });
+
+            this.trains.push(train[0]);
+
+            for (let j = 0; j < _.random(8, 12); j++) {
+                position = [0+(j*wagonParams.dx), 0, 0];
+                let wagon = $('<a-box>').attr({
+                    className: 'wagon',
+                    position: position.join(' '),
+                    width: wagonParams.width,
+                    height: wagonParams.height,
+                    depth: wagonParams.depth,
+                }).appendTo(train);
+            }
+
+            train.appendTo('#trains');
+        }
     }
 }
