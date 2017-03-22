@@ -29,7 +29,9 @@ export default class Controller {
         prop = folder.add(lights.point, 'intensity', 0, 1); $(prop.__li).find('.property-name').text('Point intensity');
 
         this.gui.add(this, 'addImage');
-        this.gui.add(this, 'light1');
+        this.gui.add(this.light1, 'light1_flash');
+        this.gui.add(this.light2, 'light2_start');
+        this.gui.add(this.light3, 'light3_switch');
     }
     initGuiVR() { // not working idk why
         this.guivr = dat.GUIVR.create('Photos');
@@ -109,7 +111,7 @@ export default class Controller {
                     width: wagonParams.width,
                     height: wagonParams.height,
                     depth: wagonParams.depth,
-                    color: "#333"
+                    color: "#111"
                 }).appendTo(train);
             }
 
@@ -117,7 +119,22 @@ export default class Controller {
         }
     }
 
-    light1() {
-        $('#bg1 a-light, #bg1 [light]')[0].emit('flash');
+    light1 = {
+        elem: $('#light1')[0],
+        light1_flash() {
+            this.elem.emit('flash');
+            this.elem.components.sound.playSound();
+            setTimeout(() => {this.elem.components.sound.stopSound()}, 500)
+        }
+    }
+
+    light2 = {
+        elem: $('#light2')[0],
+        light2_start() { this.elem.emit('start') }
+    }
+
+    light3 = {
+        elem: $('#light3')[0],
+        light3_switch() { this.elem.emit('switch') }
     }
 }

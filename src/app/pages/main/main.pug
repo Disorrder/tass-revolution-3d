@@ -9,6 +9,7 @@ block scene
         img#photo1(src="/assets/photos/TASS_170984.jpg")
         //- img#photo1(src="/assets/photos/TASS_186313.jpg")
         img#photo2(crossorigin src="https://pbs.twimg.com/profile_images/1481569385/y_902e2a9f_400x400.jpg")
+        audio#ak47_shots(src="/assets/audio/ak-47_shots.mp3")
 
     a-sky(color="#000")
     a-light.scene_light(type="ambient" color="#fff" intensity="0.1")
@@ -23,12 +24,12 @@ block scene
         a-sphere(color='#555' position='0 -3.47 -16.74' scale='4 6 15' shadow="cast: true; receive: true")
 
         //- -- variant 1 --
-        a-entity(position="-8 1.6 -13.3"
+        a-entity#light1(position="-8 1.6 -13.3"
             light="type: point; intensity: 1; penumbra: 0.5; distance: 10; decay: 2; color: #ff844e;"
-            sound=""
+            sound="src: #ak47_shots; volume: 1;"
             geometry="primitive: sphere; radius: 0.2;"
         )
-            a-animation(begin="flash" attribute="light.intensity" direction="reverse" delay="30" from="0" to="1" dur="50" repeat="4")
+            a-animation(begin="flash" attribute="light.intensity" direction="reverse" delay="20" from="0" to="1" dur="60" repeat="5")
 
         //- -- variant 2 --
         //- a-entity(position="-8 1.6 -13.3")
@@ -39,11 +40,16 @@ block scene
 
     a-entity#bg2(position="-7 0 -33")
         a-entity#trains(rotation="0 10 0")
-        a-light(position="-5 5 17" rotation="-35 0 0" type="spot" angle="20"
+        a-light#light2(position="-5 5 17" rotation="-35 0 0" type="spot" angle="20"
             geometry="primitive: sphere; radius: 0.2;"
         )
-            a-animation(_begin="start" attribute="position" to="10 5 17" dur="3000")
-            //- a-animation(_begin="start" attribute="angle" to="30" dur="3000")
+            a-animation(begin="start" attribute="position" direction="alternate" to="10 5 17" dur="3000")
+
+        a-light#light3(position="-22 10 5.7" rotation="-26.1 -94 0"
+            type="spot" angle="14" intensity="2.5"
+            geometry="primitive: sphere; radius: 0.1;"
+        )
+            a-animation(begin="switch" attribute="intensity" direction="alternate" from="2.5" to="0" dur="250" easing="ease-in-back")
 
     a-text(value="Revolution 3D" font="mozillavr" color="#BBB" position="-0.9 0.24 -3" rotation="-45 0 0" scale="1.5 1.5 1.5")
 
