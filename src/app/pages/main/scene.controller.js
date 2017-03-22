@@ -10,15 +10,26 @@ export default class Controller {
         this.photos = photoNames;
         this.photosElem = $('#photos');
 
-        this.initGui();
+        setTimeout(() => this.initGui(), 100);
         // setTimeout(() => this.onStart(), 1000);
         this.generateTrains();
     }
 
     initGui() {
         if (!window.dat) return;
+        var lights = {
+            ambient: $('.scene_light[type=ambient]')[0].getObject3D('light'),
+            point: $('.scene_light[type=point]')[0].getObject3D('light'),
+        }
+        var folder, prop;
         this.gui = new dat.GUI();
+
+        folder = this.gui.addFolder('Scene light');
+        prop = folder.add(lights.ambient, 'intensity', 0, 1); $(prop.__li).find('.property-name').text('Ambient intensity');
+        prop = folder.add(lights.point, 'intensity', 0, 1); $(prop.__li).find('.property-name').text('Point intensity');
+
         this.gui.add(this, 'addImage');
+        this.gui.add(this, 'light1');
     }
     initGuiVR() { // not working idk why
         this.guivr = dat.GUIVR.create('Photos');
@@ -98,10 +109,15 @@ export default class Controller {
                     width: wagonParams.width,
                     height: wagonParams.height,
                     depth: wagonParams.depth,
+                    color: "#333"
                 }).appendTo(train);
             }
 
             train.appendTo('#trains');
         }
+    }
+
+    light1() {
+        $('#bg1 a-light, #bg1 [light]')[0].emit('flash');
     }
 }
