@@ -13,26 +13,24 @@ export default class Controller {
         setTimeout(() => this.initGui(), 500);
         // setTimeout(() => this.onStart(), 1000);
         this.generateTrains();
-        this.eventHandlers();
+        this.initTriggers();
     }
 
     initGui() {
         if (!window.dat) return;
-        var lights = {
-            ambient: $('.scene_light[type=ambient]')[0].getObject3D('light'),
-            point: $('.scene_light[type=point]')[0].getObject3D('light'),
-        }
         var folder, prop;
         this.gui = new dat.GUI();
 
+        var lights = {
+            ambient: $('.sky_light[type=ambient]')[0].getObject3D('light'),
+            point: $('.sky_light[type=point]')[0].getObject3D('light'),
+        }
         folder = this.gui.addFolder('Scene light');
         prop = folder.add(lights.ambient, 'intensity', 0, 1); $(prop.__li).find('.property-name').text('Ambient intensity');
         prop = folder.add(lights.point, 'intensity', 0, 1); $(prop.__li).find('.property-name').text('Point intensity');
 
-        this.gui.add(this, 'addImage');
-        this.gui.add(this.light1, 'light1_flash');
-        this.gui.add(this.light2, 'light2_start');
-        this.gui.add(this.light3, 'light3_switch');
+        folder = this.gui.addFolder('#l0');
+        folder.add($('#l0')[0].getObject3D('light'), 'distance', 0, 200);
     }
     initGuiVR() { // not working idk why
         this.guivr = dat.GUIVR.create('Photos');
@@ -44,6 +42,17 @@ export default class Controller {
         var image = this.addImage(this.photos[0]);
     }
 
+    initTriggers() {
+        var elem;
+        elem = $('#trigger1')[0];
+        elem.addEventListener('click', (e) => {
+            console.log('clicked');
+            $('#light2')[0].emit('start');
+            $('#light3')[0].emit('switch');
+        })
+    }
+
+    // -- legacy code --
     addImage(src) {
         if (!src) src = this.photos[_.random(this.photos.length-1)]; //? test
 
@@ -122,34 +131,5 @@ export default class Controller {
 
             train.appendTo('#trains');
         }
-    }
-
-    eventHandlers() {
-        var elem;
-        elem = $('#trigger1')[0];
-        elem.addEventListener('click', (e) => {
-            console.log('clicked');
-            $('#light2')[0].emit('start');
-            $('#light3')[0].emit('switch');
-        })
-    }
-
-    light1 = {
-        elem: $('#light1')[0],
-        light1_flash() {
-            this.elem.emit('flash');
-            this.elem.components.sound.playSound();
-            setTimeout(() => {this.elem.components.sound.stopSound()}, 500)
-        }
-    }
-
-    light2 = {
-        elem: $('#light2')[0],
-        light2_start() { this.elem.emit('start') }
-    }
-
-    light3 = {
-        elem: $('#light3')[0],
-        light3_switch() { this.elem.emit('switch') }
     }
 }
