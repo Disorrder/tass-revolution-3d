@@ -10,9 +10,10 @@ export default class Controller {
         this.photos = photoNames;
         this.photosElem = $('#photos');
 
-        setTimeout(() => this.initGui(), 100);
+        setTimeout(() => this.initGui(), 500);
         // setTimeout(() => this.onStart(), 1000);
         this.generateTrains();
+        this.eventHandlers();
     }
 
     initGui() {
@@ -81,20 +82,20 @@ export default class Controller {
         this.trains = [];
         // TODO: clean up #trains?
         var trainParams = {
-            distance: 0.5,
-            get dz() { return this.distance + wagonParams.width; }
+            distance: 100,
+            get dz() { return this.distance + wagonParams.depth; }
         };
         var wagonParams = {
-            width: 3,
-            height: 1.2,
-            depth: 1,
-            distance: 0.3,
+            width: 15,
+            height: 3,
+            depth: 2.7,
+            distance: 1.5,
             get dx() { return this.width + this.distance; }
         };
 
         var position;
-        for (let i = 0; i < 5; i++) {
-            position = [_.random(-15,-5,true), 0.7, 0 + (i*trainParams.dz)];
+        for (let i = 0; i < 10; i++) {
+            position = [_.random(-55,-5,true), 1, 0 + (i*trainParams.dz)];
             let train = $('<a-entity>').attr({
                 id: `train-${i}`,
                 className: 'train',
@@ -103,7 +104,11 @@ export default class Controller {
 
             this.trains.push(train[0]);
 
-            for (let j = 0; j < _.random(8, 12); j++) {
+            var color = _.random(15).toString(16);
+            color = color + color + color;
+            color = [_.random(15).toString(16), _.random(15).toString(16), _.random(15).toString(16)].join('')
+
+            for (let j = 0; j < _.random(3, 11); j++) {
                 position = [0 + (j*wagonParams.dx), 0, 0];
                 let wagon = $('<a-box>').attr({
                     className: 'wagon',
@@ -111,12 +116,22 @@ export default class Controller {
                     width: wagonParams.width,
                     height: wagonParams.height,
                     depth: wagonParams.depth,
-                    color: "#111"
+                    color: "#" + color
                 }).appendTo(train);
             }
 
             train.appendTo('#trains');
         }
+    }
+
+    eventHandlers() {
+        var elem;
+        elem = $('#trigger1')[0];
+        elem.addEventListener('click', (e) => {
+            console.log('clicked');
+            $('#light2')[0].emit('start');
+            $('#light3')[0].emit('switch');
+        })
     }
 
     light1 = {

@@ -9,6 +9,7 @@ import dat from 'dat.gui/build/dat.gui';
 import AFRAME from 'aframe';
 import 'aframe-gridhelper-component';
 import 'aframe-particle-system-component';
+// import 'aframe-mouse-cursor-component';
 
 window.$ = window.jQuery = $;
 window._ = _;
