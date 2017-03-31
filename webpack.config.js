@@ -89,6 +89,7 @@ module.exports = {
                     name: "/[path][name].[ext]"
                 }
             },
+            { test: /\.glsl$/, loader: "webpack-glsl-loader" }
         ],
         noParse: /\.min\.js$/
     },
