@@ -1,6 +1,7 @@
 import loadImage from 'app/core/loadImage';
 import fadeIn from 'app/core3d/aframe/animate/fadeIn';
 import zoomIn from 'app/core3d/aframe/animate/zoomIn';
+import './objects/genExplosions.js';
 
 var photoCtx = require.context("assets/photos", true, /\.(png|jpg)$/);
 var photoNames = photoCtx.keys();
@@ -12,13 +13,14 @@ export default class Controller {
 
         setTimeout(() => this.initGui(), 500);
         // setTimeout(() => this.onStart(), 1000);
-        this.generateTrains();
-        this.initTriggers();
+        // this.generateTrains();
+        // this.initTriggers();
+        this.initExplosions();
     }
 
     initGui() {
         if (!window.dat) return;
-        var folder, prop;
+        var folder, prop, obj;
         this.gui = new dat.GUI();
 
         var lights = {
@@ -29,8 +31,15 @@ export default class Controller {
         prop = folder.add(lights.ambient, 'intensity', 0, 1); $(prop.__li).find('.property-name').text('Ambient intensity');
         prop = folder.add(lights.point, 'intensity', 0, 1); $(prop.__li).find('.property-name').text('Point intensity');
 
-        folder = this.gui.addFolder('#l0');
-        folder.add($('#l0')[0].getObject3D('light'), 'distance', 0, 200);
+        // folder = this.gui.addFolder('#l0');
+        // obj = $('#l0')[0].getObject3D('light');
+        // folder.add(obj, 'distance', 0, 200);
+
+        // folder = this.gui.addFolder('#l1');
+        // obj = $('#l1')[0].getObject3D('glow').material;
+        // console.log(obj, obj.uniforms);
+        // prop = folder.add(obj.uniforms.intensity, 'value', -10, 10); $(prop.__li).find('.property-name').text('intensity');
+        // prop = folder.add(obj.uniforms.power, 'value', -10, 10); $(prop.__li).find('.property-name').text('power');
     }
     initGuiVR() { // not working idk why
         this.guivr = dat.GUIVR.create('Photos');
@@ -49,6 +58,13 @@ export default class Controller {
             console.log('clicked');
             $('#light2')[0].emit('start');
             $('#light3')[0].emit('switch');
+        })
+    }
+
+    initExplosions() {
+        var segments = $('#backlight .explosions-segment').each((i, elem) => {
+            // var data = $(elem).data();
+            // console.log('expl', elem, data);
         })
     }
 

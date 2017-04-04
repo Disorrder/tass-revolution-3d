@@ -13,6 +13,7 @@ block scene
 
     a-sky(color="#00000a")
     //- a-sphere.sky(radius="2000" color="#fff" __src="#skyTexture" side="back")
+
     a-light.sky_light(type="ambient" color="#fff" intensity="0")
     a-light.sky_light(type="point" position="0 4 0" color="#fff" intensity="0")
     a-entity.sky_weather(position="0 0 0" particle-system="preset: snow; particleCount: 5000; velocityValue: 1 4 1;")
@@ -21,29 +22,21 @@ block scene
     a-entity#player(position="0 2 0")
         a-camera
             a-cursor(position="1 0 0" color="#aaa" fuse="true" fuse-timeout="500" raycaster="objects: .interactive" follow-mouse)
-            //- a-cursor(color="#aaa" raycaster="objects: .interactive")
 
     //- scene fragments
+    a-entity#backlight(position="0 0 0")
+        a-sphere.background(radius="1000" phi-start="220" phi-length="180" theta-start="85" theta-length="10" color="#0f0" side="back")
+        //- a-entity(position="0 0 -9" particle-explosions="particleCount: 20; positionSpread: 1000 10 1; size: 50; ")
+        //- a-entity(position="0 85 -1100" particle-system="particleCount: 20; maxAge: 0.5; duration: 15; randomize: true; positionSpread: 2000 0 1; size: 1000; color: orange; accelerationValue: null; accelerationSpread: null; velocityValue: null; velocitySpread: null" particle-explosions="")
+        a-entity(position="0 85 -1100" particle-system="particleCount: 100; maxAge: 0.5; opacity: 0.1; randomize: true; positionSpread: 4000 50 1; size: 1500; color: orange; accelerationValue: null; accelerationSpread: null; velocityValue: 200 100 0; velocitySpread: null; texture: /assets/textures/explosion_map.png;")
+
     a-entity#group1
-        a-light(position="0 5 0" type="point" distance="10")
-        a-box(position="0 2 0" width="30" height="0.3" depth="15" color="#ccc" roughness="1")
+        a-light(position="0 5 0" type="point" distance="6")
+        a-box(position="0 2 0" width="10" height="0.3" depth="6" color="#ccc" roughness="1")
         a-terrain(position="0 0 0" width="50" height="50" color="#cec" roughness="1")
 
-    a-entity#group2(position="0 0 -1000")
-        a-plane.lightReflector(position="0 500 -180" rotation="" width="2000" height="1000" color="#fff")
-        a-plane(position="0 25 0" rotation="" width="1000" height="50" color="#0f0")
-
-        a-light.flare1#l0(position="0 -9 -5" type="point" distance="1000" decay="10" intensity="9" angle="70" color="#970104")
-        a-light.flare2#l1(position="350 -9 -5" type="point" distance="1000" decay="10" intensity="18" angle="70" color="#973b17")
-
-
-
-
-
-    //- a-entity#bg1(position="-25 0 0")
-        a-sphere(color='#555' position='0 -3.02 17.43' scale='4 5.78 15' shadow="cast: true; receive: true")
-        a-sphere(color='#555' position='-4.76 -2.25 0' scale='4 5.96 13' shadow="cast: true; receive: true")
-        a-sphere(color='#555' position='0 -3.47 -16.74' scale='4 6 15' shadow="cast: true; receive: true")
+    a-entity#group2(position="0 0 -200")
+        gen-train(wagons="10")
 
         //- -- variant 1 --
         a-entity#light1(position="-8 1.6 -13.3"
