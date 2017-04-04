@@ -1,7 +1,7 @@
 import loadImage from 'app/core/loadImage';
 import fadeIn from 'app/core3d/aframe/animate/fadeIn';
 import zoomIn from 'app/core3d/aframe/animate/zoomIn';
-import './objects/genExplosions.js';
+import './objects/gen-train';
 
 var photoCtx = require.context("assets/photos", true, /\.(png|jpg)$/);
 var photoNames = photoCtx.keys();
