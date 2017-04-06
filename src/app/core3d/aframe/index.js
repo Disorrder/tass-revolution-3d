@@ -3,3 +3,4 @@
 import './particle-explosions';
 // import './rect-light';
 import './terrain';
+import './trigger';
