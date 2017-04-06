@@ -69,36 +69,12 @@ block scene
         a-entity(position="0 1 0" particle-system="particleCount: 1000; maxAge: 500; opacity: 0.7; randomize: true; positionSpread: 1 0 20; size: 3; color: yellow,red; accelerationValue: null; accelerationSpread: null; velocityValue: 3 0 0; velocitySpread: 2 0 0; texture: /assets/textures/explosion_map.png;")
 
     //- a-entity#group10(position="0 0 -100")
-        //- -- variant 1 --
         a-entity#light1(position="-8 1.6 -13.3"
             light="type: point; intensity: 1; penumbra: 0.5; distance: 10; decay: 2; color: #ff844e;"
             sound="src: #ak47_shots; volume: 0.1;"
             geometry="primitive: sphere; radius: 0.2;"
         )
             a-animation(begin="flash" attribute="light.intensity" direction="reverse" delay="20" from="0" to="1" dur="60" repeat="5")
-
-        //- -- variant 2 --
-        //- a-entity(position="-8 1.6 -13.3")
-        //-     a-sphere(radius="0.2" material="color: red; opacity: 0.5;")
-        //-     a-sound()
-        //-     a-light(type="point" intensity="1" penumbra="0.5" distance="10" decay="2" color="#ff844e")
-        //-         a-animation(begin="flash" attribute="intensity" direction="reverse" delay="30" from="0" to="1" dur="50" repeat="4")
-
-    //- a-entity#bg2(position="0 0 0")
-        a-sphere#trigger1.interactive(radius="13" position="-5 0 8" color="red" wireframe="true")
-            //- a-animation(begin="click" attribute="scale" to="1.2 1.2 1.2")
-        a-entity#trains(rotation="0 10 0")
-        a-light#light2(position="-5 5 17" rotation="-35 0 0"
-            type="spot" angle="20" intensity="1"
-            geometry="primitive: sphere; radius: 0.2;"
-        )
-            a-animation(begin="start" attribute="position" direction="alternate" to="10 5 17" dur="3000")
-
-        a-light#light3(position="-22 10 5.7" rotation="-26.1 -94 0"
-            type="spot" angle="14" intensity="2.5" distance="100"
-            geometry="primitive: sphere; radius: 0.1;"
-        )
-            a-animation(begin="switch" attribute="intensity" direction="alternate" from="2.5" to="0" dur="250" easing="ease-in-back")
 
     //- a-text(value="Revolution 3D" font="mozillavr" color="#BBB" position="-0.9 0.24 -3" rotation="-45 0 0" scale="1.5 1.5 1.5")
 
