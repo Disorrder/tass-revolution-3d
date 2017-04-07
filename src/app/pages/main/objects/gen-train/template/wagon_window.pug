@@ -1,0 +1,17 @@
+- var material = 'color: #333; roughness: 1;'
+- var window_material = 'shader: flat; color: yellow; side: double;'
+- var width = 13
+
+a-entity.wagon
+    a-box(position="0 2.7 0" width=13 height=4 depth=3 material=material)
+    a-entity.wagon__windows(position="0 2.8 0")
+        - var x1 = width / 4, x2 = 0, x3 = -x1
+        a-plane.window-1(position=`${x1} 0 1.51` width=2 height=1.2 material=window_material)
+        a-plane.window-2(position=`${x2} 0 1.51` width=2 height=1.2 material=window_material)
+        a-plane.window-3(position=`${x3} 0 1.51` width=2 height=1.2 material=window_material)
+            
+        a-plane.window-4(position=`${x1} 0 -1.51` width=2 height=1.2 material=window_material)
+        a-plane.window-5(position=`${x2} 0 -1.51` width=2 height=1.2 material=window_material)
+        a-plane.window-6(position=`${x3} 0 -1.51` width=2 height=1.2 material=window_material)
+        
+    include parts/wheels.pug

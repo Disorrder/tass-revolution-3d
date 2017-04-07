@@ -1,8 +1,9 @@
 AFRAME.registerComponent('gen-train', {
     schema: {
-        wagons: { type: 'number', default: 10 },
+        // wagons: { type: 'number', default: 10 },
         wagonSize: { type: 'vec3', default: '13 4 3' },
         wagonDistance: { type: 'number', default: 2 },
+        wagonMap: { type: 'array', default: ['head', 'generic'] }
     },
 
     init() {
@@ -20,17 +21,41 @@ AFRAME.registerComponent('gen-train', {
         this.generate();
     },
 
-    generate() {
-        this.genHead().appendTo(this.el);
+    // update(oldData) {
+    //     var diff = AFRAME.utils.diff(oldData, this.data);
+    //     if (diff.wagonMap) {
+    //         this.wagonMap =
+    //     }
+    // },
 
-        for (let i=1; i < this.data.wagons; i++) {
-            this.genWagon().addClass(`wagon-${i}`).attr({
+    generate() {
+        this.data.wagonMap.forEach((name, i) => {
+            this.genWagon(name).addClass(`wagon-${i}`).attr({
                 position: [(this.data.wagonSize.x + this.data.wagonDistance) * i, 0, 0].join(' '),
             }).appendTo(this.el);
-        }
+        })
+
+
+        // this.genWagon('head').appendTo(this.el);
+        // for (let i=1; i < this.data.wagons; i++) {
+        //     this.genWagon().addClass(`wagon-${i}`).attr({
+        //         position: [(this.data.wagonSize.x + this.data.wagonDistance) * i, 0, 0].join(' '),
+        //     }).appendTo(this.el);
+        // }
     },
 
-    genWagon() {
+    genWagon(name = '') {
+        if (!name || name === 'generic') {
+            name = '';
+        } else {
+            name = '_' + name;
+        }
+        var html = require(`./template/wagon${name}.pug`)();
+        console.log('genWagon', html);
+        return $(html);
+    },
+
+    _genWagon() {
         var wagon = $('<a-entity class="wagon">')
             .append(
                 $('<a-box>').attr({
@@ -59,10 +84,10 @@ AFRAME.registerComponent('gen-train', {
         return wagon;
     },
 
-    genHead() {
+    _genHead() {
         var light = $('<a-sphere>').attr({
             class: 'head-light',
-            position: [-this.data.wagonSize.x/2, 1.6, 0].join(' '),
+            position: [-this.data.wagonSize.x/2, 4, 0].join(' '),
             radius: 0.25,
             material: 'shader: flat; color: #ffa;',
         })

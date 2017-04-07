@@ -63,17 +63,17 @@ block scene
         //- a-terrain(position="0 2 0" width="50" height="50" color="#cec" roughness="1")
 
     a-entity#group2(position="0 0 -20")
+        a-image#image1(position="0 35 -40" scale="0 0 0" width="50" height="64" src="/assets/photos/img2.png" material="opacity: 1")
+            a-animation(begin="start" attribute="scale" to="1 1 1" dur="500" delay="7000")
+        a-image(position="0 7 -35" width="30" height="19" src="/assets/photos/img1.png" material="opacity: 0.9")
+
         a-entity#trigger2(position="-5 0 0")
             a-entity(mixin="halfSphere trigger")
             a-entity(mixin="trigger-particles")
 
-        a-image(position="0 7 -35" width="30" height="19" src="/assets/photos/img1.png" material="opacity: 1")
-        a-image(position="0 35 -40" scale="0 0 0" width="50" height="64" src="/assets/photos/img2.png" material="opacity: 1")
-            a-animation(attribute="scale" to="1 1 1" dur="500" delay="13000")
-
         a-terrain(width="500" height="50" color="#cec")
-        a-entity#train1(position="-100 3 0" rotation="0 180 0" gen-train="wagons: 20;")
-            a-animation(begin="run" attribute="position" to="550 3 0" dur="10000" delay="5000" easing="linear" repeat="indefinite")
+        a-entity#train1(position="-10 0 0" rotation="0 180 0" gen-train="wagonMap: head,window,window,window,generic,platform,platform,platform,,window,window,window")
+            a-animation(begin="start" attribute="position" to="550 3 0" dur="10000" delay="000" easing="linear" repeat="0")
 
         a-entity#trigger1(position="-90 3 0")
             a-entity(mixin="halfSphere trigger" geometry="radius: 20;")
