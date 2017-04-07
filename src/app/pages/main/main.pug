@@ -19,6 +19,8 @@ block scene
         a-mixin#trigger(material="visible: false;" trigger="")
         a-mixin#trigger-particles(particle-system="preset: snow; particleCount: 100; maxAge: 2; opacity: 0.8; type: 3; size: 1; color: red,orange; positionSpread: 7 0 7; velocityValue: 0 -2 0; velocitySpread: 2 1 0;")
 
+        a-mixin#black(material="shader: flat; color: black;")
+
 
     a-sky(color="#00000a")
 
@@ -28,7 +30,7 @@ block scene
 
     //- global objects
     a-entity#player(position="0 2 0")
-        a-camera
+        a-camera(wasd-controls="acceleration: 1650;")
             a-cursor(position="1 0 0" color="#aaa" fuse="true" fuse-timeout="700" raycaster="objects: .interactive" cursor-events)
                 a-animation(begin="fusing" end="mouseleave" attribute="color" from="#aaa" to="#ffa" dur="700" easing="ease-in")
                 a-animation(begin="fusing" end="mouseleave" attribute="scale" to="1.5 1.5 1.5" dur="700" easing="ease-in")
@@ -59,27 +61,36 @@ block scene
 
     a-entity#group1
         a-light(position="0 5 0" type="point" distance="6")
-        a-box(position="0 2 0" width="10" height="0.3" depth="6" color="#ccc" roughness="1")
+        a-box(position="0 2 0" rotation="0 90 0" width="10" height="0.3" depth="6" color="#ccc" roughness="1")
         //- a-terrain(position="0 2 0" width="50" height="50" color="#cec" roughness="1")
+        
+        //- a-box.helper(position="-342 0 -624" scale="20 200 20" shader="flat" color="blue")
+        //- a-box.helper(position="524 0 -342" scale="20 200 20" shader="flat" color="orange")
 
     a-entity#group2(position="0 0 -20")
-        a-image#image1(position="0 35 -40" scale="0 0 0" width="50" height="64" src="/assets/photos/img2.png" material="opacity: 1")
+        //- a-image#image1(position="0 35 -40" scale="0 0 0" width="50" height="64" src="/assets/photos/img2.png" material="opacity: 1")
             a-animation(begin="start" attribute="scale" to="1 1 1" dur="500" delay="7000")
-        a-image(position="0 7 -35" width="30" height="19" src="/assets/photos/img1.png" material="opacity: 0.9")
+        //- a-image(position="0 7 -35" width="30" height="19" src="/assets/photos/img1.png" material="opacity: 0.8")
 
-        a-entity#trigger2(position="-5 0 0")
-            a-entity(mixin="halfSphere trigger")
-            a-entity(mixin="trigger-particles")
+    a-entity#group3(position="0 0 -506" rotation="0 -17 0")
+        a-entity#trigger1(position="-90 3 0" scale="5 5 5")
+            a-entity(mixin="sphere trigger" geometry="radius: 40;")
+            a-entity(mixin="trigger-particles" particle-system="size: 10; maxAge: 4; positionSpread: 33 0 33;")
 
-        a-terrain(width="500" height="50" color="#cec")
-        a-entity#train1(position="-10 0 0" rotation="0 180 0" gen-train="wagonMap: head,window,window,window,generic,platform,platform,platform,,window,window,window")
-            a-animation(begin="start" attribute="position" to="550 3 0" dur="10000" delay="000" easing="linear" repeat="0")
+        a-box(position="0 -10 0" width="2000" height="20" depth="50" mixin="black")
+        a-entity#train1(position="-300 0 0" rotation="0 180 0" gen-train="wagonMap: head,window,window,window,generic,platform,platform,platform,window,window,window")
+            a-animation(begin="start" attribute="position" to="800 3 0" dur="10000" delay="0" easing="linear" repeat="0")
+        
+        a-box(position="-400 4 0" width="300" height="9" depth="20" mixin="black")
+        a-box(position="700 4 0" width="300" height="9" depth="20" mixin="black")
+            
+        a-box(position="0 5 -5" width="10" height="20" depth="10" shader="flat" color="green")
+            a-box(position="0 5 0" rotation="0 0 45" width="10" height="10" depth="10" shader="flat" color="green")
 
-        a-entity#trigger1(position="-90 3 0")
-            a-entity(mixin="halfSphere trigger" geometry="radius: 20;")
-            a-entity(mixin="trigger-particles" particle-system="size: 2; positionSpread: 33 0 33;")
+        a-image(position="0 65 -20" width="120" height="150" src="/assets/photos/img1.png" material="opacity: 0.8")
+        
 
-    a-entity#group3(position="-50 0 30")
+    //- a-entity#group4(position="-50 0 30")
         a-entity(position="0 1 0" particle-system="particleCount: 1000; maxAge: 500; opacity: 0.7; randomize: true; positionSpread: 1 0 20; size: 3; color: yellow,red; accelerationValue: null; accelerationSpread: null; velocityValue: 3 0 0; velocitySpread: 2 0 0; texture: /assets/textures/explosion_map.png;")
 
     //- a-entity#group10(position="0 0 -100")

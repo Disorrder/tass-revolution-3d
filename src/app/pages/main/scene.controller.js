@@ -54,7 +54,7 @@ export default class Controller {
         elem = $('#trigger1')[0];
         elem.addEventListener('click', (e) => {
             $('#train1')[0].emit('start');
-            $('#image1')[0].emit('start');
+            // $('#image1')[0].emit('start');
 
             // $('#light2')[0].emit('start');
             // $('#light3')[0].emit('switch');

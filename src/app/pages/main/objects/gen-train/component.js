@@ -21,20 +21,12 @@ AFRAME.registerComponent('gen-train', {
         this.generate();
     },
 
-    // update(oldData) {
-    //     var diff = AFRAME.utils.diff(oldData, this.data);
-    //     if (diff.wagonMap) {
-    //         this.wagonMap =
-    //     }
-    // },
-
     generate() {
         this.data.wagonMap.forEach((name, i) => {
             this.genWagon(name).addClass(`wagon-${i}`).attr({
                 position: [(this.data.wagonSize.x + this.data.wagonDistance) * i, 0, 0].join(' '),
             }).appendTo(this.el);
         })
-
 
         // this.genWagon('head').appendTo(this.el);
         // for (let i=1; i < this.data.wagons; i++) {
@@ -44,14 +36,13 @@ AFRAME.registerComponent('gen-train', {
         // }
     },
 
-    genWagon(name = '') {
+    genWagon(name) {
         if (!name || name === 'generic') {
             name = '';
         } else {
             name = '_' + name;
         }
         var html = require(`./template/wagon${name}.pug`)();
-        console.log('genWagon', html);
         return $(html);
     },
 
