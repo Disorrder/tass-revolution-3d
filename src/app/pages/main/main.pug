@@ -1,5 +1,10 @@
 extends ../../../index.pug
 
+mixin house(color)
+    a-entity.house&attributes(attributes)
+        a-box(position="0 0.5 0" mixin="black")
+        a-cylinder(position="0 1.14 0" rotation="-90 0 0" scale="1 1 0.5" radius="0.6" segments-radial="3" mixin="black")
+
 block scene
     a-assets
         img#boxTexture(crossorigin src="https://i.imgur.com/mYmmbrp.jpg")
@@ -61,35 +66,32 @@ block scene
 
     a-entity#group1
         a-light(position="0 5 0" type="point" distance="6")
-        a-box(position="0 2 0" rotation="0 90 0" width="10" height="0.3" depth="6" color="#ccc" roughness="1")
+        a-box(position="0 2 0" rotation="0 90 0" width="10" height="0.3" depth="6" src="/assets/textures/wooden_floor.jpg" repeat="2 2" _color="#ccc" roughness="1")
         //- a-terrain(position="0 2 0" width="50" height="50" color="#cec" roughness="1")
         
         //- a-box.helper(position="-342 0 -624" scale="20 200 20" shader="flat" color="blue")
         //- a-box.helper(position="524 0 -342" scale="20 200 20" shader="flat" color="orange")
 
-    a-entity#group2(position="0 0 -20")
-        //- a-image#image1(position="0 35 -40" scale="0 0 0" width="50" height="64" src="/assets/photos/img2.png" material="opacity: 1")
-            a-animation(begin="start" attribute="scale" to="1 1 1" dur="500" delay="7000")
-        //- a-image(position="0 7 -35" width="30" height="19" src="/assets/photos/img1.png" material="opacity: 0.8")
-
-    a-entity#group3(position="0 0 -506" rotation="0 -17 0")
+    a-entity#group3(position="0 0 -206")
         a-entity#trigger1(position="-90 3 0" scale="5 5 5")
             a-entity(mixin="sphere trigger" geometry="radius: 40;")
             a-entity(mixin="trigger-particles" particle-system="size: 10; maxAge: 4; positionSpread: 33 0 33;")
 
-        a-box(position="0 -10 0" width="2000" height="20" depth="50" mixin="black")
-        a-entity#train1(position="-300 0 0" rotation="0 180 0" gen-train="wagonMap: head,window,window,window,generic,platform,platform,platform,window,window,window")
-            a-animation(begin="start" attribute="position" to="800 3 0" dur="10000" delay="0" easing="linear" repeat="0")
+        a-entity.pivot(rotation="0 -17 0")
+            a-box(position="0 -10 0" width="2000" height="20" depth="100" mixin="black")
+            a-entity#train1(position="-300 0 0" rotation="0 180 0" gen-train="wagonMap: head,window,window,window,generic,platform,platform,platform,window,window,window")
+                a-animation(begin="start" attribute="position" to="800 3 0" dur="10000" delay="0" easing="linear" repeat="0")
         
-        a-box(position="-400 4 0" width="300" height="9" depth="20" mixin="black")
-        a-box(position="700 4 0" width="300" height="9" depth="20" mixin="black")
+            a-box(position="-400 4 0" width="300" height="9" depth="20" mixin="black")
+            a-box(position="700 4 0" width="300" height="9" depth="20" mixin="black")
             
-        a-box(position="0 5 -5" width="10" height="20" depth="10" shader="flat" color="green")
-            a-box(position="0 5 0" rotation="0 0 45" width="10" height="10" depth="10" shader="flat" color="green")
-
-        a-image(position="0 65 -20" width="120" height="150" src="/assets/photos/img1.png" material="opacity: 0.8")
+        +house()(position="-40 -0.1 -20" scale="10 10 10")
+        +house()(position="10 -0.1 -40" scale="10 10 10")
+        +house()(position="25 -0.1 -20" scale="10 10 10")
         
-
+        a-image(position="0 65 -40" width="120" height="150" src="/assets/photos/img1.png" material="opacity: 0.8")
+        
+ 
     //- a-entity#group4(position="-50 0 30")
         a-entity(position="0 1 0" particle-system="particleCount: 1000; maxAge: 500; opacity: 0.7; randomize: true; positionSpread: 1 0 20; size: 3; color: yellow,red; accelerationValue: null; accelerationSpread: null; velocityValue: 3 0 0; velocitySpread: 2 0 0; texture: /assets/textures/explosion_map.png;")
 
