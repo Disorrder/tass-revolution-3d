@@ -1,0 +1,13 @@
+- var material = 'color: #333; roughness: 1;'
+- var width = 13
+
+a-entity.wagon
+    a-entity.wagon__tanker(position="0 2.9 0")
+        a-cylinder(rotation="0 0 90" radius=1.8 height=10 open-ended=true material=material)
+        a-sphere(position="-4.13 0 0" rotation="0 0 90" radius=2 theta-length=64.45 material=material)
+        a-sphere(position="4.13 0 0" rotation="0 0 -90" radius=2 theta-length=64.45 material=material)
+        
+        a-cylinder(position="-2.5 1.92 0" radius=0.5 height=0.5 material=material)
+        a-cylinder(position="2.5 1.92 0" radius=0.5 height=0.5 material=material)
+    a-box(position="0 1 0" width=13 height=0.5 depth=3 material=material)
+    include parts/wheels.pug
