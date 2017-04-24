@@ -1,0 +1,122 @@
+<project name="TASS-Revolution3D" default="dist" basedir="..">
+
+    <!--
+    *****************************************
+    ***              Параметры            ***
+    *****************************************
+    -->
+
+    <property environment="env"/>
+    <property name="src" location="sources"/>
+    <property name="build" location="build"/>
+    <property name="packages" location="packages"/>
+    <property name="npm" value="/usr/local/bin/npm"/>
+    <property name="nodebinpath" value="./node_modules/.bin/"/>
+
+    <!--
+    *****************************************
+    ***               Задачи              ***
+    *****************************************
+    -->
+
+    <!-- Сборка пакетов -->
+    <target name="dist" depends="init, build.frontend">
+        <parallel>
+            <antcall target="package.frontend"/>
+        </parallel>
+    </target>
+
+    <target name="dist-dev" depends="init, build-dev.frontend">
+        <parallel>
+            <antcall target="package.frontend"/>
+        </parallel>
+    </target>
+
+    <!--
+    *****************************************
+    ***          Служебные задачи         ***
+    *****************************************
+    -->
+
+    <!-- Инициализация, создание пустых папочек -->
+    <target name="init" depends="clean">
+
+        <!-- Создадим папки для работы -->
+        <mkdir dir="${packages}"/>
+        <mkdir dir="${build}"/>
+
+        <!-- Скопируем сырцы в папку для сборки -->
+        <copy todir="${build}">
+            <fileset dir="${src}"/>
+        </copy>
+
+
+    </target>
+
+    <!-- Очистка-->
+    <target name="clean">
+        <delete includeEmptyDirs="true" failonerror="false">
+            <fileset dir="${packages}"/>
+        </delete>
+
+        <delete includeEmptyDirs="true" failonerror="false">
+            <fileset  dir="${build}"
+                excludes="
+                    node_modules/,
+                    bower_components/
+                "/>
+        </delete>
+    </target>
+
+    <!--
+    *****************************************
+    ***            Сборка кода            ***
+    *****************************************
+    -->
+
+    <target name="build.frontend" depends="install-build-deps">
+        <echo>Run webpack</echo>
+        <exec executable="node" failonerror="true" dir="${build}">
+            <env key="PATH" value="${env.PATH}:${nodebinpath}"/>
+            <env key="NODE_ENV" value="production"/>
+            <arg value="${npm}"/>
+            <arg value="run"/>
+            <arg value="build"/>
+        </exec>
+    </target>
+
+    <target name="build-dev.frontend" depends="install-build-deps">
+        <echo>Run webpack</echo>
+        <exec executable="node" failonerror="true" dir="${build}">
+            <env key="PATH" value="${env.PATH}:${nodebinpath}"/>
+            <arg value="${npm}"/>
+            <arg value="run"/>
+            <arg value="build"/>
+        </exec>
+    </target>
+
+    <target name="install-build-deps">
+        <echo>Install node modules</echo>
+        <exec executable="node" failonerror="true" dir="${build}">
+            <arg value="${npm}"/>
+            <arg value="install"/>
+        </exec>
+    </target>
+
+    <!--
+    *****************************************
+    ***               Пакеты              ***
+    *****************************************
+    -->
+
+    <!-- Сборка пакета фронтенда -->
+    <target name="package.frontend">
+        <tar destfile="${packages}/frontend.tar.gz"
+             basedir="${build}/.build"
+             longfile="gnu"
+             compression="gzip"
+        />
+    </target>
+
+</project>
+
