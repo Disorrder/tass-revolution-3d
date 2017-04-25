@@ -12,6 +12,7 @@ const WebpackNotifierPlugin = require('webpack-notifier');
 const CleanWebpackPlugin  = require('clean-webpack-plugin');
 const CopyWebpackPlugin   = require('copy-webpack-plugin');
 const HtmlWebpackPlugin   = require('html-webpack-plugin');
+const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 // const BowerWebpackPlugin = require("bower-webpack-plugin");
 
 // env variables
@@ -96,6 +97,7 @@ module.exports = {
     plugins: [
         flags.notify ? new WebpackNotifierPlugin({excludeWarnings: true}) : new Function(),
         flags.clean ? new CleanWebpackPlugin([cfg.path.build]) : new Function(),
+        new OpenBrowserPlugin({ url: `http://${cfg.webserver.hostname}:${cfg.webserver.port}` }),
 
         new webpack.LoaderOptionsPlugin({
             debug: true

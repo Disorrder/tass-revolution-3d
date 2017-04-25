@@ -1,10 +1,34 @@
 import loadImage from 'app/core/loadImage';
 import fadeIn from 'app/core3d/aframe/animate/fadeIn';
 import zoomIn from 'app/core3d/aframe/animate/zoomIn';
+import animate from 'app/core3d/aframe/animate2';
+// import anime from 'animejs';
 import './objects/gen-train';
 
 var photoCtx = require.context("assets/photos", true, /\.(png|jpg)$/);
 var photoNames = photoCtx.keys();
+
+class Trigger {
+    constructor(options) {
+        this.id = options.id;
+        this.active = options.active;
+        this.click = options.click;
+
+        this.element = $(this.id)[0];
+        // this.$element = $(this.id);
+        // this.element = this.$element[0];
+
+        this.element.addEventListener('click', (e) => {
+            if (!this.active) return;
+            options.click(e, this);
+        });
+    }
+
+    get active() { return this._active; }
+    set active(v) {
+        this._active = v;
+    }
+}
 
 export default class Controller {
     constructor() {
@@ -13,7 +37,6 @@ export default class Controller {
 
         setTimeout(() => this.initGui(), 500);
         // setTimeout(() => this.onStart(), 1000);
-        this.initTriggers();
     }
 
     initGui() {
@@ -49,16 +72,22 @@ export default class Controller {
         var image = this.addImage(this.photos[0]);
     }
 
-    initTriggers() {
-        var elem;
-        elem = $('#trigger1')[0];
-        elem.addEventListener('click', (e) => {
-            $('#train1')[0].emit('start');
-            // $('#image1')[0].emit('start');
+    triggers = [
+        new Trigger({
+            id: '#trigger1',
+            active: true,
+            click: this.runTrain.bind(this),
+        }),
+    ]
 
-            // $('#light2')[0].emit('start');
-            // $('#light3')[0].emit('switch');
-        })
+    runTrain(e, trigger) {
+        // trigger.active = false;
+        var train = $('#train1')[0]
+        train.emit('run');
+        setTimeout(() => {
+            // train.setAttribute('position', '100 0 0');
+            $('#train2')[0].emit('run');
+        }, 6500);
     }
 
     // -- legacy code --
