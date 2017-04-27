@@ -2,7 +2,7 @@ import loadImage from 'app/core/loadImage';
 import fadeIn from 'app/core3d/aframe/animate/fadeIn';
 import zoomIn from 'app/core3d/aframe/animate/zoomIn';
 import animate from 'app/core3d/aframe/animate2';
-// import anime from 'animejs';
+import anime from 'animejs';
 import './objects/gen-train';
 
 var photoCtx = require.context("assets/photos", true, /\.(png|jpg)$/);
@@ -82,12 +82,11 @@ export default class Controller {
 
     runTrain(e, trigger) {
         // trigger.active = false;
-        var train = $('#train1')[0]
-        train.emit('run');
+        $('#train1')[0].emit('run');
+        $('#train2')[0].emit('run');
         setTimeout(() => {
-            // train.setAttribute('position', '100 0 0');
-            $('#train2')[0].emit('run');
-        }, 6500);
+
+        }, 1000);
     }
 
     // -- legacy code --
