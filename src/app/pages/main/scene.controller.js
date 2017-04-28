@@ -4,6 +4,7 @@ import zoomIn from 'app/core3d/aframe/animate/zoomIn';
 import animate from 'app/core3d/aframe/animate2';
 import anime from 'animejs';
 import './objects/gen-train';
+window.anime = anime;
 
 var photoCtx = require.context("assets/photos", true, /\.(png|jpg)$/);
 var photoNames = photoCtx.keys();
@@ -84,9 +85,37 @@ export default class Controller {
         // trigger.active = false;
         $('#train1')[0].emit('run');
         $('#train2')[0].emit('run');
-        setTimeout(() => {
 
-        }, 1000);
+        var t2_light_mtl = $('#train2 .wagon__windows a-plane')
+            .add('#train2 .head__light a-sphere')
+            .add('#train2 .head__light a-cone')
+        ;
+
+        var obj = {opacity: 1};
+        anime({
+            targets: obj,
+            delay: 18000,
+            // easing: [.91,-0.54,.29,1.56],
+            elasticity: 100,
+            opacity: 0,
+            start() {
+                $('#train2 .head__light a-light')[0].getObject3D('light').intensity = 0;
+            },
+            update() {
+                t2_light_mtl.each((k, v) => {
+                    v.getObject3D('mesh').material.opacity = obj.opacity;
+                })
+            }
+        });
+    }
+
+    runTrainAnime(e, trigger) {
+        // trigger.active = false;
+        Promise.resolve().then(() => {
+            return anime({
+
+            })
+        })
     }
 
     // -- legacy code --

@@ -4,12 +4,13 @@
 a-entity.wagon
     a-box(position="0 2.7 0" width=13 height=4 depth=3 material=material)
     a-cylinder(position=`${-width/2 + 2} 5 0` height=1 radius=0.5 material=material)
-    a-sphere.head-light(position=`${-width/2} 4 0` radius=0.25 material="shader: flat; color: #ffa;")
+    a-entity.head__light(position=`${-width/2} 4 0`)
+        a-sphere(radius=0.25 material="shader: flat; color: #ffa; transparent: true;")
         a-light(position="-1 0 0" type="point" distance=9)
         //- a-light(position="-1 0 0" type="spot" distance=9)
         a-cone(position="-13.5 -3.57 0" rotation="0 0 -75"
             height="28.18" radius-bottom=2 radius-top=0.2 segments-height=1
-            material="shader: flat; color: #ffa; opacity: 0.5;"
+            material="shader: flat; color: #ffa; transparent: true; opacity: 0.5;"
         )
             
     include parts/wheels.pug
