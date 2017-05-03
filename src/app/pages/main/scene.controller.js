@@ -1,3 +1,4 @@
+import downloadJSON from 'app/components/downloader'
 import loadImage from 'app/core/loadImage';
 import fadeIn from 'app/core3d/aframe/animate/fadeIn';
 import zoomIn from 'app/core3d/aframe/animate/zoomIn';
@@ -33,11 +34,14 @@ class Trigger {
 
 export default class Controller {
     constructor() {
+        this.scene = $('#scene')[0].object3D;
         this.photos = photoNames;
         this.photosElem = $('#photos');
 
         setTimeout(() => this.initGui(), 500);
         // setTimeout(() => this.onStart(), 1000);
+
+        window.exportScene = this.exportScene.bind(this);
     }
 
     initGui() {
@@ -70,7 +74,7 @@ export default class Controller {
     }
 
     onStart() {
-        var image = this.addImage(this.photos[0]);
+        // var image = this.addImage(this.photos[0]);
     }
 
     triggers = [
@@ -116,6 +120,15 @@ export default class Controller {
 
             })
         })
+    }
+
+    // -- exporter --
+    exportScene() {
+        // var data = this.scene.toJSON();
+        var data = $('#train1')[0].object3D.toJSON();
+        // var data = $('#group1')[0].object3D.toJSON();
+        console.log('exp data', data);
+        downloadJSON(data, 'scene.json');
     }
 
     // -- legacy code --

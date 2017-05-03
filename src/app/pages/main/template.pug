@@ -2,8 +2,8 @@ extends ../../../index.pug
 
 mixin house(color)
     a-entity.house&attributes(attributes)
-        a-box(position="0 0.5 0" mixin="grey")
-        a-cylinder(position="0 1.14 0" rotation="-90 0 0" scale="1 1 0.5" radius="0.6" segments-radial="3" mixin="grey")
+        a-box(position="0 0.5 0")
+        a-cylinder(position="0 1.14 0" rotation="-90 0 0" scale="1 1 0.5" radius="0.6" segments-radial="3")
 
 block scene
     a-assets
@@ -76,7 +76,7 @@ block scene
             a-box(mixin="debug-ray" rotation="0 -150 0")
         
         a-light(position="0 5 0" type="point" distance="6")
-        a-box(position="0 2 0" rotation="0 0 0" width="10" height="0.3" depth="30" src="/assets/textures/wooden_floor.jpg" repeat="2 2" _color="#ccc" roughness="1")
+        a-box(position="0 2 0" rotation="0 0 0" width="10" height="0.3" depth="30" __src="/assets/textures/wooden_floor.jpg" repeat="2 2" _color="#ccc" roughness="1")
         //- a-terrain(position="0 2 0" width="50" height="50" color="#cec" roughness="1")
         
         //- a-box.helper(position="-342 0 -624" scale="20 200 20" shader="flat" color="blue")
@@ -95,15 +95,17 @@ block scene
             a-entity.railway
                 a-box(position="0 -9.9 0" width="2000" height="20" depth="100" mixin="black")
                 a-entity#train1(position="-400 0 0" rotation="0 180 0"
+                    material="shader: flat; color: #bed;" common-material
                     gen-train="wagonMap: head,window,window,window,generic,platform,platform,platform,tanker,tanker,tanker,tanker,tanker,tanker,window,window,window"
                     __animation__run="startEvents: run; property: position; to: 500 0 0; dur: 6000; delay: 0; easing: linear;"
                 )
                     a-animation(begin="run" delay="1000" dur="7000" attribute="position" to="400 0 0" easing="linear")
+                    //- a-animation(begin="run" delay="7000" dur="7000" attribute="material.color" to="#aaa" easing="linear")
             
                 a-box(position="-500 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
                 a-box(position="290 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
                 
-            a-entity.houses
+            a-entity.houses(mixin="grey" common-material)
                 +house()(position="-40 0 -20" scale="10 10 10")
                 +house()(position="10 0 -40" scale="10 10 10")
                 +house()(position="25 0 -20" scale="10 10 10")
@@ -116,6 +118,7 @@ block scene
             a-entity.railway
                 a-box(position="0 -9.9 0" width="2000" height="20" depth="100" mixin="black")
                 a-entity#train2(position="-200 0 0" rotation="0 180 0"
+                    material="shader: flat; color: #bed;" common-material
                     gen-train="wagonMap: head,window,window,window,generic,platform,platform,platform,tanker,tanker,tanker,tanker,tanker,tanker,window,window,window"
                 )
                     a-animation(begin="run" delay="9000" dur="7000" attribute="position" to="230 0 0" easing="ease-out-sine")
@@ -123,7 +126,7 @@ block scene
                 a-box(position="-300 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
                 //- a-box(position="400 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
                 
-            a-entity.houses
+            a-entity.houses(mixin="grey" common-material)
                 +house()(position="-40 0 -20" scale="5 5 5")
                 +house()(position="10 0 -40" scale="5 5 5")
                 +house()(position="25 0 -20" scale="5 5 5")
