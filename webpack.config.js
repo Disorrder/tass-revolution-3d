@@ -39,7 +39,8 @@ module.exports = {
     entry: {
         vendor: `app/vendor.js`,
         app: `app/app.entry.js`,
-        main: `app/pages/main/entry.js`
+        main: `app/pages/main/entry.js`,
+        clara: `app/pages/clara/entry.js`,
     },
     output: {
         path: path.resolve(__dirname, cfg.path.build),
@@ -84,12 +85,13 @@ module.exports = {
             { test: /\.styl$/, use: ["style-loader", "css-loader", "stylus-loader"] },
             { test: /\.font\.(js|json)$/, use: ["style-loader", "css-loader", "fontgen-loader"] },
             {
-                test: /\.(jpeg|jpg|png|gif |woff|svg|ttf|eot)$/i,
+                test: /\.(jpeg|jpg|png|gif|woff|svg|ttf|eot)$/i,
                 loader: "file-loader",
                 options: {
                     name: "/[path][name].[ext]"
                 }
             },
+            // { test: /scene\.json$/, loader: "file-loader", options: {name: "[path][name].[ext]"} },
             { test: /\.glsl$/, loader: "webpack-glsl-loader" }
         ],
         noParse: /\.min\.js$/
@@ -110,11 +112,23 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             filename: 'main.html',
-            template: 'app/pages/main/main.pug',
+            template: 'app/pages/main/template.pug',
             inject: 'head',
             chunks: ['vendor', 'main'],
             chunksSortMode(a, b) {
                 var chunks = ['vendor', 'main'];
+                var i = chunks.indexOf(a.names[0]);
+                var j = chunks.indexOf(b.names[0]);
+                return i - j;
+            }
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'clara.html',
+            template: 'app/pages/clara/template.pug',
+            inject: 'head',
+            chunks: ['vendor', 'clara'],
+            chunksSortMode(a, b) {
+                var chunks = ['vendor', 'clara'];
                 var i = chunks.indexOf(a.names[0]);
                 var j = chunks.indexOf(b.names[0]);
                 return i - j;
