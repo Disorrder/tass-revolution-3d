@@ -1,4 +1,5 @@
-import downloadJSON from 'app/components/downloader'
+import 'three/examples/js/exporters/OBJExporter.js';
+import downloadFile from 'app/components/downloader'
 import loadImage from 'app/core/loadImage';
 import fadeIn from 'app/core3d/aframe/animate/fadeIn';
 import zoomIn from 'app/core3d/aframe/animate/zoomIn';
@@ -123,12 +124,24 @@ export default class Controller {
     }
 
     // -- exporter --
-    exportScene() {
-        // var data = this.scene.toJSON();
-        var data = $('#train1')[0].object3D.toJSON();
+    __exportScene() {
+        // var data = $('#train1')[0].object3D.toJSON();
         // var data = $('#group1')[0].object3D.toJSON();
+        var data = this.scene.toJSON();
         console.log('exp data', data);
-        downloadJSON(data, 'scene.json');
+        var json = JSON.stringify(data);
+        console.log('exp json', json);
+
+        downloadFile(data, 'scene.json');
+    }
+
+    exportScene(selector = '#scene') {
+        var exporter = new THREE.OBJExporter();
+        // var obj = this.scene;
+        var obj = $(selector)[0].object3D;
+        var data = exporter.parse(obj);
+        // console.log(data);
+        downloadFile(data, selector+'.obj');
     }
 
     // -- legacy code --

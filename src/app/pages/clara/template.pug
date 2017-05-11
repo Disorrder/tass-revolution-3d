@@ -5,8 +5,8 @@ block scene
 
     a-sky(color="#00000a")
 
-    a-light.sky_light(type="ambient" color="#fff" intensity="0.3")
-    a-light.sky_light(type="point" position="0 4 0" color="#fff" intensity="0.5")
+    a-light.sky_light(type="ambient" color="#fff" intensity="0.7")
+    a-light.sky_light(type="point" position="0 4 0" color="#fff" intensity="0.7")
     //- a-entity.sky_weather(position="0 0 0" particle-system="preset: snow; particleCount: 5000; velocityValue: 1 4 1;")
 
     //- global objects
@@ -24,6 +24,8 @@ block scene
                 a-animation(begin="click" attribute="scale" to="1 1 1" delay="150" dur="200" easing="ease")
 
     a-entity#world
+    a-entity
+        a-terrain
     //- a-entity#world(blend-model=`src: url(${require('app/pages/clara/scene.json')})`)
         
 block ui

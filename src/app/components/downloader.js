@@ -1,9 +1,7 @@
-export default function downloadJSON(data, filename = 'data.json') {
+export default function downloadFile(data, filename = 'data.json', type) {
     if (!data) return;
 
-    var json = JSON.stringify(data);
-    console.log('exp json', json);
-    var blob = new Blob([json], {type: "application/json"});
+    var blob = new Blob([data], {type});
     var url  = URL.createObjectURL(blob);
 
     var a = document.createElement('a');

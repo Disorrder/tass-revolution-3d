@@ -1,4 +1,5 @@
 import sceneJson from './scene.json';
+// import trainPartsJSON from './train-parts.json';
 import anime from 'animejs';
 
 export default class Controller {
@@ -8,11 +9,11 @@ export default class Controller {
         // load scene
         var loader = new THREE.ObjectLoader();
         var scene = loader.parse(sceneJson);
-        // console.log(sceneJson, scene);
+        console.log(sceneJson, scene);
         this.scene.add(scene);
 
         // setTimeout(() => this.initGui(), 1000);
-        setTimeout(() => this.onStart(), 1000);
+        // setTimeout(() => this.onStart(), 1000);
     }
 
     initGui() {
