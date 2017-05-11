@@ -37,7 +37,7 @@ block scene
     //- a-entity.sky_weather.particle-snow(position="0 0 0" particle-system="preset: snow; particleCount: 5000; velocityValue: 1 4 1;")
 
     //- global objects
-    a-entity#player(position="0 2 0")
+    a-entity#player(position="0 2 0" rotation="0 -170 0")
         a-camera(wasd-controls="acceleration: 1650;")
             a-cursor(position="1 0 0" color="#aaa" fuse="true" fuse-timeout="700" raycaster="objects: .interactive" cursor-events)
                 a-animation(begin="fusing" end="mouseleave" attribute="color" from="#aaa" to="#ffa" dur="700" easing="ease-in")
@@ -133,7 +133,12 @@ block scene
                     +house()(position="25 0 -20" scale="5 5 5")
                     
                     a-light(position="8 13 -50" type="point" color="#fff" intensity="2.7" distance="100")
-                    a-plane(position="0 8 -50" width="90" height="16" shader="flat" color="#fff")
+                    //- a-plane(position="0 8 -50" width="90" height="16" shader="flat" color="#fff")
+                    //- a-image#qq(position="0 8 -50" width="90" height="16" src="#photo1")
+                    a-entity#portal1(position="0 8 -50" scale="0.05 0.05 0.05")
+                        a-plane(scale="1.02 1.02 1" width="0" height="0" shader="flat" color="#fff")
+                        a-image(width="0" height="0" src="#photo1" opacity="0" position="0 0 20")
+                        rect-light(width="0" height="0" distance="10")
         
         //- a-text(value="Revolution 3D" font="mozillavr" color="#BBB" position="-0.9 0.24 -3" rotation="-45 0 0" scale="1.5 1.5 1.5")
 

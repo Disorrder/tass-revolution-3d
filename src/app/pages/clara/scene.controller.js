@@ -9,7 +9,6 @@ export default class Controller {
         // load scene
         var loader = new THREE.ObjectLoader();
         var scene = loader.parse(sceneJson);
-        console.log(sceneJson, scene);
         this.scene.add(scene);
 
         // setTimeout(() => this.initGui(), 1000);

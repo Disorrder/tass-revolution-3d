@@ -40,7 +40,7 @@ export default class Controller {
         this.photosElem = $('#photos');
 
         setTimeout(() => this.initGui(), 500);
-        // setTimeout(() => this.onStart(), 1000);
+        setTimeout(() => this.onStart(), 2000);
 
         window.exportScene = this.exportScene.bind(this);
     }
@@ -76,6 +76,37 @@ export default class Controller {
 
     onStart() {
         // var image = this.addImage(this.photos[0]);
+        this.animatePortal();
+    }
+
+    animatePortal() {
+        var p1 = $('#portal1')[0];
+        var p1_texture = $('#portal1 a-image')[0].getObject3D('mesh').material.map;
+
+        anime.timeline()
+        .add({
+            targets: '#portal1 a-plane, #portal1 rect-light, #portal1 a-image',
+            duration: 1,
+            width: p1_texture.image.width,
+        })
+        .add({
+            targets: '#portal1 a-plane, #portal1 rect-light, #portal1 a-image',
+            delay: 1000,
+            duration: 300,
+            elasticity: 0,
+            easing: 'easeInQuad',
+            // width: p1_texture.image.width,
+            height: p1_texture.image.height,
+        })
+        .add({
+            targets: '#portal1 a-image',
+            elasticity: 100,
+            opacity: 1,
+        })
+
+
+        console.log(p1.object3D);
+
     }
 
     triggers = [
