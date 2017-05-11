@@ -91,26 +91,37 @@ export default class Controller {
         $('#train1')[0].emit('run');
         $('#train2')[0].emit('run');
 
-        var t2_light_mtl = $('#train2 .wagon__windows a-plane')
-            .add('#train2 .head__light a-sphere')
-            .add('#train2 .head__light a-cone')
-        ;
+        // Train windows fade to black
+        var t2_windows = $('#train2 .wagon__passanger');
+        var t2_windows_mtl = t2_windows.map((k, v) => v.object3D.findByName('Windows').material);
+        t2_windows_mtl = _.uniq(t2_windows_mtl);
 
-        var obj = {opacity: 1};
+        var t2_windows_colors = t2_windows_mtl.map((v) => {
+            return {color: '#'+v.color.getHexString()}
+        });
+
         anime({
-            targets: obj,
+            targets: t2_windows_colors,
             delay: 18000,
-            // easing: [.91,-0.54,.29,1.56],
             elasticity: 100,
-            opacity: 0,
-            start() {
-                $('#train2 .head__light a-light')[0].getObject3D('light').intensity = 0;
-            },
+            color: '#000',
             update() {
-                t2_light_mtl.each((k, v) => {
-                    v.getObject3D('mesh').material.opacity = obj.opacity;
+                t2_windows_mtl.forEach((v, k) => {
+                    v.color.set(t2_windows_colors[k].color);
                 })
             }
+        });
+
+        // Head light fade to transparent
+        var t2_head = $('#train2 .wagon__head')[0];
+        var t2_light_mtl = [
+            t2_head.object3D.findByName('Lamp_cone').material
+        ];
+
+        anime({
+            targets: t2_light_mtl,
+            delay: 18500,
+            opacity: 0,
         });
     }
 
