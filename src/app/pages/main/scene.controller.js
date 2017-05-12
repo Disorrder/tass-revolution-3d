@@ -40,7 +40,7 @@ export default class Controller {
         this.photosElem = $('#photos');
 
         setTimeout(() => this.initGui(), 500);
-        setTimeout(() => this.onStart(), 2000);
+        setTimeout(() => this.onStart(), 3000);
 
         window.exportScene = this.exportScene.bind(this);
     }
@@ -76,37 +76,50 @@ export default class Controller {
 
     onStart() {
         // var image = this.addImage(this.photos[0]);
-        this.animatePortal();
+        // this.openPortal('#portal20');
     }
 
-    animatePortal() {
-        var p1 = $('#portal1')[0];
-        var p1_texture = $('#portal1 a-image')[0].getObject3D('mesh').material.map;
+    openPortal(name) {
+        var portal_texture = $(`${name} a-image`)[0].getObject3D('mesh').material.map;
+        var size = $(name).attr('size') || 'auto auto';
+        var wh = portal_texture.image.width / portal_texture.image.height;
+
+        {
+            let [x, y] = size.split(' ');
+            if (x !== 'auto') x = +x || portal_texture.image.width;
+            if (y !== 'auto') y = +y || portal_texture.image.height;
+            if (x === 'auto') x = (y * wh) || portal_texture.image.width;
+            if (y === 'auto') y = (x / wh) || portal_texture.image.height;
+
+            size = {x, y};
+        }
 
         anime.timeline()
         .add({
-            targets: '#portal1 a-plane, #portal1 rect-light, #portal1 a-image',
-            duration: 1,
-            width: p1_texture.image.width,
+            targets: `${name} .animate`,
+            duration: 200,
+            // elasticity: 0,
+            easing: 'easeInQuad',
+            width: size.x,
+            height: 0.01 * size.y,
         })
         .add({
-            targets: '#portal1 a-plane, #portal1 rect-light, #portal1 a-image',
-            delay: 1000,
-            duration: 300,
+            targets: `${name} .animate`,
+            delay: 200,
+            duration: 1500,
             elasticity: 0,
             easing: 'easeInQuad',
-            // width: p1_texture.image.width,
-            height: p1_texture.image.height,
+            // width: portal_texture.image.width,
+            height: size.y,
         })
         .add({
-            targets: '#portal1 a-image',
+            targets: `${name} a-image`,
+            delay: 1500,
+            duration: 1000,
+            easing: 'easeInQuad',
             elasticity: 100,
             opacity: 1,
         })
-
-
-        console.log(p1.object3D);
-
     }
 
     triggers = [
@@ -118,9 +131,42 @@ export default class Controller {
     ]
 
     runTrain(e, trigger) {
-        // trigger.active = false;
+        trigger.active = false;
+
+        // animate images
+        // TODO: MAKE TIMELINE
+
+        setTimeout(() => {
+            this.openPortal('#portal1')
+        }, 1000);
+
+        anime({
+            targets: '#img2',
+            delay: 4000,
+            opacity: 1
+        });
+
+        setTimeout(() => {
+            this.openPortal('#portal20')
+        }, 8000);
+
+        anime({
+            targets: '#img3',
+            delay: 18000,
+            duration: 300,
+            opacity: 1
+        });
+
+        anime({
+            targets: '#img4',
+            delay: 20000,
+            duration: 500,
+            opacity: 1
+        });
+
         $('#train1')[0].emit('run');
         $('#train2')[0].emit('run');
+        $('#train3')[0].emit('run');
 
         // Train windows fade to black
         var t2_windows = $('#train2 .wagon__passanger');
