@@ -1,6 +1,6 @@
 // import AFRAME from 'aframe';
 // var THREE = AFRAME.THREE;
-import loadImage from 'app/core/loadImage';
+import loadImage from 'app/components/loadImage';
 
 AFRAME.registerGeometry('terrain', {
     schema: {

@@ -38,6 +38,8 @@ block scene
 
     //- global objects
     a-entity#player(position="0 2 0" rotation="0 20 0")
+        //- a-animation.user-rotation(delay="5000" dur="20000" attribute="rotation" to="0 -200 0" easing="linear")
+            
         a-camera(wasd-controls="acceleration: 1650;")
             a-cursor(position="1 0 0" color="#aaa" fuse="true" fuse-timeout="700" raycaster="objects: .interactive" cursor-events)
                 a-animation(begin="fusing" end="mouseleave" attribute="color" from="#aaa" to="#ffa" dur="700" easing="ease-in")
@@ -68,6 +70,29 @@ block scene
                 a-entity.particle-fire.small(position="200 85 -1010" particle-system="particleCount: 30; maxAge: 0.5; positionSpread: 1100 50 1; randomize: true; opacity: 0.1; size: 1500; color: orange; accelerationValue: null; accelerationSpread: null; velocityValue: 200 100 0; velocitySpread: null; texture: /assets/textures/explosion_map.png;")
 
 
+        a-entity.radial#images
+            a-entity.pivot(rotation="0 50 0")
+                a-image#img1(position="0 12 -16" width="12.6" height="4" src="/assets/photos/slide1/date.png")
+                a-entity#portal1(position="0 7 -18" size="16 auto")
+                    a-plane.animate(scale="1.1 1.1 1" width="0" height="0" shader="flat" color="#fff")
+                    a-image.animate(position="0 0 1" color="red" width="0" height="0" src="/assets/photos/slide1/header.png" opacity="0")
+
+            a-entity.pivot(rotation="0 -20 0")
+                a-image#img2(position="0 10 -250" width="300" height="40" src="/assets/photos/slide1/war_title.png" opacity="0")
+
+            a-entity.pivot(rotation="0 -78 0")
+                a-image#img3(position="0 10 -200" width="110" height="40" src="/assets/photos/slide1/bread_troubles.png" opacity="0")
+
+            a-entity.pivot(rotation="0 -160 0")
+                a-entity#portal2(position="20 56 -150" size="180 auto")
+                    a-plane.animate(scale="1.02 1.02 1" width="0" height="0" shader="flat" color="#fff")
+                    a-image.animate(position="0 0 1" width="0" height="0" src="/assets/photos/slide1/bread_people.jpg" opacity="0")
+                    rect-light.animate(width="0" height="0" distance="10")
+
+            a-entity.pivot(rotation="0 -220 0")
+                a-image#img4(position="0 0 -15" width="42" height="52" src="/assets/photos/slide1/Nikolay2.png" opacity="0")
+
+
         a-entity#group1(rotation="0 -40 0")
             //- a-entity.axis
                 a-box(mixin="debug-ray" rotation="0 0 0" color="red")
@@ -78,11 +103,12 @@ block scene
             
             a-light(position="0 5 0" type="point" distance="6")
             a-box(position="0 2 0" rotation="0 0 0" width="30" height="0.3" depth="10" src="/assets/textures/wooden_floor.jpg" repeat="2 2" _color="#ccc" roughness="1")
-
-            a-image#img1(position="-16 7 0" rotation="0 90 0" width="6.3" height="2" src="/assets/photos/slide1/date.png")
-            a-entity#portal1(position="-18 4 0" rotation="0 90 0" size="8 auto")
-                a-plane.animate(scale="1.1 1.1 1" width="0" height="0" shader="flat" color="#fff")
-                a-image.animate(position="0 0 1" color="red" width="0" height="0" src="/assets/photos/slide1/header.png" opacity="0")
+                //- a-animation.user-rotation(delay="5000" dur="20000" attribute="rotation" to="0 -200 0" easing="linear")
+                
+            //- a-image#img1(position="-16 12 0" rotation="0 90 0" width="12.6" height="4" src="/assets/photos/slide1/date.png")
+            //- a-entity#portal1(position="-18 7 0" rotation="0 90 0" size="16 auto")
+            //-     a-plane.animate(scale="1.1 1.1 1" width="0" height="0" shader="flat" color="#fff")
+            //-     a-image.animate(position="0 0 1" color="red" width="0" height="0" src="/assets/photos/slide1/header.png" opacity="0")
 
             //- a-image#img4(position="0 1 12" rotation="0 0 0" width="15" height="21" src="/assets/photos/slide1/Nikolay.jpg" opacity="0")
             
@@ -106,7 +132,7 @@ block scene
                     a-box(position="-500 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
                     a-box(position="290 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
                     
-                a-image#img2(position="18 10 -41" rotation="0 0 0" width="300" height="40" src="/assets/photos/slide1/war_title.png" opacity="0")
+                //- a-image#img2(position="18 10 -41" rotation="0 0 0" width="300" height="40" src="/assets/photos/slide1/war_title.png" opacity="0")
                     
                 //- a-entity.houses(__mixin="grey" __common-material)
                     +house()(position="-30 0 -20" scale="10 10 10")
@@ -130,13 +156,13 @@ block scene
                     //- a-box(position="400 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
                     
                 a-entity.images
-                    a-entity#portal20(position="20 56 -50" size="180 auto")
-                        a-plane.animate(scale="1.02 1.02 1" width="0" height="0" shader="flat" color="#fff")
-                        a-image.animate(position="0 0 1" width="0" height="0" src="/assets/photos/slide1/bread_people.jpg" opacity="0")
-                        rect-light.animate(width="0" height="0" distance="10")
+                    //- a-entity#portal20(position="20 56 -50" size="180 auto")
+                    //-     a-plane.animate(scale="1.02 1.02 1" width="0" height="0" shader="flat" color="#fff")
+                    //-     a-image.animate(position="0 0 1" width="0" height="0" src="/assets/photos/slide1/bread_people.jpg" opacity="0")
+                    //-     rect-light.animate(width="0" height="0" distance="10")
                             
-                    a-image#img3(position="150 70 -4" rotation="0 -49 0" width="110" height="40" src="/assets/photos/slide1/bread_troubles.png" opacity="0")
-                    a-image#img4(position="270 56 90" rotation="0 -80 0" width="150" height="200" src="/assets/photos/slide1/Nikolay2.png" opacity="0")
+                    //- a-image#img3(position="150 70 -4" rotation="0 -49 0" width="110" height="40" src="/assets/photos/slide1/bread_troubles.png" opacity="0")
+                    //- a-image#img4(position="270 56 90" rotation="0 -80 0" width="150" height="200" src="/assets/photos/slide1/Nikolay2.png" opacity="0")
                     //- a-image#img4(position="250 56 -4" rotation="0 -49 0" width="110" height="40" src="/assets/photos/slide1/bread_face.png" _opacity="0")
 
                 a-entity.houses
@@ -156,7 +182,7 @@ block scene
                     a-entity#train3(position="-200 0 0" rotation="0 180 0" scale="3 3 3"
                         gen-train="wagonMap: head,passanger,passanger,generic,platform,platform,tanker,tanker,passanger,passanger,passanger"
                     )
-                        a-animation(begin="run" delay="2000" dur="7000" attribute="position" to="715 0 0" easing="ease-out-sine")
+                        a-animation(begin="run" _delay="2000" dur="7000" attribute="position" to="715 0 0" easing="ease-out-sine")
                 
                     a-box(position="-300 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
                     //- a-box(position="400 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
