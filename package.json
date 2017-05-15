@@ -38,7 +38,7 @@
     "aframe-gridhelper-component": "^0.2.0",
     "aframe-mouse-cursor-component": "^0.4.1",
     "aframe-particle-system-component": "^1.0.9",
-    "animejs": "^2.0.2",
+    "animejs": "git+https://github.com/Disorrder/anime.git#Disorrder-patch-1",
     "bootstrap": "^3.3.7",
     "dat.gui": "^0.6.1",
     "datguivr": "^0.1.6",
