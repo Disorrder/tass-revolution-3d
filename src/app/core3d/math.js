@@ -1,3 +1,11 @@
+export function toRad(grad) {
+    return grad * Math.PI / 180;
+}
+
+export function toGrad(rad) {
+    return rad * 180 / Math.PI;
+}
+
 export function getRandomSpread(spread) { // number or vector
     if (_.isNumber(spread)) return getRandomSpreadFloat(spread);
     var vector = spread.clone ? spread.clone() : {};
