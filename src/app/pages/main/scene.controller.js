@@ -243,7 +243,6 @@ export default class Controller {
             duration: 500,
         })
         .add({
-            offset: 0,
             // delay: 4000,
             begin: () => {
                 $('#train3')[0].emit('run');

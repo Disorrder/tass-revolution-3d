@@ -72,16 +72,17 @@ block scene
 
         a-entity.radial#images
             a-entity.pivot(rotation="0 50 0")
-                a-image#img1(position="0 12 -16" width="12.6" height="4" src="/assets/photos/slide1/date.png")
+                a-image#img1(position="0 12 -16" image-size="width: 12" src="/assets/photos/slide1/date.png")
                 a-entity#portal1(position="0 7 -18" size="16 auto")
                     a-plane.animate(scale="1.1 1.1 1" width="0" height="0" shader="flat" color="#fff")
                     a-image.animate(position="0 0 1" color="red" width="0" height="0" src="/assets/photos/slide1/header.png" opacity="0")
 
             a-entity.pivot(rotation="0 -20 0")
-                a-image#img2(position="0 10 -250" width="300" height="40" src="/assets/photos/slide1/war_title.png" opacity="0")
+                a-image#img2(position="-100 10 -200" image-size="width: 100" src="/assets/photos/slide1/war_title1.png" opacity="0")
+                a-image#img3(position="50 10 -250" image-size="width: 200" src="/assets/photos/slide1/war_title2.png" opacity="0")
 
             a-entity.pivot(rotation="0 -78 0")
-                a-image#img3(position="0 10 -200" width="110" height="40" src="/assets/photos/slide1/bread_troubles.png" opacity="0")
+                a-image#img4(position="0 10 -200" image-size="width: 110" src="/assets/photos/slide1/bread_troubles.png" opacity="0")
 
             a-entity.pivot(rotation="0 -160 0")
                 a-entity#portal2(position="20 56 -150" size="180 auto")
@@ -90,7 +91,7 @@ block scene
                     rect-light.animate(width="0" height="0" distance="10")
 
             a-entity.pivot(rotation="0 -220 0")
-                a-image#img4(position="0 0 -15" width="42" height="52" src="/assets/photos/slide1/Nikolay2.png" opacity="0")
+                a-image#img4(position="0 0 -15" image-size="width: 40" src="/assets/photos/slide1/Nikolay2.png" opacity="0")
 
 
         a-entity#group1(rotation="0 -40 0")
