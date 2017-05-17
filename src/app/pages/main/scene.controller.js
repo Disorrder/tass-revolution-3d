@@ -80,7 +80,9 @@ export default class Controller {
         if (AFRAME.utils.device.isGearVR()
             || AFRAME.utils.device.isMobile()
         ) {
-            $('#scene')[0].enterVR();
+            setTimeout(() => {
+                $('#scene')[0].enterVR();
+            }, 1001);
         }
 
         anime({

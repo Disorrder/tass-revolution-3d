@@ -34,7 +34,7 @@ block scene
 
     a-light.sky_light(type="ambient" color="#fff" intensity="0")
     a-light.sky_light(type="point" position="0 4 0" color="#fff" intensity="0")
-    a-entity.sky_weather.particle-snow(position="0 0 0" particle-system="preset: snow; particleCount: 5000; velocityValue: 1 4 1;")
+    a-entity.sky_weather.particle-snow(position="0 0 0" particle-system="preset: snow; particleCount: 1000; velocityValue: 1 4 1;")
 
     //- global objects
     a-entity#player(position="0 2 0" rotation="0 20 0")
@@ -154,15 +154,6 @@ block scene
                     a-box(position="-300 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
                     //- a-box(position="400 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
                     
-                //- a-entity.houses(__mixin="grey" __common-material)
-                    +house()(position="-40 0 -20" scale="5 5 5")
-                    +house()(position="10 0 -40" scale="5 5 5")
-                    +house()(position="25 0 -20" scale="5 5 5")
-                    
-                    a-light(position="8 13 -50" type="point" color="#fff" intensity="2.7" distance="100")
-                    //- a-plane(position="0 8 -50" width="90" height="16" shader="flat" color="#fff")
-                    //- a-image#qq(position="0 8 -50" width="90" height="16" src="#photo1")        
-        
         a-entity#group6(rotation="0 -220 0")
             a-entity(position="0 0 -400")
                 a-entity#trigger2(position="0 3 0" scale="10 5 10")
@@ -170,9 +161,6 @@ block scene
                     a-entity(mixin="trigger-particles" particle-system="size: 10; particleCount: 200; maxAge: 4; positionSpread: 25 0 25;")
 
         a-entity.radial#images
-            //- a-entity.pivot(rotation="0 20 0")
-                a-image#img-bg(position="0 4 -10" width=10 height=10 src="/assets/photos/slide1/testBg.png")
-            
             a-entity.pivot(rotation="0 50 0")
                 a-image#img1(position="0 12 -16" image-size="width: 12" src="/assets/photos/slide1/date.png" opacity="0.99")
                 a-entity#portal1(position="0 7 -18" size="16 auto")
