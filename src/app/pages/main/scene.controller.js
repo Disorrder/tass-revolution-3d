@@ -24,7 +24,7 @@ class Trigger {
 
         this.element.addEventListener('click', (e) => {
             if (!this.active) return;
-            options.click(e, this);
+            this.click(e, this);
         });
     }
 
@@ -36,12 +36,15 @@ class Trigger {
 
 export default class Controller {
     constructor() {
-        this.scene = $('#scene')[0].object3D;
+        this.scene = $('#scene')[0];
         this.photos = photoNames;
         this.photosElem = $('#photos');
 
-        // setTimeout(() => this.initGui(), 500);
-        setTimeout(() => this.onStart(), 2000); // TODO: scene onload callback
+        if (this.scene.hasLoaded) {
+            this.onStart()
+        } else {
+            this.scene.addEventListener('loaded', this.onStart.bind(this));
+        }
 
         window.exportScene = this.exportScene.bind(this);
     }
@@ -59,15 +62,11 @@ export default class Controller {
         prop = folder.add(lights.ambient, 'intensity', 0, 1); $(prop.__li).find('.property-name').text('Ambient intensity');
         prop = folder.add(lights.point, 'intensity', 0, 1); $(prop.__li).find('.property-name').text('Point intensity');
 
-        // folder = this.gui.addFolder('#l0');
-        // obj = $('#l0')[0].getObject3D('light');
-        // folder.add(obj, 'distance', 0, 200);
-
-        // folder = this.gui.addFolder('#l1');
-        // obj = $('#l1')[0].getObject3D('glow').material;
-        // console.log(obj, obj.uniforms);
-        // prop = folder.add(obj.uniforms.intensity, 'value', -10, 10); $(prop.__li).find('.property-name').text('intensity');
-        // prop = folder.add(obj.uniforms.power, 'value', -10, 10); $(prop.__li).find('.property-name').text('power');
+        folder = this.gui.addFolder('Camera');
+        prop = folder.add(this.scene.camera, 'fov', 0, 120);
+        prop.onChange(() => {
+            this.scene.camera.updateProjectionMatrix();
+        })
     }
     initGuiVR() { // not working idk why
         this.guivr = dat.GUIVR.create('Photos');
@@ -76,7 +75,14 @@ export default class Controller {
     }
 
     onStart() {
-        // var image = this.addImage(this.photos[0]);
+        this.initGui();
+
+        if (AFRAME.utils.device.isGearVR()
+            || AFRAME.utils.device.isMobile()
+        ) {
+            $('#scene')[0].enterVR();
+        }
+
         anime({
             targets: '#images a-image[opacity=0]',
             height: 0,
@@ -143,6 +149,13 @@ export default class Controller {
 
     triggers = [
         new Trigger({
+            id: '#trigger0',
+            active: true,
+            click() {
+                location = location.href;
+            },
+        }),
+        new Trigger({
             id: '#trigger1',
             active: true,
             click: this.runTrain.bind(this),
@@ -150,7 +163,9 @@ export default class Controller {
         new Trigger({
             id: '#trigger2',
             active: false,
-            // click: this.runTrain.bind(this),
+            click() {
+                location = location.href;
+            },
         }),
     ]
 
@@ -227,30 +242,16 @@ export default class Controller {
         .add({
             targets: '#img1',
             opacity: 0,
-            height: { value: 0, delay: 5000, duration: 10 },
+            height: { value: 0, delay: 4000, duration: 10 },
             delay: 1000,
-            duration: 4000,
+            duration: 3000,
             easing: 'easeInQuad',
-        })
-        .add({
-            targets: '#img2',
-            height: $('#img2').attr('height'),
-            opacity: 1,
-            delay: 1000,
-            duration: 500,
-            easing: 'easeInQuad',
-        })
-        .add({
-            targets: {t:0}, t:0,
-            delay: 500,
-            begin: () => {
-                $('#train1')[0].emit('run');
-            }
         })
 
         .add({ // rotate user
             targets: {t:0}, t:0,
             delay: 500,
+            // offset: '-=2000',
             begin: () => {
                 var targets = $('#player, #group1 .platform');
                 var rotation = _.map(targets, (v, k) => {
@@ -259,7 +260,7 @@ export default class Controller {
                 anime({
                     targets: rotation,
                     y: '-=180',
-                    duration: 19000,
+                    duration: 22000,
                     // elasticity: 0,
                     easing: 'linear',
                     run() {
@@ -271,6 +272,24 @@ export default class Controller {
                 })
             }
         })
+
+        .add({
+            targets: {t:0}, t:0,
+            delay: 500,
+            duration: 500,
+            begin: () => {
+                $('#train1')[0].emit('run');
+            }
+        })
+        .add({
+            targets: '#img2',
+            height: $('#img2').attr('height'),
+            opacity: 1,
+            delay: 2000,
+            duration: 500,
+            easing: 'easeInQuad',
+        })
+
         .add({
             targets: '#img3',
             height: $('#img3').attr('height'),
@@ -282,17 +301,17 @@ export default class Controller {
         .add({
             targets: '#img2',
             opacity: 0,
-            height: { value: 0, delay: 3000, duration: 100 },
-            delay: 2000,
-            duration: 100,
+            height: { value: 0, delay: 1000, duration: 100 },
+            delay: 1000,
+            duration: 300,
             easing: 'easeInQuad',
         })
         .add({
             targets: '#img3',
             opacity: 0,
-            height: { value: 0, delay: 3000, duration: 100 },
+            height: { value: 0, delay: 2000, duration: 100 },
             delay: 2000,
-            duration: 100,
+            duration: 300,
             easing: 'easeInQuad',
         })
 
@@ -300,12 +319,29 @@ export default class Controller {
             targets: '#img4',
             height: $('#img4').attr('height'),
             opacity: 1,
-            delay: 1000,
+            delay: 2000,
             duration: 500,
         })
         .add({
+            targets: '#img4',
+            opacity: 0,
+            height: { value: 0, delay: 4500, duration: 100 },
+            delay: 4000,
+            duration: 500,
+            easing: 'easeInQuad',
+        })
+
+        .add({
             targets: {t:0}, t:0,
-            delay: 1000,
+            delay: 2000,
+            // duration: $('#train2 [begin=run]').attr('dur'),
+            begin: () => {
+                $('#train2')[0].emit('run');
+            }
+        })
+        .add({
+            targets: {t:0}, t:0,
+            // delay: 1000,
             duration: p2_open.duration,
             begin: () => {
                 p2_open.play();
@@ -313,26 +349,12 @@ export default class Controller {
         })
         .add({
             targets: {t:0}, t:0,
-            delay: 1000,
-            duration: $('#train2 [begin=run]').attr('dur'),
-            begin: () => {
-                $('#train2')[0].emit('run');
-            }
-        })
-        .add({
-            targets: {t:0}, t:0,
-            delay: 500,
+            // delay: 500,
+            delay: $('#train2 [begin=run]').attr('dur'),
             duration: t2_off.duration,
             begin() {
                 t2_off.play();
             }
-        })
-        .add({
-            targets: '#img4',
-            height: 0,
-            opacity: 0,
-            delay: 1000,
-            duration: 500,
         })
         .add({
             targets: {t:0}, t:0,
@@ -352,13 +374,14 @@ export default class Controller {
             targets: '#img5',
             height: $('#img5').attr('height'),
             opacity: 1,
+            delay: 2000,
             duration: 1000,
             easing: 'easeInQuart'
         })
 
         .add({
             targets: {t:0}, t:0,
-            delay: 1000,
+            delay: 3000,
             duration: 500,
             begin: () => {
                 $('#train3')[0].emit('run');
@@ -383,7 +406,8 @@ export default class Controller {
             duration: 500,
             begin: () => {
                 $('.sky_weather.particle-snow').remove();
-                $('#group6 > a-entity').append(this.triggers[1].element);
+                var trigger = _.find(this.triggers, {id: '#trigger2'});
+                $('#group6 > a-entity').append(trigger.element);
             }
         })
         .add({
@@ -393,6 +417,10 @@ export default class Controller {
             delay: 2000,
             duration: 500,
             // easing: 'easeInQuart',
+            begin: () => {
+                var trigger = _.find(this.triggers, {id: '#trigger2'});
+                trigger.active = true;
+            }
         })
     }
 
