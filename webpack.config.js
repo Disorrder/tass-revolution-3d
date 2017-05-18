@@ -53,13 +53,13 @@ module.exports = {
         port: cfg.webserver.port,
         host: cfg.webserver.host,
         inline: true,
+        disableHostCheck: true,
         historyApiFallback: true,
+        contentBase: cfg.path.src,
         watchOptions: {
             aggregateTimeout: 300,
             poll: 1000
         },
-        // outputPath: cfg.path.build,
-        contentBase: cfg.path.src,
         stats: 'minimal',
     },
     resolve: {
@@ -105,13 +105,13 @@ module.exports = {
             debug: true
         }),
 
+        // new HtmlWebpackPlugin({
+        //     filename: 'index.html',
+        //     template: 'index.pug',
+        //     inject: 'head'
+        // }),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: 'index.pug',
-            inject: 'head'
-        }),
-        new HtmlWebpackPlugin({
-            filename: 'main.html',
             template: 'app/pages/main/template.pug',
             inject: 'head',
             chunks: ['vendor', 'main'],
@@ -169,7 +169,8 @@ module.exports = {
 }
 
 if (cfg.api && cfg.api.active) {
-    module.exports.devServer.proxy = {
+    if (!module.exports.devServer.proxy) module.exports.devServer.proxy = {};
+    Object.assign(module.exports.devServer.proxy, {
         '/api/**': { target: `http://${cfg.api.host}:${cfg.api.port}`, secure: false }
-    }
+    });
 }
