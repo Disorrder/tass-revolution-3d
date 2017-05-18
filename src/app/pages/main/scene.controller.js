@@ -36,6 +36,7 @@ class Trigger {
 
 export default class Controller {
     constructor() {
+        // this.debug = true;
         this.scene = $('#scene')[0];
         this.photos = photoNames;
         this.photosElem = $('#photos');
@@ -136,6 +137,10 @@ export default class Controller {
             duration: 500,
             easing: 'easeInQuad',
             elasticity: 100,
+            begin() {
+                var sound = $(`${selector} a-sound`)[0].components.sound;
+                if (sound) sound.playSound();
+            }
         })
     }
 
@@ -160,7 +165,7 @@ export default class Controller {
         new Trigger({
             id: '#trigger1',
             active: true,
-            click: this.runTrain.bind(this),
+            click: this.runScene1.bind(this),
         }),
         new Trigger({
             id: '#trigger2',
@@ -210,7 +215,11 @@ export default class Controller {
         return timeline;
     }
 
-    runTrain(e, trigger) {
+    testTrainPath() {
+        var points = ['#flag_t1', '#flag_t2']
+    }
+
+    runScene1(e, trigger) {
         trigger.active = false;
 
         var p1_open = this.openPortal('#portal1');
@@ -218,8 +227,17 @@ export default class Controller {
 
         var t2_off = this.trainLightOff('#train2');
 
-        var timeline = anime.timeline();
+        anime({
+            targets: '#bg_sound',
+            volume: 0,
+            duration: 3000,
+            easing: 'linear',
+            complete() {
+                $('#bg_sound')[0].components.sound.stopSound();
+            }
+        });
 
+        var timeline = anime.timeline();
         timeline
         .add({
             targets: {t:0}, t:0,
@@ -235,7 +253,7 @@ export default class Controller {
         })
         .add({
             targets: {t:0}, t:0,
-            delay: 7000,
+            delay: this.debug ? 0 : 5000,
             begin: () => {
                 this.closePortal('#portal1');
             }
@@ -246,7 +264,7 @@ export default class Controller {
             opacity: 0,
             height: { value: 0, delay: 4000, duration: 10 },
             delay: 1000,
-            duration: 3000,
+            duration: this.debug ? 100 : 3000,
             easing: 'easeInQuad',
         })
 
@@ -290,6 +308,9 @@ export default class Controller {
             delay: 2000,
             duration: 500,
             easing: 'easeInQuad',
+            begin() {
+                // $('#img2 a-sound')[0].components.sound.playSound();
+            }
         })
 
         .add({
@@ -299,6 +320,9 @@ export default class Controller {
             delay: 2000,
             duration: 500,
             easing: 'easeInQuad',
+            begin() {
+                // $('#img3 a-sound')[0].components.sound.playSound();
+            }
         })
         .add({
             targets: '#img2',
@@ -323,6 +347,9 @@ export default class Controller {
             opacity: 1,
             delay: 2000,
             duration: 500,
+            begin() {
+                $('#img4 a-sound')[0].components.sound.playSound();
+            }
         })
         .add({
             targets: '#img4',
@@ -339,6 +366,17 @@ export default class Controller {
             // duration: $('#train2 [begin=run]').attr('dur'),
             begin: () => {
                 $('#train2')[0].emit('run');
+
+                var t1_sound = $('#train1')[0].components.sound;
+                anime({
+                    targets: t1_sound,
+                    volume: 0,
+                    delay: +$('#train2 [begin=run]').attr('dur'),
+                    duration: 5000,
+                    complete() {
+                        t1_sound.stopSound();
+                    }
+                })
             }
         })
         .add({
@@ -378,7 +416,10 @@ export default class Controller {
             opacity: 1,
             delay: 2000,
             duration: 1000,
-            easing: 'easeInQuart'
+            easing: 'easeInQuart',
+            begin() {
+                $('#img5 a-sound')[0].components.sound.playSound();
+            }
         })
 
         .add({
@@ -396,6 +437,9 @@ export default class Controller {
             opacity: 1,
             delay: 2000,
             duration: 500,
+            begin() {
+                $('#img6 a-sound')[0].components.sound.playSound();
+            }
             // complete: () => {
             //     $('#group6 > a-entity').append(this.triggers[1].element);
             // }
@@ -420,10 +464,23 @@ export default class Controller {
             duration: 500,
             // easing: 'easeInQuart',
             begin: () => {
+                $('#img5 a-sound')[1].components.sound.playSound();
+
                 var trigger = _.find(this.triggers, {id: '#trigger2'});
                 trigger.active = true;
             }
         })
+        .add({
+            targets: '#bg_sound',
+            volume: 1,
+            delay: 1000,
+            duration: 2000,
+            easing: 'linear',
+            begin: () => {
+                $('#bg_sound')[0].components.sound.playSound();
+            }
+        })
+
     }
 
     // -- exporter --

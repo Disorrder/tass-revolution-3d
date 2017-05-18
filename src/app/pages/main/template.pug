@@ -7,14 +7,10 @@ mixin house(color)
 
 block scene
     a-assets
-        //- img#boxTexture(crossorigin src="https://i.imgur.com/mYmmbrp.jpg")
-        img#skyTexture(crossorigin src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg")
+        //- img#skyTexture(crossorigin src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg")
         //- img#skyTexture(crossorigin src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg")
         img#groundTexture(crossorigin src="https://cdn.aframe.io/a-painter/images/floor.jpg")
-        img#photo1(src="/assets/photos/TASS_170984.jpg")
-        //- img#photo1(src="/assets/photos/TASS_186313.jpg")
-        img#photo2(crossorigin src="https://pbs.twimg.com/profile_images/1481569385/y_902e2a9f_400x400.jpg")
-        audio#ak47_shots(src="/assets/audio/ak-47_shots.mp3")
+        //- audio#ak47_shots(src="/assets/audio/ak-47_shots.mp3")
 
         //- mixins
         a-mixin#debug(material="visible: true; wireframe: true; color: red; shader: flat; opacity: 0.4")
@@ -38,7 +34,7 @@ block scene
 
     //- global objects
     a-entity#player(position="0 2 0" rotation="0 20 0")
-        a-sound.ambient
+        a-sound#bg_sound(src="/assets/audio/scene1/background1.wav" volume="1" autoplay="true" loop="true")
         a-camera(_wasd-controls="acceleration: 165;" fov="60")
             a-entity(position="0 0 -2")
                 a-cursor(material="color: #eee; opacity: 0.8" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events)
@@ -94,6 +90,7 @@ block scene
                     a-entity#train1(position="-400 0 0" rotation="0 180 0" scale="2.2 2.2 2.2"
                         __material="shader: flat; color: #000;" __common-material
                         gen-train="wagonMap: head,passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
+                        sound="src: /assets/audio/scene1/train1.wav; volume: 90; loop: true; on: run;"
                     )
                         a-animation(begin="run" dur="11000" attribute="position" to="450 0 0" easing="linear")
                 
@@ -167,24 +164,33 @@ block scene
                 a-entity#portal1(position="0 7 -18" size="16 auto")
                     a-plane.animate(scale="1.1 1.1 1" width="0" height="0" shader="flat" color="#fff")
                     a-image.animate(position="0 0 1" color="red" width="0" height="0" src="/assets/photos/slide1/header.png" opacity="0")
+                    a-sound(src="/assets/audio/scene1/img_appear-2.wav" volume="10")
 
             a-entity.pivot(rotation="0 -20 0")
                 a-image#img2(position="-100 7 -190" image-size="height: 20" src="/assets/photos/slide1/war_title1.png" opacity="0")
+                    a-sound(src="/assets/audio/scene1/img_appear-1.wav" volume="20")
                 a-image#img3(position="50 7 -250" image-size="height: 20" src="/assets/photos/slide1/war_title2.png" opacity="0")
+                    a-sound(src="/assets/audio/scene1/img_appear-2.wav" volume="20")
 
             a-entity.pivot(rotation="0 -78 0")
                 a-image#img4(position="0 7 -100" image-size="height: 20" src="/assets/photos/slide1/bread_troubles.png" opacity="0")
+                    a-sound(src="/assets/audio/scene1/img_appear-1.wav" volume="20")
 
             a-entity.pivot(rotation="0 -160 0")
                 a-entity#portal2(position="0 35 -150" size="120 auto")
                     a-plane.animate(scale="1.02 1.02 1" width="0" height="0" shader="flat" color="#fff")
                     a-image.animate(position="0 0 1" width="0" height="0" src="/assets/photos/slide1/bread_people.jpg" opacity="0")
                     rect-light.animate(width="0" height="0" distance="10")
+                    a-sound(src="/assets/audio/scene1/img_appear-2.wav" volume="20")
 
             a-entity.pivot(rotation="0 -220 0")
                 a-entity(position="0 2 -15")
                     a-image#img5(image-size="width: 20" src="/assets/photos/slide1/Nikolay.jpg" opacity="0")
+                        a-sound(src="/assets/audio/scene1/img_appear-1.wav" volume="7")
+                        a-sound(src="/assets/audio/scene1/nikolay_deleted.wav" volume="20")
+                        
                     a-image#img6(position="-0.5 5.5 1" image-size="width: 9" src="/assets/photos/slide1/Nikolay_bread_face.png" opacity="0")
+                        a-sound(src="/assets/audio/scene1/img_appear-2.wav" volume="7")
 
         
         //- a-text(value="Revolution 3D" font="mozillavr" color="#BBB" position="-0.9 0.24 -3" rotation="-45 0 0" scale="1.5 1.5 1.5")
