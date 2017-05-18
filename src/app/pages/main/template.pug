@@ -38,17 +38,18 @@ block scene
 
     //- global objects
     a-entity#player(position="0 2 0" rotation="0 20 0")
-        a-camera(wasd-controls="acceleration: 165;" fov="60")
-            a-cursor(position="1 0 0" color="#aaa" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events)
-                a-animation(begin="fusing" end="mouseleave" attribute="color" from="#aaa" to="#ffa" dur="1500" easing="ease-in")
-                a-animation(begin="fusing" end="mouseleave" attribute="scale" to="1.5 1.5 1.5" dur="1500" easing="ease-in")
+        a-sound.ambient
+        a-camera(_wasd-controls="acceleration: 165;" fov="60")
+            a-entity(position="0 0 -2")
+                a-cursor(material="color: #eee; opacity: 0.8" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events)
+                    a-animation(begin="fusing" end="mouseleave" attribute="scale" to="2 2 2" dur="1500" easing="ease-in")
+                    a-animation(begin="fusing" end="mouseleave" attribute="geometry.thetaLength" from="360" to="0" dur="1500" easing="ease-in")
 
-                a-animation(begin="mouseleave" attribute="color" from="#ffa" to="#aaa" dur="0" easing="ease")
-                a-animation(begin="mouseleave" attribute="scale" to="1 1 1" dur="100" easing="ease")
+                    a-animation(begin="mouseleave" attribute="scale" to="1 1 1" dur="100" easing="ease")
+                    a-animation(begin="mouseleave" attribute="geometry.thetaLength" to="360" dur="500" easing="ease")
 
-                a-animation(begin="click" attribute="color" from="#ffa" to="#aaa" dur="100" easing="ease-in")
-                a-animation(begin="click" attribute="scale" to="2 2 2" dur="150" easing="ease")
-                a-animation(begin="click" attribute="scale" to="1 1 1" delay="150" dur="200" easing="ease")
+                    a-animation(begin="click" attribute="scale" from="0 0 0" to="1 1 1" _delay="100" dur="300" easing="ease")
+                    a-animation(begin="click" attribute="geometry.thetaLength" to="360" dur="100" easing="ease")
 
     //- scene fragments
     a-entity#world
