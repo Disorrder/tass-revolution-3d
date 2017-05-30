@@ -82,8 +82,8 @@ export default class Controller {
             || AFRAME.utils.device.isMobile()
         ) {
             setTimeout(() => {
-                $('#scene')[0].enterVR();
-            }, 1001);
+                $('.a-enter-vr-button').click();
+            }, 1000);
         }
 
         anime({
