@@ -11,7 +11,7 @@ block scene
         //- img#skyTexture(crossorigin src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg")
         img#groundTexture(crossorigin src="https://cdn.aframe.io/a-painter/images/floor.jpg")
         //- audio#ak47_shots(src="/assets/audio/ak-47_shots.mp3")
-
+        
         //- mixins
         a-mixin#debug(material="visible: true; wireframe: true; color: red; shader: flat; opacity: 0.4")
         a-mixin#debug-ray(geometry="primitive: box; width: 1; depth: 2000;" material="shader: flat; color: yellow; opacity: 0.5")
@@ -162,20 +162,20 @@ block scene
 
         a-entity.radial#images
             a-entity.pivot(rotation="0 50 0")
-                a-image#img1(position="0 12 -16" image-size="width: 12" src="/assets/photos/slide1/date.png" opacity="0.99")
+                a-image#img1(position="0 12 -16" width="12" image-init="" src="/assets/photos/slide1/date.png" opacity="0.99")
                 a-entity#portal1(position="0 7 -18" size="16 auto")
                     a-plane.animate(scale="1.1 1.1 1" width="0" height="0" shader="flat" color="#fff")
                     a-image.animate(position="0 0 1" color="red" width="0" height="0" src="/assets/photos/slide1/header.png" opacity="0")
                     a-sound(src="/assets/audio/scene1/img_appear-2.wav" volume="10")
 
             a-entity.pivot(rotation="0 -20 0")
-                a-image#img2(position="-100 7 -190" image-size="height: 20" src="/assets/photos/slide1/war_title1.png" opacity="0")
+                a-image#img2(position="-100 7 -190" height="20" image-init="" src="/assets/photos/slide1/war_title1.png" opacity="0")
                     a-sound(src="/assets/audio/scene1/img_appear-1.wav" volume="20")
-                a-image#img3(position="50 7 -250" image-size="height: 20" src="/assets/photos/slide1/war_title2.png" opacity="0")
+                a-image#img3(position="50 7 -250" height="20" image-init="" src="/assets/photos/slide1/war_title2.png" opacity="0")
                     a-sound(src="/assets/audio/scene1/img_appear-2.wav" volume="20")
 
             a-entity.pivot(rotation="0 -78 0")
-                a-image#img4(position="0 7 -100" image-size="height: 20" src="/assets/photos/slide1/bread_troubles.png" opacity="0")
+                a-image#img4(position="0 7 -100" height="20" image-init="" src="/assets/photos/slide1/bread_troubles.png" opacity="0")
                     a-sound(src="/assets/audio/scene1/img_appear-1.wav" volume="20")
 
             a-entity.pivot(rotation="0 -160 0")
@@ -187,11 +187,11 @@ block scene
 
             a-entity.pivot(rotation="0 -220 0")
                 a-entity(position="0 2 -15")
-                    a-image#img5(image-size="width: 20" src="/assets/photos/slide1/Nikolay.jpg" opacity="0")
+                    a-image#img5(width="20" image-init="" src="/assets/photos/slide1/Nikolay.jpg" opacity="0")
                         a-sound(src="/assets/audio/scene1/img_appear-1.wav" volume="7")
                         a-sound(src="/assets/audio/scene1/nikolay_deleted.wav" volume="20")
                         
-                    a-image#img6(position="-0.5 5.5 1" image-size="width: 9" src="/assets/photos/slide1/Nikolay_bread_face.png" opacity="0")
+                    a-image#img6(position="-0.5 5.5 1" width="9" image-init="" src="/assets/photos/slide1/Nikolay_bread_face.png" opacity="0")
                         a-sound(src="/assets/audio/scene1/img_appear-2.wav" volume="7")
 
         

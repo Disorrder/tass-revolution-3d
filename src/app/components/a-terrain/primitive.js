@@ -5,8 +5,9 @@ var meshMixin = AFRAME.primitives.getMeshMixin();
 AFRAME.registerPrimitive('a-terrain', extendDeep({}, meshMixin, {
     defaultComponents: {
         geometry: {primitive: 'terrain'},
-        rotation: "-90 0 0",
-        terrain: {}
+        material: {
+            roughness: 0
+        },
     },
     mappings: {
         'width': 'geometry.width',

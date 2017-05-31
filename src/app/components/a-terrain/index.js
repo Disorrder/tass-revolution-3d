@@ -1,2 +1,2 @@
-import './component'
+import './geometry'
 import './primitive'
