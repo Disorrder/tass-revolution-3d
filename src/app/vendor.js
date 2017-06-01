@@ -7,10 +7,9 @@ import $ from 'jquery';
 import _ from 'lodash';
 import dat from 'dat.gui/build/dat.gui';
 import AFRAME from 'aframe';
-import 'aframe-gridhelper-component';
+// import 'aframe-video-shader';
 import 'aframe-particle-system-component';
 import 'aframe-animation-component';
-// import 'aframe-mouse-cursor-component';
 import 'three/examples/js/GPUParticleSystem.js';
 
 window.$ = window.jQuery = $;
