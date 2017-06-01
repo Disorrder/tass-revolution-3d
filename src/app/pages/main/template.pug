@@ -66,6 +66,15 @@ block scene
     a-entity#world
         a-entity#backlight(position="0 0 0")
             a-sphere.background(radius="1000" phi-start="140" phi-length="190" theta-start="85" theta-length="40" color="#010" side="back")
+            a-path#bg-fire-path(position="0 100 0" line-geometry="" visible="false")
+                a-entity.a-path-point(position="-360 0 -1050" geometry="primitive: box;")
+                a-entity.a-path-point(position="-132 0 -1064" geometry="primitive: box;")
+                a-entity.a-path-point(position="603 0 -946" geometry="primitive: box;")
+                a-entity.a-path-point(position="1128 0 -45" geometry="primitive: box;")
+                a-entity.a-path-point(position="892 0 650" geometry="primitive: box;")
+
+            //- a-entity#pf(position="0 5 -10" particle-fire="path: #bg-fire-path;")
+            //- a-box(position="0 4 -10")
 
             a-entity.pivot(rotation="0 0 0")
                 a-entity.particle-fire.smoke(position="0 85 -1050" _particle-system="particleCount: 100; maxAge: 5; positionSpread: 1500 50 1; randomize: true; opacity: 0.1; size: 1000; color: red,orange; accelerationValue: null; accelerationSpread: 0 20 20; velocityValue: 200 100 0; velocitySpread: null; texture: #tex-particle-1;")

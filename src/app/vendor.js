@@ -11,6 +11,7 @@ import 'aframe-gridhelper-component';
 import 'aframe-particle-system-component';
 import 'aframe-animation-component';
 // import 'aframe-mouse-cursor-component';
+import 'three/examples/js/GPUParticleSystem.js';
 
 window.$ = window.jQuery = $;
 window._ = _;

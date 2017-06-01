@@ -1,6 +1,6 @@
 import 'three/examples/js/exporters/OBJExporter.js';
-import downloadFile from 'app/components/downloader'
-import loadImage from 'app/components/loadImage';
+import downloadFile from 'app/components/js/downloader'
+import loadImage from 'app/components/js/loadImage';
 import * as math from 'app/core3d/math';
 import fadeIn from 'app/core3d/aframe/animate/fadeIn';
 import zoomIn from 'app/core3d/aframe/animate/zoomIn';
@@ -48,6 +48,14 @@ export default class Controller {
         }
 
         window.exportScene = this.exportScene.bind(this);
+
+        // setInterval(() => {
+        //     $('a-video, video').click();
+        //     $('a-video, video').map((k, v) => {
+        //         console.log(k, v.play, v);
+        //         if (v.play) v.play();
+        //     })
+        // }, 500);
     }
 
     initGui() {
