@@ -27,8 +27,10 @@ AFRAME.registerComponent('image-init', {
     },
 
     tick() {
-        if (!this.image) { // check image load
-            this.image = this.getTextureImage();
+        let image = this.getTextureImage();
+
+        if (image !== this.image) { // check image load
+            this.image = image;
             if (this.image) this.update();
         }
     },
