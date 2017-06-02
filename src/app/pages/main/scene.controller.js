@@ -1,13 +1,15 @@
 import 'three/examples/js/exporters/OBJExporter.js';
 import downloadFile from 'app/components/js/downloader'
 import loadImage from 'app/components/js/loadImage';
-import * as math from 'app/core3d/math';
-import fadeIn from 'app/core3d/aframe/animate/fadeIn';
-import zoomIn from 'app/core3d/aframe/animate/zoomIn';
-import animate from 'app/core3d/aframe/animate2';
+import * as math from 'app/extensions/math';
+import fadeIn from 'app/extensions/aframe/animate/fadeIn';
+import zoomIn from 'app/extensions/aframe/animate/zoomIn';
+import * as animate from 'app/extensions/anime';
 import anime from 'animejs';
 import './objects/gen-train';
 window.anime = anime;
+
+const FUSE_TIMEOUT = 1500;
 
 var photoCtx = require.context("assets/photos", true, /\.(png|jpg)$/);
 var photoNames = photoCtx.keys();

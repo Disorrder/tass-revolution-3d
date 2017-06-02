@@ -1,5 +1,5 @@
 import ExplodeMaterial from './material/material.js';
-import * as math from 'app/core3d/math';
+import * as math from 'app/extensions/math';
 
 AFRAME.registerComponent('particle-explosions', {
     dependencies: ['particle-system'],

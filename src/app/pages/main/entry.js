@@ -1,5 +1,5 @@
-import 'app/core3d/three';
-import 'app/core3d/aframe';
+import 'app/extensions/three';
+import 'app/extensions/aframe';
 import 'app/components';
 import SceneController from './scene.controller';
 
