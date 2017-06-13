@@ -14,6 +14,8 @@ const FUSE_TIMEOUT = 1500;
 var photoCtx = require.context("assets/photos", true, /\.(png|jpg)$/);
 var photoNames = photoCtx.keys();
 
+var _triggers = ['#trigger1', '#trigger2', '#trigger3'];
+var currentTrigger = _triggers.shift();
 class Trigger {
     constructor(options) {
         this.id = options.id;
@@ -26,6 +28,10 @@ class Trigger {
         ['click', 'mouseenter', 'mouseleave'].forEach((event) => {
             this[event] = options[event];
             this.element.addEventListener(event, (e) => {
+                // if (this.visible != true) return;
+                if (this.id != currentTrigger) return;
+                if (event == 'click') currentTrigger = _triggers.shift();
+
                 if (!this.active) return;
                 if (this[event]) this[event](e, this);
             });
@@ -291,7 +297,7 @@ export default class Controller {
             },
             complete() {
                 trigger.visible = false;
-                // $('#trigger1').remove();
+                $('#trigger1').remove();
             }
         })
         .add({
@@ -352,7 +358,7 @@ export default class Controller {
             duration: 500,
             easing: 'easeInQuad',
             begin() {
-                // $('#img2 a-sound')[0].components.sound.playSound();
+                $('#img2 a-sound')[0].components.sound.playSound();
             }
         })
 
@@ -364,7 +370,7 @@ export default class Controller {
             duration: 500,
             easing: 'easeInQuad',
             begin() {
-                // $('#img3 a-sound')[0].components.sound.playSound();
+                $('#img3 a-sound')[0].components.sound.playSound();
             }
         })
         .add({
@@ -473,13 +479,49 @@ export default class Controller {
         })
 
         .add({
-            targets: '#img5, #img6, #img7',
+            targets: '#img5',
             visible: true,
             opacity: 1,
-            delay(el, i) { return i * 2000 },
-            duration: 500,
+            delay: 2000,
+            duration: 1000,
             easing: 'easeInQuad',
+            begin() {
+                $('#img5 a-sound')[0].components.sound.playSound();
+            }
         })
+
+        .add({
+            targets: '#img6',
+            visible: true,
+            opacity: 1,
+            delay: 2000,
+            duration: 1000,
+            easing: 'easeInQuad',
+            begin() {
+                $('#img6 a-sound')[0].components.sound.playSound();
+            }
+        })
+
+        .add({
+            targets: '#img7',
+            visible: true,
+            opacity: 1,
+            delay: 1000,
+            duration: 1000,
+            easing: 'easeInQuad',
+            begin() {
+                $('#img7 a-sound')[0].components.sound.playSound();
+            }
+        })
+
+        //.add({
+            //targets: '#img5, #img6, #img7',
+            //visible: true,
+            //opacity: 1,
+            //delay(el, i) { return i * 2500 },
+            //duration: 500,
+          //  easing: 'easeInQuad',
+      //  })
 
         var img8 = $('#img8')[0];
 
@@ -488,22 +530,30 @@ export default class Controller {
             targets: '#img8',
             visible: true,
             opacity: 1,
-            duration: 500,
+            delay: 1000,
+            duration: 1000,
             easing: 'easeInQuad',
+            begin() {
+                $('#img8 a-sound')[0].components.sound.playSound();
+            }
         })
-        .add({
-            targets: img8.object3D.position,
-            y: 25,
-            offset: '-=500',
-            duration: 500,
-            easing: 'easeInOutQuart',
-        })
+        // .add({
+        //     targets: img8.object3D.position,
+        //     y: 25,
+        //     offset: '-=500',
+        //     delay: 1000,
+        //     duration: 600,
+        //     easing: 'easeInOutQuart',
+        //     complete() {
+        //         $('#img3 a-sound')[0].components.sound.playSound();
+        //     }
+        // })
 
         .add({
             targets: '#img5, #img6, #img7, #img8',
             opacity: 0,
-            delay: 6000,
-            duration: 500,
+            delay: 5000,
+            duration: 200,
             easing: 'easeInQuad',
             complete: () => {
                 var trigger = _.find(this.triggers, {id: '#trigger3'});
@@ -524,9 +574,12 @@ export default class Controller {
             targets: '#img10',
             visible: true,
             opacity: 1,
-            delay: 1000,
+            delay: 2000,
             duration: 500,
             easing: 'easeInQuad',
+            complete() {
+                $('#img10 a-sound')[0].components.sound.playSound();
+            }
         })
 
 
@@ -662,6 +715,9 @@ export default class Controller {
             targets: '#img13',
             color: '#fcc',
             delay: 2000,
+            begin() {
+                $('#img13 a-sound')[0].components.sound.playSound();
+            }
             // easing: 'easeInQuad',
         })
         .add({
@@ -675,6 +731,9 @@ export default class Controller {
             targets: '#img13, #img14',
             opacity: 0,
             delay: 1000,
+            complete() {
+                $('#img14 a-sound')[0].components.sound.playSound();
+            }
             // easing: 'easeInQuad',
         })
 
@@ -682,7 +741,7 @@ export default class Controller {
             targets: '#group1 a-light',
             intensity: 0,
             // delay: 5000,
-            duration: 500,
+            duration: 2000,
             begin: () => {
                 $('.sky_weather.particle-snow').remove();
                 // var trigger = _.find(this.triggers, {id: '#trigger2'});
@@ -695,7 +754,7 @@ export default class Controller {
         .add({
             targets: '#img121',
             opacity: 1,
-            delay: 1000,
+            delay: 2000,
             begin() {
                 img12.setAttribute('src', '#tex-photo-5');
                 img12.setAttribute('scale', '0 0 1');
@@ -707,6 +766,9 @@ export default class Controller {
                     duration: 3000,
                     easing: 'linear',
                 })
+              },
+          complete() {
+                    $('#trigger2 a-sound')[0].components.sound.playSound();
             }
         })
 
