@@ -1,36 +1,40 @@
-import 'three/examples/js/GPUParticleSystem.js';
+import ParticleSystem from 'app/extensions/three/GPUParticleSystem';
 
 var textureLoader = new THREE.TextureLoader();
 
-AFRAME.registerComponent('particle-fire', {
+AFRAME.registerComponent('particle-fire-2', {
     schema: {
         // path: { type: string },
         // points: { type: 'number', default: 50 }
     },
 
     init() {
-        this.particleSystem = new THREE.GPUParticleSystem({
-			maxParticles: 250000,
+        this.options = {
+            maxParticles: 1e5,
             particleNoiseTex: textureLoader.load('https://threejs.org/examples/textures/perlin-512.png'),
             particleSpriteTex: textureLoader.load('https://threejs.org/examples/textures/particle2.png'),
-		});
+        }
 
-        this.options = {
+        this.particleOptions = {
             position: new THREE.Vector3(),
-            positionRandomness: 0.2,
-            velocity: new THREE.Vector3(0,0,0),
-            velocityRandomness: .5,
+            positionSpread: new THREE.Vector3(5, 0, 0),
+            velocity: new THREE.Vector3(1, 1, 0),
+            velocitySpread: new THREE.Vector3(1, 0.2, 1),
+            acceleration: new THREE.Vector3(0, -0.05, 0),
+            accelerationSpread: new THREE.Vector3(3, 1, 3),
             color: 0xff5566, //aa88ff
-            colorRandomness: .2,
-            turbulence: .05,
-            lifetime: 2,
-            size: 15,
-            sizeRandomness: 1,
-            // smoothPosition: true,
+            colorSpread: .2,
+            opacity: 0.5,
+            // turbulence: .05,
+            lifetime: 4,
+            size: 5,
+            sizeSpread: 1,
         };
 
+        this.particleSystem = new ParticleSystem(this.options, this.particleOptions);
+
         this.spawnerOptions = {
-            spawnRate: 100,
+            spawnRate: 10,
             timeScale: 1
         };
 

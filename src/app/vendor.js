@@ -12,8 +12,6 @@ import 'aframe-particle-system-component';
 import 'aframe-animation-component';
 import 'aframe-look-at-component';
 
-import 'three/examples/js/GPUParticleSystem.js';
-
 window.$ = window.jQuery = $;
 window._ = _;
 window.dat = dat;

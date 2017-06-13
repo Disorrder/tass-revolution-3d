@@ -5,14 +5,31 @@
  * Modified by Disorder
  */
 
- var textureLoader = new THREE.TextureLoader();
+// -- math::random --
+// preload a million random numbers [-0.5, 0.5]
+// const RANDOM_LENGTH = 1e6;
+// var _rand = [], _randCursor;
+// for (_randCursor = 0; _randCursor < RANDOM_LENGTH; _randCursor++) {
+//     _rand.push( Math.random() - 0.5 );
+// }
+//
+// function getRandomSpread() {
+//     return ++_randCursor >= RANDOM_LENGTH ? _rand[_randCursor = 0] : _rand[_randCursor];
+// }
 
- var defaultOptions = {
-     maxParticles: 1000000,
-     containerCount: 1,
-     particleNoiseTex: null,
-     particleSpriteTex: null
- }
+function getRandomSpread() {
+    return Math.random() - 0.5;
+}
+
+// ------
+var textureLoader = new THREE.TextureLoader();
+
+var defaultOptions = {
+    maxParticles: 1000000,
+    containerCount: 1,
+    particleNoiseTex: null,
+    particleSpriteTex: null
+}
 
 export default class GPUParticleSystem extends THREE.Object3D {
     constructor(options) {
@@ -29,12 +46,6 @@ export default class GPUParticleSystem extends THREE.Object3D {
     	this.PARTICLE_CURSOR = 0;
     	this.time = 0;
         this.particleContainers = [];
-
-        // preload a million random numbers
-        this._rand = [];
-        for (this._randCursor = 1e5; this._randCursor > 0; this._randCursor--) {
-            this._rand.push(Math.random() - .5);
-        }
 
         // load textures
         var tex;
@@ -57,12 +68,6 @@ export default class GPUParticleSystem extends THREE.Object3D {
     	this.particleShaderMat.defaultAttributeValues.particleVelColSizeLife = [0, 0, 0, 0];
 
         this.init();
-    }
-
-    random() {
-        return ++this._randCursor >= this._rand.length
-            ? this.rand[this._randCursor = 1]
-            : this.rand[this._randCursor];
     }
 
     init() {
