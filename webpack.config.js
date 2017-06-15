@@ -41,6 +41,7 @@ module.exports = {
         app: `app/app.entry.js`,
         main: `app/pages/main/entry.js`,
         clara: `app/pages/clara/entry.js`,
+        empty: `app/pages/empty/entry.js`,
     },
     output: {
         path: path.resolve(__dirname, cfg.path.build),
@@ -129,6 +130,18 @@ module.exports = {
             chunks: ['vendor', 'clara'],
             chunksSortMode(a, b) {
                 var chunks = ['vendor', 'clara'];
+                var i = chunks.indexOf(a.names[0]);
+                var j = chunks.indexOf(b.names[0]);
+                return i - j;
+            }
+        }),
+        new HtmlWebpackPlugin({
+            filename: 'empty.html',
+            template: 'app/pages/empty/template.pug',
+            inject: 'head',
+            chunks: ['vendor', 'empty'],
+            chunksSortMode(a, b) {
+                var chunks = ['vendor', 'empty'];
                 var i = chunks.indexOf(a.names[0]);
                 var j = chunks.indexOf(b.names[0]);
                 return i - j;

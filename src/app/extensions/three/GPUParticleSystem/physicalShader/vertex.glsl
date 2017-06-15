@@ -1,8 +1,8 @@
-// precision highp float;
+precision highp float;
 
 uniform float uTime;
 uniform float uScale;
-uniform sampler2D tNoise;
+// uniform sampler2D tNoise;
 
 attribute vec4 particlePositionTime;
 attribute vec3 particleVelocity;
@@ -12,7 +12,9 @@ attribute float particleSize;
 attribute float particleLifetime;
 
 varying vec4 vColor;
-varying float lifeLeft;
+float lifeLeft;
+
+#define EASE_IN 0.3
 
 void main() {
     vColor = particleColor;
@@ -26,6 +28,7 @@ void main() {
 
     if (currentTime > 0. && currentTime < 1.) {
         newPosition += (particleVelocity + particleAcceleration * timeElapsed) * timeElapsed;
+        vColor.a *= lifeLeft;
         pointSize = uScale * particleSize * lifeLeft;
     } else {
         newPosition = position;
@@ -41,5 +44,11 @@ void main() {
         float perspective = 1.0;
     #endif
 
+    if (currentTime < EASE_IN) { // appear easing
+        perspective *= currentTime / EASE_IN;
+        // vColor.a *= currentTime / EASE_IN;
+    }
+
     gl_PointSize = perspective * pointSize;
+    // gl_PointSize = 0;
 }

@@ -1,0 +1,147 @@
+extends ../../../index.pug
+
+mixin house(color)
+    a-entity.house&attributes(attributes)
+        a-box(position="0 0.5 0")
+        a-cylinder(position="0 1.14 0" rotation="-90 0 0" scale="1.2 1.2 0.7" radius="0.8" segments-radial="3")
+
+block scene
+    a-assets
+        //- img#skyTexture(crossorigin src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg")
+        //- img#skyTexture(crossorigin src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg")
+        img#groundTexture(crossorigin src="https://cdn.aframe.io/a-painter/images/floor.jpg")
+
+        img#tex-bg-forest(src="/assets/textures/forest3.png")
+        img#tex-bg-piter(src="/assets/textures/piter2.png")
+        img#tex-photo-1(src="/assets/photos/scene1/portal1.png")
+        img#tex-photo-2(src="/assets/photos/scene1/portal2.png")
+        img#tex-photo-3(src="/assets/photos/scene1/Nickolay_black.png")
+        img#tex-photo-4(src="/assets/photos/scene1/hleb.png")
+        img#tex-photo-5(src="/assets/photos/scene1/red dawn.png")
+        img#tex-photo-6(src="/assets/photos/scene1/petrograd.png")
+
+        img#tex-text-1(src="/assets/photos/scene1/text1.png")
+        img#tex-text-2(src="/assets/photos/scene1/text2.png")
+        img#tex-text-3(src="/assets/photos/scene1/text3.png")
+        img#tex-text-4(src="/assets/photos/scene1/text4.png")
+        img#tex-text-5(src="/assets/photos/scene1/text5.png")
+        img#tex-text-6(src="/assets/photos/scene1/text6.png")
+        img#tex-text-7(src="/assets/photos/scene1/text7.png")
+        img#tex-text-8(src="/assets/photos/scene1/text8.png")
+        img#tex-text-9(src="/assets/photos/scene1/text9.png")
+        img#tex-text-10(src="/assets/photos/scene1/text10.png")
+        img#tex-text-11(src="/assets/photos/scene1/text11.png")
+        img#tex-text-12(src="/assets/photos/scene1/text12.png")
+        img#tex-text-13(src="/assets/photos/scene1/text13.png")
+        img#tex-text-14(src="/assets/photos/scene1/text14.png")
+        img#tex-text-15(src="/assets/photos/scene1/text15.png")
+        img#tex-text-16(src="/assets/photos/scene1/winter.png")
+        img#tex-text-17(src="/assets/photos/scene1/Russia.png")
+
+        img#tex-ui-tip-1(src="/assets/photos/scene1/tip1.png")
+
+        img#tex-particle-1(src="/assets/textures/explosion_map.png")
+
+
+        audio#audio-bg-1(src="/assets/audio/scene1/background1.wav")
+        audio#audio-pl(src="/assets/audio/scene1/platform_turning.mp3")
+        audio#audio-click(src="/assets/audio/scene1/trigger_on.wav")
+        audio#audio-text1(src="/assets/audio/scene1/text1.mp3")
+        audio#audio-text2(src="/assets/audio/scene1/text2.wav")
+        audio#audio-trigger2(src="/assets/audio/scene1/2_train_horn.mp3")
+        audio#audio-text5(src="/assets/audio/scene1/text5.wav")
+        audio#audio-text6(src="/assets/audio/scene1/text6.wav")
+        audio#audio-text7(src="/assets/audio/scene1/text7.wav")
+        audio#audio-text9(src="/assets/audio/scene1/trigger_off.wav")
+        audio#audio-text10(src="/assets/audio/scene1/trigger_on.wav")
+
+        audio#audio-sfx-11(src="/assets/audio/scene1/1_train_sound.wav")
+        audio#audio-sfx-1(src="/assets/audio/scene1/1_train_back.mp3")
+        audio#audio-sfx-2(src="/assets/audio/scene1/img_appear-1.wav")
+        audio#audio-sfx-3(src="/assets/audio/scene1/img_appear-2.wav")
+        audio#audio-sfx-4(src="/assets/audio/scene1/2_train_back.mp3")
+        audio#audio-sfx-5(src="/assets/audio/scene1/nikolay_deleted.wav")
+
+        //- mixins
+        a-mixin#debug(material="visible: true; wireframe: true; color: red; shader: flat; opacity: 0.4")
+        a-mixin#debug-ray(geometry="primitive: box; width: 0.1; depth: 2000;" material="shader: flat; color: yellow; opacity: 0.5")
+
+        a-mixin#halfSphere(geometry="primitive: sphere; radius: 15; thetaLength: 90;")
+        a-mixin#sphere(geometry="primitive: sphere; radius: 15;")
+
+        a-mixin#trigger(material="visible: false;" trigger="")
+        a-mixin#trigger-particles(_particle-system="preset: snow; particleCount: 100; maxAge: 2; opacity: 1; type: 3; size: 1; color: red,orange; positionSpread: 7 0 7; velocityValue: 0 -2 0; velocitySpread: 2 1 0;")
+
+        a-mixin#black(material="shader: flat; color: #000;")
+        a-mixin#grey(material="color: #aaa; roughness: 1;")
+
+
+    a-sky(color="#000")
+
+    a-light.sky_light(type="ambient" color="#fff" intensity="0")
+    a-light.sky_light(type="point" position="0 4 0" color="#fff" intensity="0")
+
+    //- scene fragments
+    a-entity#world
+        a-entity#backlight(position="0 0 0")
+            a-path#bg-fire-path(position="0 100 0" line-geometry="" visible="false")
+                a-entity.a-path-point(position="-360 0 -1050" geometry="primitive: box;")
+                a-entity.a-path-point(position="-132 0 -1064" geometry="primitive: box;")
+                a-entity.a-path-point(position="603 0 -946" geometry="primitive: box;")
+                a-entity.a-path-point(position="1128 0 -45" geometry="primitive: box;")
+                a-entity.a-path-point(position="892 0 650" geometry="primitive: box;")
+
+            //- Horizon textures
+            a-cylinder.background(position="0 40 0" geometry="height: 270; radius: 1200; segmentsHeight: 1; thetaStart: 55; thetaLength: 145; openEnded: true;" src="#tex-bg-forest" repeat="2.5 0.9" shader="flat" transparent="true" side="back" color="#000")
+            a-cylinder.background(position="0 -70 0" geometry="height: 100; radius: 1200; segmentsHeight: 1; thetaStart: 55; thetaLength: 145; openEnded: true;" _shader="flat" color="#010" side="back")
+            //- Horizon Piter
+            a-entity.pivot(rotation="0 -230 0")
+                //- a-image#img12(position="0 230 -1200" width="1000" image-init="" src="#tex-photo-2" _opacity="0")
+                a-image#img12(position="0 73 -1200" width="1000" image-init="" src="#tex-text-12" opacity="0")
+                a-image#img121(position="0 500 -1100" width="1000" image-init="" src="#tex-photo-6" opacity="0" color="#fff")
+            a-cylinder.background(position="0 50 0" geometry="height: 200; radius: 1000; segmentsHeight: 1; thetaStart: 288; thetaLength: 45; openEnded: true;" src="#tex-bg-piter" repeat="1 0.9" shader="flat" transparent="true" side="back" color="#000")
+            //- a-cylinder.background(position="0 50 0" geometry="height: 200; radius: 1100; segmentsHeight: 1; thetaStart: 288; thetaLength: 45; openEnded: true;" _src="#tex-bg-piter" _repeat="1 0.9" shader="flat" _transparent="true" side="back" color="#532")
+
+            //- Horizon shader effects
+            a-entity#pf(position="0 5 -15" particle-fire-2="path: #bg-fire-path;")
+            //- a-entity#pf(position="2 5 -15" particle-fire-2="path: #bg-fire-path;")
+            //- a-entity#pf(position="4 5 -15" particle-fire-2="path: #bg-fire-path;")
+            //- a-entity#pf(position="6 5 -15" particle-fire-2="path: #bg-fire-path;")
+            //- a-entity#pf(position="8 5 -15" particle-fire-2="path: #bg-fire-path;")
+            //- a-entity#pf(position="10 5 -15" particle-fire-2="path: #bg-fire-path;")
+
+            a-box(position="0 4 -15")
+
+
+        a-entity#group1(rotation="0 -40 0" sound="src: #audio-pl; volume: 90; loop: false; on: run")
+            a-light(position="0 5 0" type="point" distance="19" intensity="0.5")
+            a-box.platform(position="0 2 0" rotation="0 0 0" width="30" height="0.3" depth="5" src="/assets/textures/wooden_floor.jpg" repeat="1 1" _color="#ccc" roughness="1")
+            a-entity#trigger0(position="0 2 0")
+                a-entity(mixin="sphere trigger" geometry="radius: 0.7;" material="opacity: 0.1;")
+                //- a-entity(mixin="trigger-particles" _particle-system="size: 10; maxAge: 4; positionSpread: 25 0 25;")
+
+
+    //- a-entity.sky_weather.particle-snow(position="0 0 0" particle-system="preset: snow; particleCount: 1000; velocityValue: 1 4 1;")
+
+    //- global objects
+    a-entity#player(position="0 2 0" rotation="0 20 0")
+        a-sound#bg_sound(src="#audio-bg-1" volume="1" autoplay="true" loop="true")
+        a-camera(wasd-controls="acceleration: 650;" fov="75")
+            a-entity(position="0 0 -2")
+                a-cursor(material="color: #eee; opacity: 0.8" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events)
+                    a-animation(begin="fusing" end="mouseleave" attribute="scale" to="2 2 2" dur="1500" easing="ease-in")
+                    a-animation(begin="fusing" end="mouseleave" attribute="geometry.thetaLength" from="360" to="0" dur="1500" easing="ease-in")
+
+                    a-animation(begin="mouseleave" attribute="scale" to="1 1 1" dur="100" easing="ease")
+                    a-animation(begin="mouseleave" attribute="geometry.thetaLength" to="360" dur="500" easing="ease")
+
+                    a-animation(begin="click" attribute="scale" from="0 0 0" to="1 1 1" _delay="100" dur="300" easing="ease")
+                    a-animation(begin="click" attribute="geometry.thetaLength" to="360" dur="100" easing="ease")
+
+            a-entity#sound
+            //- fov is 75, gui z is -0.7, when 1 is 100% width and about 95% height
+            a-entity#gui(position="0 0 -0.07" scale="0.1 0.1 0.1")
+                //- a-image#tip(position="0 0.3 0" width="0.5" src="" npot="true" image-init="" opacity="0" visible="false")
+
+block ui
+    div ololo
