@@ -44,7 +44,6 @@ export default class GPUParticleSystem extends THREE.Object3D {
         this.DPR = window.devicePixelRatio || 1;
         this.DPR = Math.sqrt(this.DPR);
 
-        this.PARTICLE_COUNT = options.maxParticles || 1e5; //?
         this.maxParticles = options.maxParticles || 1e5;
         this.particleNoiseTex = options.particleNoiseTex;
         this.particleSpriteTex = options.particleSpriteTex;
@@ -89,7 +88,7 @@ export default class GPUParticleSystem extends THREE.Object3D {
 
         // init attributes
         this.attributesMeta.forEach((v) => {
-            let arr = new v.constr(this.PARTICLE_COUNT * v.size);
+            let arr = new v.constr(this.maxParticles * v.size);
             let attr = new THREE.BufferAttribute(arr, v.size);
             if (v.dynamic) attr.setDynamic(true);
             this.geometry.addAttribute(v.name, attr);
@@ -173,7 +172,7 @@ export default class GPUParticleSystem extends THREE.Object3D {
 		this.count++;
 
 		this.PARTICLE_CURSOR++;
-		if (this.PARTICLE_CURSOR >= this.PARTICLE_COUNT) {
+		if (this.PARTICLE_CURSOR >= this.maxParticles) {
 			this.PARTICLE_CURSOR = 0;
 		}
 
@@ -190,12 +189,12 @@ export default class GPUParticleSystem extends THREE.Object3D {
         if (this.particleUpdate == true) {
             this.attributesMeta.forEach((v) => {
                 let attr = this.geometry.getAttribute(v.name);
-                if (this.offset + this.count < this.PARTICLE_COUNT) {
+                if (this.offset + this.count < this.maxParticles) {
                     attr.updateRange.offset = attr.updateRange.offset = this.offset * v.size;
                     attr.updateRange.count = attr.updateRange.count = this.count * v.size;
                 } else {
                     attr.updateRange.offset = 0;
-                    attr.updateRange.count = attr.updateRange.count = (this.PARTICLE_COUNT * v.size);
+                    attr.updateRange.count = attr.updateRange.count = (this.maxParticles * v.size);
                 }
                 attr.needsUpdate = true;
             });

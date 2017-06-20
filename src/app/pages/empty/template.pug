@@ -104,12 +104,12 @@ block scene
             //- a-cylinder.background(position="0 50 0" geometry="height: 200; radius: 1100; segmentsHeight: 1; thetaStart: 288; thetaLength: 45; openEnded: true;" _src="#tex-bg-piter" _repeat="1 0.9" shader="flat" _transparent="true" side="back" color="#532")
 
             //- Horizon shader effects
-            a-entity#pf(position="-10 10 -15" particle-system-2="preset: test; maxParticles: 10; spawnRate: 2; opacity: 1; color: #bed; colorSpread: 0.6; size: 50; texture: #tex-particle-2;")
-            //- a-entity#pf(position="-5 5 -15" particle-system-2="preset: test; color: orange;")
-            //- a-entity#pf(position="0 10 -15" particle-system-2="preset: test; color: yellow;")
-            //- a-entity#pf(position="5 5 -15" particle-system-2="preset: test; color: green;")
-            //- a-entity#pf(position="10 10 -15" particle-system-2="preset: test; color: blue;")
-            //- a-entity#pf(position="10 5 -15" particle-system-2="preset: test;")
+            a-entity#pf(position="-10 10 -15" gpu-particle-system="preset: test; maxParticles: 10; spawnRate: 2; opacity: 1; color: #bed; colorSpread: 0.6; size: 50; texture: #tex-particle-2;")
+            //- a-entity#pf(position="-5 5 -15" gpu-particle-system="preset: test; color: orange;")
+            //- a-entity#pf(position="0 10 -15" gpu-particle-system="preset: test; color: yellow;")
+            //- a-entity#pf(position="5 5 -15" gpu-particle-system="preset: test; color: green;")
+            //- a-entity#pf(position="10 10 -15" gpu-particle-system="preset: test; color: blue;")
+            //- a-entity#pf(position="10 5 -15" gpu-particle-system="preset: test;")
 
             a-box(position="0 4 -15")
 

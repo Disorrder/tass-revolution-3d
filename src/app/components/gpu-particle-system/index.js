@@ -35,7 +35,7 @@ var schema = {
     }
 }
 
-AFRAME.registerComponent('particle-system-2', {
+AFRAME.registerComponent('gpu-particle-system', {
     schema,
 
     init() {
@@ -83,9 +83,13 @@ AFRAME.registerComponent('particle-system-2', {
             diff = Object.assign({}, preset, diff);
         }
 
-        if (diff.maxParticles) this.maxParticles = diff.maxParticles;
+        if (this.particleSystem) {
+            if (diff.maxParticles) this.particleSystem.maxParticles = diff.maxParticles;
+            if (diff.perspective != null) this.particleSystem.material.defines.HAS_PERSPECTIVE = diff.perspective;
+        }
+
         if (diff.spawnRate) this._spawnTimeInterval = 1 / diff.spawnRate;
-        if (diff.perspective != null) this.particleSystem.material.defines.HAS_PERSPECTIVE = diff.perspective;
+        if (diff.maxParticles) this.options.maxParticles = diff.maxParticles;
 
         this.particleOptionsKeys.forEach((option) => {
             if (diff[option] != null) {
@@ -98,7 +102,7 @@ AFRAME.registerComponent('particle-system-2', {
         time /= 1000; dt /= 1000;
 
         if (time - this._spawnLastTime >= this.particleOptions.lifetime) {
-            for (let i = 0; i < this.options.maxParticles; i++) {
+            for (let i = 0; i < this.particleSystem.maxParticles; i++) {
                 this.particleSystem.spawnParticle(this.particleOptions);
             }
             this._spawnLastTime = time;

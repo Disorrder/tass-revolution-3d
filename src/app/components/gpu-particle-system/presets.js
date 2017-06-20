@@ -32,3 +32,18 @@ presets.test = Object.assign({}, presets.default, {
     accelerationSpread: new THREE.Vector3(0, 0.5, 0),
     lifetime: 5,
 });
+
+presets.snow = Object.assign({}, presets.default, {
+    maxParticles: 5000,
+    spawnRate: 500,
+
+    position: new THREE.Vector3(0, 25, 0),
+    positionSpread: new THREE.Vector3(100, 50, 100),
+    velocity: new THREE.Vector3(0, -3, 0),
+    velocitySpread: new THREE.Vector3(2, 1, 2),
+    color: 'white',
+    colorSpread: 0.2,
+    opacity: 10,
+    lifetime: 10,
+    size: 0.5,
+});

@@ -4,4 +4,4 @@ import './a-terrain';
 import './image-init';
 
 // import './particle-fire';
-import './particle-system-2';
+import './gpu-particle-system';
