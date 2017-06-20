@@ -123,6 +123,7 @@ export default class GPUParticleSystem extends THREE.Object3D {
 
         spreadVector3(position, positionSpread);
         spreadVector3(velocity, velocitySpread);
+        spreadVector3(acceleration, accelerationSpread);
         spreadColor(color, colorSpread);
         size += sizeSpread * getRandomSpread();
         size *= this.DPR;
