@@ -43,7 +43,7 @@ presets.snow = Object.assign({}, presets.default, {
     velocitySpread: new THREE.Vector3(2, 1, 2),
     color: 'white',
     colorSpread: 0.2,
-    opacity: 10,
+    opacity: 1,
     lifetime: 10,
     size: 0.5,
 });

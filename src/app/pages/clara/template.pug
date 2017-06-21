@@ -10,7 +10,7 @@ block scene
     //- a-entity.sky_weather(position="0 0 0" particle-system="preset: snow; particleCount: 5000; velocityValue: 1 4 1;")
 
     //- global objects
-    a-entity#player(position="0 0 0")
+    a-entity#playerBox(position="0 0 0")
         a-camera(wasd-controls="acceleration: 165;")
             a-cursor(position="1 0 0" color="#aaa" fuse="true" fuse-timeout="700" raycaster="objects: .interactive" cursor-events)
                 a-animation(begin="fusing" end="mouseleave" attribute="color" from="#aaa" to="#ffa" dur="700" easing="ease-in")

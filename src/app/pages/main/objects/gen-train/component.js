@@ -38,13 +38,22 @@ function getTrainPart(name) {
             // mb remap names from Body.001 to Body?
             v.position.set(0, 0, 0);
             let body = v.children.find((v) => ~v.name.indexOf('Body')) || v;
-            v.boxSize = new THREE.Box3().setFromObject(body).getSize();
+            let box = new THREE.Box3().setFromObject(body);
+            v.boxSize = box.getSize();
+            // var center = box.getCenter();
+            // v.position.x += center.x;
+            // console.log(body, box, center);
         });
     }
 
     var part = trainParts.find((v) => v.name === name);
     var clone = part.clone();
     clone.boxSize = part.boxSize;
+
+    if (name === 'head') { // WTF
+        clone.boxSize.x += 0.5;
+    }
+
     return clone;
 }
 
@@ -75,8 +84,9 @@ AFRAME.registerComponent('gen-train', {
             var wagon = this.genWagon(name);
             // console.log(wagon, trainLength, wagon.boxSize.x);
 
+            var z = trainLength + wagon.boxSize.x / 2;
             var dom = $('<a-entity>').addClass(`wagon-${i} wagon__${name}`).attr({
-                position: [(trainLength + wagon.boxSize.x / 2), 0, 0].join(' '),
+                position: [0, 0, -z].join(' '),
             }).appendTo(this.el);
 
             trainLength += wagon.boxSize.x;

@@ -322,7 +322,7 @@ export default class Controller {
             delay: 500,
             // offset: '-=2000',
             begin: () => {
-                var targets = $('#player, #group1 .platform');
+                var targets = $('#playerBox, #group1 .platform');
                 var rotation = _.map(targets, (v, k) => {
                     return v.getAttribute('rotation');
                 });
@@ -421,7 +421,7 @@ export default class Controller {
     runScene2(e, trigger) {
         trigger.active = false;
 
-        var t2_off = this.trainLightOff('#train2');
+        var t1_off = this.trainLightOff('#train1');
 
         var timeline = anime.timeline();
         timeline
@@ -430,7 +430,7 @@ export default class Controller {
             delay: 500,
             // offset: '-=2000',
             begin: () => {
-                var targets = $('#player, #group1 .platform');
+                var targets = $('#playerBox, #group1 .platform');
                 var rotation = _.map(targets, (v, k) => {
                     return v.getAttribute('rotation');
                 });
@@ -452,15 +452,15 @@ export default class Controller {
         .add({
             targets: {t:0}, t:0,
             delay: 2000,
-            // duration: $('#train2 [begin=run]').attr('dur'),
+            // duration: $('#train1 [begin=run2]').attr('dur'),
             begin: () => {
-                $('#train2')[0].emit('run');
+                $('#train1')[0].emit('run2');
 
                 var t1_sound = $('#train1')[0].components.sound;
                 anime({
                     targets: t1_sound,
                     volume: 0,
-                    delay: +$('#train2 [begin=run]').attr('dur'),
+                    delay: +$('#train1 [begin=run2]').attr('dur'),
                     duration: 5000,
                     complete() {
                         t1_sound.stopSound();
@@ -563,7 +563,7 @@ export default class Controller {
 
         .add({
             targets: {t:0}, t:0,
-            // delay: $('#train2 [begin=run]').attr('dur'),
+            // delay: $('#train1 [begin=ru2]').attr('dur'),
             duration: t2_off.duration,
             begin() {
                 t2_off.play();
