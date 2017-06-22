@@ -25,7 +25,7 @@ class Trigger {
         // this.$element = $(this.id);
         // this.element = this.$element[0];
 
-        ['click', 'mouseenter', 'mouseleave'].forEach((event) => {
+        ['_click', '_mouseenter', '_mouseleave'].forEach((event) => {
             this[event] = options[event];
             this.element.addEventListener(event, (e) => {
                 // if (this.visible != true) return;

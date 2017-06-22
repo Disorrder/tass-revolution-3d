@@ -93,16 +93,16 @@ block scene
 
             a-entity.pivot(rotation="0 -10 0")
                 a-entity
-                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 50; lifetime: 5; spawnRate: 10; opacity: 0.2; size: 500; color: red; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
-                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 30; lifetime: 3; spawnRate: 10; opacity: 0.2; size: 500; color: orange; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 50; lifetime: 5; spawnRate: 10; opacity: 0.2; size: 700; color: red; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 30; lifetime: 3; spawnRate: 10; opacity: 0.2; size: 700; color: orange; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
             a-entity.pivot(rotation="0 -30 0")
                 a-entity
-                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 30; lifetime: 3; spawnRate: 10; opacity: 0.2; size: 500; color: orange; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 30; lifetime: 3; spawnRate: 10; opacity: 0.2; size: 700; color: orange; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
             a-entity.pivot(rotation="0 -45 0")
                 a-entity
-                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 100; lifetime: 5; spawnRate: 20; opacity: 0.2; size: 500; color: red; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 100; lifetime: 5; spawnRate: 20; opacity: 0.2; size: 700; color: red; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
             a-entity.pivot(rotation="0 -90 0")
                 a-entity
@@ -140,7 +140,7 @@ block scene
             a-entity#train1(_position="-314 0 -328" _rotation="0 180 0" scale="2.2 2.2 2.2"
                 move-by-path="path: #railway-1; position: 0;"
                 __material="shader: flat; color: #000;" __common-material
-                gen-train="wagonMap: head,passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
+                gen-train="wagonMap: passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
                 sound="src: #audio-sfx-1; volume: 90; loop: false; on: run;"
             )
                 a-animation(begin="run" dur="11000" attribute="move-by-path.position" to="0.6" easing="linear")
@@ -168,7 +168,7 @@ block scene
                     
                     //- a-entity#train2(position="-200 0 0" rotation="0 180 0" scale="2.2 2.2 2.2"
                     //-     __material="shader: flat; color: #000;" __common-material
-                    //-     gen-train="wagonMap: head,passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
+                    //-     gen-train="wagonMap: passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
                     //-     sound="src: #audio-sfx-4; volume: 90; loop: false; on: run;"
                     //- )
                     //-     a-animation(begin="run" dur="10000" attribute="position" to="320 0 0" easing="ease-out-sine")
@@ -185,7 +185,7 @@ block scene
                 a-entity.railway
                     //- a-box(position="0 -0.4 0" width="2000" height="1" depth="100" mixin="black")
                     a-entity#train3(position="-200 0 0" rotation="0 90 0" scale="4 4 4"
-                        gen-train="wagonMap: head,passanger,passanger,generic,platform,platform,tanker,tanker,passanger,passanger,passanger"
+                        gen-train="wagonMap: passanger,passanger,generic,platform,platform,tanker,tanker,passanger,passanger,passanger"
                     )
                         a-animation(begin="run" _delay="2000" dur="10000" attribute="position" to="715 0 0" easing="ease-out-sine")
                     
@@ -280,15 +280,7 @@ block scene
         a-sound#bg_sound(src="#audio-bg-1" volume="0" autoplay="true" loop="true")
         a-camera#player(wasd-controls="acceleration: 650;" fov="75")
             a-entity(position="0 0 -2")
-                a-cursor(material="color: #eee; opacity: 0.8" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events)
-                    a-animation(begin="fusing" end="mouseleave" attribute="scale" to="2 2 2" dur="1500" easing="ease-in")
-                    a-animation(begin="fusing" end="mouseleave" attribute="geometry.thetaLength" from="360" to="0" dur="1500" easing="ease-in")
-
-                    a-animation(begin="mouseleave" attribute="scale" to="1 1 1" dur="100" easing="ease")
-                    a-animation(begin="mouseleave" attribute="geometry.thetaLength" to="360" dur="500" easing="ease")
-
-                    a-animation(begin="click" attribute="scale" from="0 0 0" to="1 1 1" _delay="100" dur="300" easing="ease")
-                    a-animation(begin="click" attribute="geometry.thetaLength" to="360" dur="100" easing="ease")
+                a-cursor(material="color: #eee; opacity: 0.8" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events cursor-animation)
 
             a-entity#sound
             //- fov is 75, gui z is -0.7, when 1 is 100% width and about 95% height

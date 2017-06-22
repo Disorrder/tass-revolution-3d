@@ -42,6 +42,7 @@ export default class GPUParticleSystem extends THREE.Object3D {
         super();
 
         this.DPR = window.devicePixelRatio || 1;
+        if (this.DPR === 4) this.DPR = 1; // SGS7 issue
         this.DPR = Math.sqrt(this.DPR);
 
         this.maxParticles = options.maxParticles || 1e5;

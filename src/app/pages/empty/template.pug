@@ -71,7 +71,7 @@ block scene
         a-mixin#sphere(geometry="primitive: sphere; radius: 15;")
 
         a-mixin#trigger(material="visible: false;" trigger="")
-        a-mixin#trigger-particles(_particle-system="preset: snow; particleCount: 100; maxAge: 2; opacity: 1; type: 3; size: 1; color: red,orange; positionSpread: 7 0 7; velocityValue: 0 -2 0; velocitySpread: 2 1 0;")
+        a-mixin#trigger-particles(gpu-particle-system="maxParticles: 100; lifetime: 4; spawnRate: 20; opacity: 0.8; size: 3; color: red; positionSpread: 25 0 25; velocity: 0 2 0; velocitySpread: 2 1 0; accelerationSpread: 1 1 1; texture: #tex-particle-1;")
 
         a-mixin#black(material="shader: flat; color: #000;")
         a-mixin#grey(material="color: #aaa; roughness: 1;")
@@ -85,13 +85,26 @@ block scene
     //- scene fragments
     a-entity#world
         a-entity#backlight(position="0 0 0")
-            a-path#bg-fire-path(position="0 100 0" line-geometry="" visible="false")
-                a-entity.a-path-point(position="-360 0 -1050" geometry="primitive: box;")
-                a-entity.a-path-point(position="-132 0 -1064" geometry="primitive: box;")
-                a-entity.a-path-point(position="603 0 -946" geometry="primitive: box;")
-                a-entity.a-path-point(position="1128 0 -45" geometry="primitive: box;")
-                a-entity.a-path-point(position="892 0 650" geometry="primitive: box;")
+            //- Horizon effects
+            a-entity.pivot(rotation="0 -10 0")
+                a-entity
+                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 50; lifetime: 5; spawnRate: 10; opacity: 0.2; size: 700; color: red; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 30; lifetime: 3; spawnRate: 10; opacity: 0.2; size: 700; color: orange; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
+            a-entity.pivot(rotation="0 -30 0")
+                a-entity
+                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 30; lifetime: 3; spawnRate: 10; opacity: 0.2; size: 700; color: orange; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+
+            a-entity.pivot(rotation="0 -45 0")
+                a-entity
+                    a-entity.particle-fire.smoke(position="0 0.11 -1050" gpu-particle-system="maxParticles: 100; lifetime: 5; spawnRate: 20; opacity: 0.2; size: 700; color: red; positionSpread: 1500 10 1; velocity: 70 40 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+
+            a-entity.pivot(rotation="0 -90 0")
+                a-entity
+                    a-entity.particle-fire.small(position="200 -10.11 -1010" gpu-particle-system="maxParticles: 10; lifetime: 0.5; spawnRate: 1; opacity: 0.8; size: 750; color: orange; positionSpread: 800 10 1; velocity: 10 5 0; texture: #tex-particle-1;")
+                    a-entity.particle-fire.small(position="200 -10.11 -1010" gpu-particle-system="maxParticles: 10; lifetime: 0.5; spawnRate: 1; opacity: 0.8; size: 750; color: red; positionSpread: 800 10 1; velocity: 10 5 0; texture: #tex-particle-1;")
+
+            
             //- Horizon textures
             a-cylinder.background(position="0 40 0" geometry="height: 270; radius: 1200; segmentsHeight: 1; thetaStart: 55; thetaLength: 145; openEnded: true;" src="#tex-bg-forest" repeat="2.5 0.9" shader="flat" transparent="true" side="back" color="#000")
             a-cylinder.background(position="0 -70 0" geometry="height: 100; radius: 1200; segmentsHeight: 1; thetaStart: 55; thetaLength: 145; openEnded: true;" _shader="flat" color="#010" side="back")
@@ -103,26 +116,24 @@ block scene
             a-cylinder.background(position="0 50 0" geometry="height: 200; radius: 1000; segmentsHeight: 1; thetaStart: 288; thetaLength: 45; openEnded: true;" src="#tex-bg-piter" repeat="1 0.9" shader="flat" transparent="true" side="back" color="#000")
             //- a-cylinder.background(position="0 50 0" geometry="height: 200; radius: 1100; segmentsHeight: 1; thetaStart: 288; thetaLength: 45; openEnded: true;" _src="#tex-bg-piter" _repeat="1 0.9" shader="flat" _transparent="true" side="back" color="#532")
 
-            //- Horizon shader effects
-            a-entity#pf(position="-10 10 -15" gpu-particle-system="preset: test; maxParticles: 10; spawnRate: 2; opacity: 1; color: #bed; colorSpread: 0.6; size: 50; texture: #tex-particle-2;")
+            //- test Particle shader effects
+            //- a-entity#pf(position="-10 10 -15" gpu-particle-system="preset: test; maxParticles: 10; spawnRate: 2; opacity: 1; color: #bed; colorSpread: 0.6; size: 50; texture: #tex-particle-2;")
             //- a-entity#pf(position="-5 5 -15" gpu-particle-system="preset: test; color: orange;")
             //- a-entity#pf(position="0 10 -15" gpu-particle-system="preset: test; color: yellow;")
             //- a-entity#pf(position="5 5 -15" gpu-particle-system="preset: test; color: green;")
             //- a-entity#pf(position="10 10 -15" gpu-particle-system="preset: test; color: blue;")
-            //- a-entity#pf(position="10 5 -15" gpu-particle-system="preset: test;")
 
             a-box(position="0 4 -15")
 
-
-        a-entity#group1(rotation="0 -40 0" sound="src: #audio-pl; volume: 90; loop: false; on: run")
+        a-entity#group1(_rotation="0 -40 0" sound="src: #audio-pl; volume: 90; loop: false; on: run")
             a-light(position="0 5 0" type="point" distance="19" intensity="0.5")
             a-box.platform(position="0 2 0" rotation="0 0 0" width="30" height="0.3" depth="5" src="/assets/textures/wooden_floor.jpg" repeat="1 1" _color="#ccc" roughness="1")
-            a-entity#trigger0(position="0 2 0")
-                a-entity(mixin="sphere trigger" geometry="radius: 0.7;" material="opacity: 0.1;")
-                //- a-entity(mixin="trigger-particles" _particle-system="size: 10; maxAge: 4; positionSpread: 25 0 25;")
 
+            a-entity#trigger3(position="-100 3 -10" _visible="false")
+                a-entity(mixin="sphere trigger")
+                a-entity(mixin="trigger-particles" gpu-particle-system="size: 5;")
 
-    //- a-entity.sky_weather.particle-snow(position="0 0 0" particle-system="preset: snow; particleCount: 1000; velocityValue: 1 4 1;")
+    a-entity.sky_weather.particle-snow(position="0 0 0" gpu-particle-system="preset: snow; maxParticles: 500; spawnRate: 50; texture: #tex-particle-1;")
 
     //- global objects
     a-entity#playerBox(position="0 2 0" rotation="0 20 0")

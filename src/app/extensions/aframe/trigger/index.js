@@ -3,15 +3,15 @@ AFRAME.registerComponent('trigger', {
         // if (!this.el.id) this.el.id = this.genId();
         this.el.classList.add('interactive');
     },
-    play() {
-    },
-    pause() {
-    },
-    remove() {
-    },
-
-    tick() {
-    },
+    // play() {
+    // },
+    // pause() {
+    // },
+    // remove() {
+    // },
+    //
+    // tick() {
+    // },
 
     genId() {
         var triggers = document.querySelectorAll('[id^=trigger]');
