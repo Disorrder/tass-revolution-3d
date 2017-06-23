@@ -15,6 +15,14 @@ const HtmlWebpackPlugin   = require('html-webpack-plugin');
 const OpenBrowserPlugin = require('open-browser-webpack-plugin');
 // const BowerWebpackPlugin = require("bower-webpack-plugin");
 
+function chunksSortOrder(chunks) {
+    return function(a, b) {
+        var i = chunks.indexOf(a.names[0]);
+        var j = chunks.indexOf(b.names[0]);
+        return i - j;
+    }
+}
+
 // env variables
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 function isDev() { return process.env.NODE_ENV == 'development' }
@@ -116,36 +124,21 @@ module.exports = {
             template: 'app/pages/main/template.pug',
             inject: 'head',
             chunks: ['vendor', 'main'],
-            chunksSortMode(a, b) {
-                var chunks = ['vendor', 'main'];
-                var i = chunks.indexOf(a.names[0]);
-                var j = chunks.indexOf(b.names[0]);
-                return i - j;
-            }
+            chunksSortMode: chunksSortOrder(['vendor', 'main']),
         }),
         new HtmlWebpackPlugin({
             filename: 'clara.html',
             template: 'app/pages/clara/template.pug',
             inject: 'head',
             chunks: ['vendor', 'clara'],
-            chunksSortMode(a, b) {
-                var chunks = ['vendor', 'clara'];
-                var i = chunks.indexOf(a.names[0]);
-                var j = chunks.indexOf(b.names[0]);
-                return i - j;
-            }
+            chunksSortMode: chunksSortOrder(['vendor', 'clara']),
         }),
         new HtmlWebpackPlugin({
             filename: 'empty.html',
             template: 'app/pages/empty/template.pug',
             inject: 'head',
             chunks: ['vendor', 'empty'],
-            chunksSortMode(a, b) {
-                var chunks = ['vendor', 'empty'];
-                var i = chunks.indexOf(a.names[0]);
-                var j = chunks.indexOf(b.names[0]);
-                return i - j;
-            }
+            chunksSortMode: chunksSortOrder(['vendor', 'empty']),
         }),
 
         // new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js'),
