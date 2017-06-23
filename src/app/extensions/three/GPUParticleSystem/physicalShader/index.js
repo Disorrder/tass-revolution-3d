@@ -18,12 +18,6 @@ var defaultOptions = {
 export default class extends THREE.ShaderMaterial {
     constructor(options, uniforms = {}) {
         options = Object.assign({}, defaultOptions, options);
-
-        // for (let k in options.uniforms) { //? map uniforms
-        //     let v = uniforms[k];
-        //     if (v) options.uniforms[k].value = v;
-        // }
-
         super(options);
     }
 }
