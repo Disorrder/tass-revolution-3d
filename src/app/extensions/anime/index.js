@@ -1,7 +1,6 @@
 export var lastAnimation; //?
 
 export function fadeIn(selector, options = {}) {
-    console.log(selector, 'grg');
     return anime({
         targets: selector,
         opacity: 1,

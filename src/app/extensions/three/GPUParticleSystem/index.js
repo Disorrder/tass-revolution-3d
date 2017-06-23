@@ -136,12 +136,6 @@ export default class GPUParticleSystem extends THREE.Object3D {
 		attr.array[i * 4 + 2] = position.z;
 		attr.array[i * 4 + 3] = this.time; // + (getRandomSpread() * 2e-2); //startTime
 
-		// if (smoothPosition === true) {
-		// 	attr.array[i * 4 + 0] -= velocity.x * getRandomSpread(); //x
-		// 	attr.array[i * 4 + 1] -= velocity.y * getRandomSpread(); //y
-		// 	attr.array[i * 4 + 2] -= velocity.z * getRandomSpread(); //z
-		// }
-
         attr = this.geometry.getAttribute('particleVelocity');
         attr.array[i * 3 + 0] = velocity.x;
         attr.array[i * 3 + 1] = velocity.y;
@@ -163,8 +157,6 @@ export default class GPUParticleSystem extends THREE.Object3D {
 
         attr = this.geometry.getAttribute('particleLifetime');
         attr.array[i * 1 + 0] = lifetime;
-
-        // console.log('spawn', i, this.time, position, velocity, color, size, lifetime);
 
 
 		if (this.offset === 0) { // ===

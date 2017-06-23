@@ -11,7 +11,6 @@ AFRAME.registerComponent('common-material', {
             if (!elem.geometry) return;
             if (this.isStandartMaterial(elem.material)) {
                 elem.material = this.material;
-                console.log(elem, elem.material);
             }
         })
     },

@@ -19,7 +19,6 @@ AFRAME.registerComponent('rect-light', {
         // this.update();
 
         this.el.setObject3D('light', this.light);
-        console.log('liii', this.light);
     },
 
     update() {

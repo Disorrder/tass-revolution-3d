@@ -35,8 +35,6 @@ AFRAME.registerComponent('particle-fire', {
         };
 
         this.el.setObject3D('particle-system', this.particleSystem);
-
-        console.log('par sys', this.particleSystem);
     },
 
     update() {
@@ -45,7 +43,6 @@ AFRAME.registerComponent('particle-fire', {
 
     tick(time, dt) {
         time /= 1000; dt /= 1000;
-        // console.log(dt, this.spawnerOptions.spawnRate * dt);
         for ( var x = 0; x < this.spawnerOptions.spawnRate * dt; x++ ) {
             this.particleSystem.spawnParticle(this.options);
         }

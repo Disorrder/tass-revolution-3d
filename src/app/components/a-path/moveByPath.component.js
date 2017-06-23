@@ -25,7 +25,6 @@ AFRAME.registerComponent('move-by-path', {
             if (this.data.position < 0.99) {
                 this.el.object3D.lookAt(this.path.curve.getPoint(this.data.position+0.01));
             }
-            console.log('move-by-path', this.el.object3D.position, this.path.curve.getPoint(this.data.position), this.path.curve.getPoint(this.data.position+0.01));
         }
     },
 
