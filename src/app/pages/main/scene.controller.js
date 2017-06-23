@@ -52,7 +52,7 @@ export default class Controller {
         this.photosElem = $('#photos');
 
         if (this.scene.hasLoaded) {
-            this.onStart()
+            this.onStart();
         } else {
             this.scene.addEventListener('loaded', this.onStart.bind(this));
         }
@@ -88,6 +88,7 @@ export default class Controller {
 
     onStart() {
         this.initGui();
+        // $('.a-enter-vr-button').remove();
 
         if (AFRAME.utils.device.isGearVR()
             || AFRAME.utils.device.isMobile()
@@ -107,6 +108,10 @@ export default class Controller {
         setTimeout(() => {
             this.guiShow('#tip', '#tex-ui-tip-1');
         }, 5000);
+
+        setTimeout(() => {
+            this.runRocket('#rocket1');
+        }, 2000);
     }
 
     openPortal(selector, timeline) {
@@ -257,6 +262,44 @@ export default class Controller {
         });
 
         return timeline;
+    }
+
+    runRocket(selector) {
+        var elem = $(selector);
+        var rocket = elem.find('.rocket')[0];
+        var particles = elem.find('.particles')[0];
+        var particleComponent = particles.components['gpu-particle-system'];
+        var targets = {
+            t: 0,
+            y: 0
+        };
+
+        anime.timeline()
+        .add({
+            targets: rocket.object3D.position,
+            y: 500,
+            duration: 3000,
+            easing: 'easeOutQuint',
+        })
+        .add({
+            targets: rocket.object3D.position,
+            y: 450,
+            // delay: 500,
+            duration: 2000,
+            easing: 'easeInOutQuad',
+        })
+
+        .add({
+            targets, t: 1,
+            duration: 6000,
+            offset: 0,
+            run() {
+                particles.setAttribute('gpu-particle-system', 'position', rocket.object3D.position.toString())
+                // particleComponent.spawnParticle();
+                // elem.
+
+            }
+        })
     }
 
     runScene1(e, trigger) {

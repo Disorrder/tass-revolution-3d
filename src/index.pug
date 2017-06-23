@@ -22,29 +22,12 @@ html
 
         script(src="/config.js")
 
-        // Google Tag Manager (noscript)
-        //- noscript
-        //-     iframe(src="https://www.googletagmanager.com/ns.html?id=GTM-PS3VMVS" height="0" width="0" style="display:none;visibility:hidden")
-        // End Google Tag Manager (noscript)
-
         block head
             title Революция 3D
 
     body
-        //- a(ui-sref="home-menu")
-        //-     img.logo-ro(src=require("assets/images/logo/ro.svg"))
-        //- a(href="http://tass.ru/" target="_blank")
-        //-     img.logo-tass(src=require("assets/images/logo/tass.svg") )
         div#viewport
             a-scene#scene(shadows="true" _stats="true")
                 block scene
             div#scene-ui
                 block ui
-
-        // Google Tag Manager
-        //- script.
-        //-     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-        //-     var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-        //-     j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-        //-     })(window,document,'script','dataLayer','GTM-PS3VMVS');
-        // End Google Tag Manager

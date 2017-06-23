@@ -4,6 +4,7 @@ import presets from './presets';
 var textureLoader = new THREE.TextureLoader();
 
 var schema = {
+    enabled: { type: 'boolean', default: true },
     preset: { type: 'string', default: 'default',
         oneOf: ['default', 'test']
     },
@@ -98,14 +99,20 @@ AFRAME.registerComponent('gpu-particle-system', {
         });
     },
 
+    spawnParticle(options = this.particleOptions) {
+        this.particleSystem.spawnParticle(this.particleOptions);
+    },
+
     _tick(time, dt) { // pulse
         time /= 1000; dt /= 1000;
 
-        if (time - this._spawnLastTime >= this.particleOptions.lifetime) {
-            for (let i = 0; i < this.particleSystem.maxParticles; i++) {
-                this.particleSystem.spawnParticle(this.particleOptions);
+        if (this.data.enabled) {
+            if (time - this._spawnLastTime >= this.particleOptions.lifetime) {
+                for (let i = 0; i < this.particleSystem.maxParticles; i++) {
+                    this.particleSystem.spawnParticle(this.particleOptions);
+                }
+                this._spawnLastTime = time;
             }
-            this._spawnLastTime = time;
         }
 
         this.particleSystem.update(time);
@@ -115,10 +122,12 @@ AFRAME.registerComponent('gpu-particle-system', {
         time /= 1000; dt /= 1000;
         if (!this._spawnLastTime) return this._spawnLastTime = time;
 
-        this._spawnDt = time - this._spawnLastTime;
+        if (this.data.enabled) {
+            this._spawnDt = time - this._spawnLastTime;
 
-        for ( this._spawnLastTime; this._spawnLastTime <= time-this._spawnTimeInterval; this._spawnLastTime += this._spawnTimeInterval ) {
-            this.particleSystem.spawnParticle(this.particleOptions);
+            for ( this._spawnLastTime; this._spawnLastTime <= time-this._spawnTimeInterval; this._spawnLastTime += this._spawnTimeInterval ) {
+                this.particleSystem.spawnParticle(this.particleOptions);
+            }
         }
 
         this.particleSystem.update(time);
@@ -127,5 +136,5 @@ AFRAME.registerComponent('gpu-particle-system', {
     setPreset(name) {
         Object.assign(this.data, presets[name]);
         this.update();
-    }
+    },
 });
