@@ -1,22 +1,20 @@
+AFRAME.registerSystem('trigger', {
+    schema: {},
+    init() {
+        this.items = [];
+    },
+
+    add(trigger) {
+
+    },
+
+    getById(id) {
+
+    }
+});
+
 AFRAME.registerComponent('trigger', {
     init() {
-        // if (!this.el.id) this.el.id = this.genId();
-        this.el.classList.add('interactive');
+        this.system = this.el.sceneEl.systems.trigger;
     },
-    // play() {
-    // },
-    // pause() {
-    // },
-    // remove() {
-    // },
-    //
-    // tick() {
-    // },
-
-    genId() {
-        var triggers = document.querySelectorAll('[id^=trigger]');
-        var triggerIds = _.map(triggers, (v) => v.id.replace('trigger', '') | 0);
-        var max = _.max(triggerIds);
-        return 'trigger' + (max + 1);
-    }
 });

@@ -8,16 +8,6 @@ AFRAME.registerComponent('cursor-animation', {
             scale: 1
         }
 
-        this.fusing = anime({
-            autoplay: false,
-            targets: this.params,
-            thetaLength: 0,
-            scale: 2,
-            duration: this.cursorComponent.data.fuseTimeout,
-            easing: 'easeInQuad',
-            update: this.applyParams.bind(this)
-        });
-
         this.el.addEventListener('mouseenter', this._mouseenterHandle = this.mouseenterHandle.bind(this));
         this.el.addEventListener('fusing', this._fusingHandle = this.fusingHandle.bind(this));
         this.el.addEventListener('click', this._clickHandle = this.clickHandle.bind(this));
@@ -25,7 +15,10 @@ AFRAME.registerComponent('cursor-animation', {
     },
 
     remove() {
-
+        this.el.removeEventListener('mouseenter', this._mouseenterHandle);
+        this.el.removeEventListener('fusing', this._fusingHandle);
+        this.el.removeEventListener('click', this._clickHandle);
+        this.el.removeEventListener('mouseleave', this._mouseleaveHandle);
     },
 
     applyParams() {

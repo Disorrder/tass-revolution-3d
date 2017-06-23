@@ -14,36 +14,35 @@ const FUSE_TIMEOUT = 1500;
 var photoCtx = require.context("assets/photos", true, /\.(png|jpg)$/);
 var photoNames = photoCtx.keys();
 
-var _triggers = ['#trigger1', '#trigger2', '#trigger3'];
-var currentTrigger = _triggers.shift();
+
 class Trigger {
     constructor(options) {
         this.id = options.id;
+        this.element = $(this.id)[0];
         this.active = options.active;
         this.visible = options.visible;
-        this.element = $(this.id)[0];
-        // this.$element = $(this.id);
-        // this.element = this.$element[0];
 
-        ['_click', '_mouseenter', '_mouseleave'].forEach((event) => {
+        ['click', 'mouseenter', 'mouseleave'].forEach((event) => {
             this[event] = options[event];
             this.element.addEventListener(event, (e) => {
-                // if (this.visible != true) return;
-                if (this.id != currentTrigger) return;
-                if (event == 'click') currentTrigger = _triggers.shift();
-
+                // console.log(this.id, event, e, this.active, this._active, this.visible);
                 if (!this.active) return;
                 if (this[event]) this[event](e, this);
             });
         })
     }
 
-    get active() { return this._active; }
+    get active() { return this._active && this.visible; }
     set active(v) { this._active = v; }
 
-    get visible() { if (this.element) this.element.getAttribute('visible') }
-    set visible(v) { if (this.element) this.element.setAttribute('visible', v) }
+    get visible() { return this.element ? this.element.getAttribute('visible') : false }
+    set visible(v) {
+        if (this.element) {
+            this.element.setAttribute('visible', v)
+        }
+    }
 }
+
 
 export default class Controller {
     constructor() {
@@ -60,14 +59,6 @@ export default class Controller {
 
         window.exportScene = this.exportScene.bind(this);
         window.ctrl = this;
-
-        // setInterval(() => {
-        //     $('a-video, video').click();
-        //     $('a-video, video').map((k, v) => {
-        //         console.log(k, v.play, v);
-        //         if (v.play) v.play();
-        //     })
-        // }, 500);
     }
 
     initGui() {
@@ -202,6 +193,7 @@ export default class Controller {
         new Trigger({
             id: '#trigger2',
             active: true,
+            visible: false,
             click: this.runScene2.bind(this),
             mouseenter: (e, trigger) => {
                 trigger.__fuseAnimation = animate.fadeIn('#trigger2 .img-1', {duration: FUSE_TIMEOUT});
@@ -215,6 +207,7 @@ export default class Controller {
         new Trigger({
             id: '#trigger3',
             active: true,
+            visible: false,
             click: this.runScene3.bind(this),
             mouseenter: (e, trigger) => {
                 trigger.__fuseAnimation = animate.fadeIn('#img11', {duration: FUSE_TIMEOUT});
@@ -231,43 +224,39 @@ export default class Controller {
         var timeline = anime.timeline({autoplay: false});
 
         // Train windows fade to black
-        var t2_windows = $(`${selector} .wagon__passanger`);
-        var t2_windows_mtl = t2_windows.map((k, v) => v.object3D.findByName('Windows').material);
-        t2_windows_mtl = _.uniq(t2_windows_mtl);
+        var train_windows = $(`${selector} .wagon__passanger`);
+        var train_windows_mtl = train_windows.map((k, v) => v.object3D.findByName('Windows').material);
+        train_windows_mtl = _.uniq(train_windows_mtl);
 
-        var t2_windows_colors = t2_windows_mtl.map((v) => {
+        var train_windows_colors = train_windows_mtl.map((v) => {
             return {color: '#'+v.color.getHexString()}
         });
 
         timeline.add({
-            targets: t2_windows_colors,
+            targets: train_windows_colors,
             delay: 0,
             elasticity: 0,
             color: '#000',
             update() {
-                t2_windows_mtl.forEach((v, k) => {
-                    v.color.set(t2_windows_colors[k].color);
+                train_windows_mtl.forEach((v, k) => {
+                    v.color.set(train_windows_colors[k].color);
                 })
             }
         });
 
         // Head light fade to transparent
-        var t2_head = $(`${selector} .wagon__head`)[0];
-        var t2_light_mtl = [
-            t2_head.object3D.findByName('Lamp_cone').material
+        var train_head = $(`${selector} .wagon__head`)[0];
+        var train_light_mtl = [
+            train_head.object3D.findByName('Lamp_cone').material
         ];
 
         timeline.add({
-            targets: t2_light_mtl,
+            targets: train_light_mtl,
             offset: '-=500',
             opacity: 0,
         });
 
         return timeline;
-    }
-
-    testTrainPath() {
-        var points = ['#flag_t1', '#flag_t2']
     }
 
     runScene1(e, trigger) {
@@ -564,9 +553,9 @@ export default class Controller {
         .add({
             targets: {t:0}, t:0,
             // delay: $('#train1 [begin=ru2]').attr('dur'),
-            duration: t2_off.duration,
+            duration: t1_off.duration,
             begin() {
-                t2_off.play();
+                t1_off.play();
             }
         })
 
