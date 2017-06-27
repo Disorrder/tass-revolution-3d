@@ -271,7 +271,8 @@ export default class Controller {
         var particleComponent = particles.components['gpu-particle-system'];
         var targets = {
             t: 0,
-            y: 0
+            y: 0,
+            opacity: 1,
         };
 
         anime.timeline()
@@ -280,25 +281,49 @@ export default class Controller {
             y: 500,
             duration: 3000,
             easing: 'easeOutQuint',
+            complete() {
+                particles.setAttribute('gpu-particle-system', 'enabled', false)
+            }
         })
         .add({
             targets: rocket.object3D.position,
             y: 450,
             // delay: 500,
-            duration: 2000,
+            duration: 3000,
             easing: 'easeInOutQuad',
+            run() {
+                rocket.setAttribute('opacity', _.random(0.8, 1, true));
+            },
+        })
+
+        .add({
+            targets,
+            opacity: 0,
+            run() {
+                rocket.setAttribute('opacity', targets.opacity);
+            },
+            complete() {
+                rocket.setAttribute('visible', false);
+                particles.setAttribute('gpu-particle-system', 'enabled', false);
+            }
         })
 
         .add({
             targets, t: 1,
-            duration: 6000,
+            duration: 2500,
             offset: 0,
+            easing: 'easeOutQuad',
             run() {
                 particles.setAttribute('gpu-particle-system', 'position', rocket.object3D.position.toString())
-                // particleComponent.spawnParticle();
-                // elem.
-
-            }
+                particles.setAttribute('gpu-particle-system', 'opacity', 1 - targets.t);
+            },
+        })
+        .add({
+            targets, t: 1,
+            duration: 25000,
+            complete() {
+                elem.attr('visible', false);
+            },
         })
     }
 

@@ -7,6 +7,8 @@ presets.default = {
     // texture: 'https://threejs.org/examples/textures/particle2.png',
     texture: require('assets/textures/explosion_map.png'),
     perspective: true,
+    easeIn: 0.3,
+    easeOut: 0.7,
 
     position: new THREE.Vector3(),
     positionSpread: new THREE.Vector3(),

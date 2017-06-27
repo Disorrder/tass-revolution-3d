@@ -6,7 +6,7 @@ var textureLoader = new THREE.TextureLoader();
 var schema = {
     enabled: { type: 'boolean', default: true },
     preset: { type: 'string', default: 'default',
-        oneOf: ['default', 'test']
+        // oneOf: ['default', 'test']
     },
 
     maxParticles: { type: 'number' },
@@ -14,6 +14,8 @@ var schema = {
     texture: { type: 'map' },
     // texture: { type: 'map' },
     perspective: { type: 'boolean' },
+    easeIn: { type: 'number' },
+    easeOut: { type: 'number' },
 
     position: { type: 'vec3' },
     positionSpread: { type: 'vec3' },
@@ -87,6 +89,9 @@ AFRAME.registerComponent('gpu-particle-system', {
         if (this.particleSystem) {
             if (diff.maxParticles) this.particleSystem.maxParticles = diff.maxParticles;
             if (diff.perspective != null) this.particleSystem.material.defines.HAS_PERSPECTIVE = diff.perspective;
+            if (diff.easeIn != null) this.particleSystem.material.defines.EASE_IN = diff.easeIn;
+            if (diff.easeOut != null) this.particleSystem.material.defines.EASE_OUT = diff.easeOut;
+            // console.log(diff, diff.easeIn, this.particleSystem.material.defines);
         }
 
         if (diff.spawnRate) this._spawnTimeInterval = 1 / diff.spawnRate;
