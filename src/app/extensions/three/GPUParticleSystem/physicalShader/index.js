@@ -1,5 +1,5 @@
 export default class extends THREE.ShaderMaterial {
-    constructor(options, uniforms = {}) {
+    constructor(options) {
         var defaultOptions = {
             transparent: true,
             depthWrite: false,
@@ -15,11 +15,11 @@ export default class extends THREE.ShaderMaterial {
                 EASE_OUT: 0.7,
             },
             blending: THREE.AdditiveBlending,
-            vertexShader: require('./vertex.glsl'),
+            vertexShader:   require('./vertex.glsl'),
             fragmentShader: require('./fragment.glsl'),
         }
 
-        options = Object.assign({}, defaultOptions, options);
+        options = Object.assign(defaultOptions, options);
         super(options);
     }
 }

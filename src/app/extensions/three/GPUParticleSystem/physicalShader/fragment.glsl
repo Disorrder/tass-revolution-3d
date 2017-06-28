@@ -7,7 +7,6 @@ float scaleLinear(float value, vec2 valueDomain, vec2 valueRange) {
 }
 
 varying vec4 vColor;
-// varying float lifeLeft;
 uniform sampler2D tSprite;
 
 void main() {
@@ -15,6 +14,4 @@ void main() {
 
     vec4 tex = texture2D( tSprite, gl_PointCoord );
     gl_FragColor = tex * vColor;
-    // tex.a *= vColor.a;
-    // gl_FragColor = vec4( vColor.rgb * tex.a, tex.a );
 }

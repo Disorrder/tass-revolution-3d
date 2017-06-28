@@ -199,5 +199,4 @@ export default class GPUParticleSystem extends THREE.Object3D {
     }
 }
 
-
 // THREE.GPUParticleSystem = GPUParticleSystem;

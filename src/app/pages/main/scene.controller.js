@@ -109,9 +109,9 @@ export default class Controller {
             this.guiShow('#tip', '#tex-ui-tip-1');
         }, 5000);
 
-        setTimeout(() => {
-            this.runRocket('#rocket1');
-        }, 2000);
+        // setTimeout(() => {
+        //     this.runRocket('#rocket1');
+        // }, 2000);
     }
 
     openPortal(selector, timeline) {
@@ -266,60 +266,81 @@ export default class Controller {
 
     runRocket(selector) {
         var elem = $(selector);
-        var rocket = elem.find('.rocket')[0];
-        var particles = elem.find('.particles')[0];
-        var particleComponent = particles.components['gpu-particle-system'];
-        var targets = {
+        var flare = elem.find('.flare')[0];
+        var smoke = elem.find('.smoke')[0];
+        var particleComponent = smoke.components['gpu-particle-system'];
+        var flareParams = {
+            size: 10
+        }
+        var smokeParams = {
             t: 0,
-            y: 0,
             opacity: 1,
         };
 
-        anime.timeline()
+        return anime.timeline()
         .add({
-            targets: rocket.object3D.position,
+            targets: flare.object3D.position,
             y: 500,
             duration: 3000,
             easing: 'easeOutQuint',
             complete() {
-                particles.setAttribute('gpu-particle-system', 'enabled', false)
+                smoke.setAttribute('gpu-particle-system', 'enabled', false)
             }
         })
         .add({
-            targets: rocket.object3D.position,
-            y: 450,
-            // delay: 500,
-            duration: 3000,
+            targets: flareParams,
+            size: 500,
+            duration: 200,
             easing: 'easeInOutQuad',
             run() {
-                rocket.setAttribute('opacity', _.random(0.8, 1, true));
+                flare.setAttribute('width', flareParams.size);
+                flare.setAttribute('height', flareParams.size);
+            },
+        })
+        .add({
+            targets: flare.object3D.position,
+            y: 400,
+            // delay: 500,
+            duration: 8000,
+            easing: 'easeInOutQuad',
+            run() {
+                if (_.random(0, 13) === 0) {
+                    let size = _.random(0.95, 1, true)
+                    flare.setAttribute('opacity', size);
+                    flare.setAttribute('width', flareParams.size * size);
+                    flare.setAttribute('height', flareParams.size * size);
+                }
             },
         })
 
         .add({
-            targets,
+            targets: smokeParams,
             opacity: 0,
+            duration: 300,
+            easing: 'easeInOutQuint',
             run() {
-                rocket.setAttribute('opacity', targets.opacity);
+                flare.setAttribute('opacity', smokeParams.opacity);
+                flare.setAttribute('width', flareParams.size * smokeParams.opacity);
+                flare.setAttribute('height', flareParams.size * smokeParams.opacity);
             },
             complete() {
-                rocket.setAttribute('visible', false);
-                particles.setAttribute('gpu-particle-system', 'enabled', false);
+                flare.setAttribute('visible', false);
+                smoke.setAttribute('gpu-particle-system', 'enabled', false);
             }
         })
 
         .add({
-            targets, t: 1,
+            targets: smokeParams, t: 1,
             duration: 2500,
             offset: 0,
             easing: 'easeOutQuad',
             run() {
-                particles.setAttribute('gpu-particle-system', 'position', rocket.object3D.position.toString())
-                particles.setAttribute('gpu-particle-system', 'opacity', 1 - targets.t);
+                smoke.setAttribute('gpu-particle-system', 'position', flare.object3D.position.toString())
+                smoke.setAttribute('gpu-particle-system', 'opacity', 1 - smokeParams.t);
             },
         })
         .add({
-            targets, t: 1,
+            targets: {t: 0}, t: 0,
             duration: 25000,
             complete() {
                 elem.attr('visible', false);
@@ -342,8 +363,25 @@ export default class Controller {
             }
         });
 
+
         var timeline = anime.timeline();
         timeline
+        .add({
+            targets: {t:0}, t:0,
+            delay: 1000,
+            begin: () => {
+                this.runRocket('#rocket1');
+            },
+        })
+        .add({
+            targets: {t:0}, t:0,
+            delay: 2000,
+            begin() {
+                $('#fx-fire-1 .particles').each((k, v) => {
+                    v.setAttribute('gpu-particle-system', 'size', 400);
+                });
+            },
+        })
         .add({
             targets: {t:0}, t:0,
             delay: 1000,
