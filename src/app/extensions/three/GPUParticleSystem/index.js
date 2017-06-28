@@ -42,7 +42,7 @@ export default class GPUParticleSystem extends THREE.Object3D {
         super();
 
         this.DPR = window.devicePixelRatio || 1;
-        if (this.DPR === 4) this.DPR = 1; // SGS7 issue
+        // if (this.DPR === 4) this.DPR = 2; // SGS7 issue
         this.DPR = Math.sqrt(this.DPR);
 
         this.maxParticles = options.maxParticles || 1e5;
@@ -126,7 +126,7 @@ export default class GPUParticleSystem extends THREE.Object3D {
         spreadVector3(acceleration, accelerationSpread);
         spreadColor(color, colorSpread);
         size += sizeSpread * getRandomSpread();
-        size *= this.DPR;
+        size /= this.DPR;
 
         i = this.PARTICLE_CURSOR;
 

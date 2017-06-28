@@ -301,10 +301,10 @@ export default class Controller {
             targets: flare.object3D.position,
             y: 400,
             // delay: 500,
-            duration: 8000,
+            duration: 12000,
             easing: 'easeInOutQuad',
             run() {
-                if (_.random(0, 13) === 0) {
+                if (_.random(0, 9) === 0) {
                     let size = _.random(0.95, 1, true)
                     flare.setAttribute('opacity', size);
                     flare.setAttribute('width', flareParams.size * size);
@@ -378,7 +378,9 @@ export default class Controller {
             delay: 2000,
             begin() {
                 $('#fx-fire-1 .particles').each((k, v) => {
-                    v.setAttribute('gpu-particle-system', 'size', 400);
+                    v.setAttribute('gpu-particle-system', 'size', 1200);
+                    v.setAttribute('gpu-particle-system', 'opacity', 0.2);
+                    // v.setAttribute('gpu-particle-system', 'velocity', '50 30 0');
                 });
             },
         })
@@ -520,6 +522,24 @@ export default class Controller {
 
         var timeline = anime.timeline();
         timeline
+        .add({
+            targets: {t:0}, t:0,
+            delay: 1000,
+            begin: () => {
+                this.runRocket('#rocket2');
+            },
+        })
+        .add({
+            targets: {t:0}, t:0,
+            delay: 2000,
+            begin() {
+                $('#fx-fire-2 .particles, #fx-fire-3 .particles').each((k, v) => {
+                    v.setAttribute('gpu-particle-system', 'size', 900);
+                    v.setAttribute('gpu-particle-system', 'opacity', 0.2);
+                });
+            },
+        })
+
         .add({ // rotate user
             targets: {t:0}, t:0,
             delay: 500,
