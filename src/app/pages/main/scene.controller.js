@@ -38,7 +38,7 @@ class Trigger {
     get visible() { return this.element ? this.element.getAttribute('visible') : false }
     set visible(v) {
         if (this.element) {
-            this.element.setAttribute('visible', v)
+            this.element.setAttribute('visible', v);
         }
     }
 }
@@ -166,10 +166,13 @@ export default class Controller {
     closePortal(selector) {
         return anime({
             targets: `${selector} .animate`,
-            height: 0,
+            opacity: 0,
             duration: 1000,
             // elasticity: 0,
             easing: 'easeInQuad',
+            complete() {
+                $(selector)[0].setAttribute('visible', false);
+            }
         })
     }
 
@@ -283,8 +286,11 @@ export default class Controller {
             y: 500,
             duration: 3000,
             easing: 'easeOutQuint',
+            begin() {
+                smoke.setAttribute('gpu-particle-system', 'spawnEnabled', true);
+            },
             complete() {
-                smoke.setAttribute('gpu-particle-system', 'enabled', false)
+                smoke.setAttribute('gpu-particle-system', 'spawnEnabled', false);
             }
         })
         .add({
@@ -299,12 +305,12 @@ export default class Controller {
         })
         .add({
             targets: flare.object3D.position,
-            y: 400,
+            y: 370,
             // delay: 500,
-            duration: 12000,
+            duration: 15000,
             easing: 'easeInOutQuad',
             run() {
-                if (_.random(0, 9) === 0) {
+                if (_.random(0, 10) === 0) {
                     let size = _.random(0.95, 1, true)
                     flare.setAttribute('opacity', size);
                     flare.setAttribute('width', flareParams.size * size);
@@ -323,10 +329,9 @@ export default class Controller {
                 flare.setAttribute('width', flareParams.size * smokeParams.opacity);
                 flare.setAttribute('height', flareParams.size * smokeParams.opacity);
             },
-            complete() {
-                flare.setAttribute('visible', false);
-                smoke.setAttribute('gpu-particle-system', 'enabled', false);
-            }
+            // complete() {
+            //     flare.setAttribute('visible', false);
+            // }
         })
 
         .add({
@@ -378,7 +383,7 @@ export default class Controller {
             delay: 2000,
             begin() {
                 $('#fx-fire-1 .particles').each((k, v) => {
-                    v.setAttribute('gpu-particle-system', 'size', 1200);
+                    v.setAttribute('gpu-particle-system', 'size', 600);
                     v.setAttribute('gpu-particle-system', 'opacity', 0.2);
                     // v.setAttribute('gpu-particle-system', 'velocity', '50 30 0');
                 });
@@ -534,7 +539,7 @@ export default class Controller {
             delay: 2000,
             begin() {
                 $('#fx-fire-2 .particles, #fx-fire-3 .particles').each((k, v) => {
-                    v.setAttribute('gpu-particle-system', 'size', 900);
+                    v.setAttribute('gpu-particle-system', 'size', 400);
                     v.setAttribute('gpu-particle-system', 'opacity', 0.2);
                 });
             },
@@ -570,6 +575,7 @@ export default class Controller {
             // duration: $('#train1 [begin=run2]').attr('dur'),
             begin: () => {
                 $('#train1')[0].emit('run2');
+                $('#group2 .particle-snow')[0].setAttribute('gpu-particle-system', 'spawnEnabled', true);
 
                 var t1_sound = $('#train1')[0].components.sound;
                 anime({
@@ -782,6 +788,7 @@ export default class Controller {
         trigger.active = false;
 
         // var p2_open = this.openPortal('#portal2');
+        $('#group2 .particle-snow')[0].setAttribute('gpu-particle-system', 'spawnEnabled', false);
 
         var timeline = anime.timeline();
         timeline

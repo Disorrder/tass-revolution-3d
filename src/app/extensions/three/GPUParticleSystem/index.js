@@ -25,8 +25,8 @@ var position = new THREE.Vector3();
 var positionSpread = new THREE.Vector3();
 var velocity = new THREE.Vector3();
 var velocitySpread = new THREE.Vector3();
-var acceleration = new THREE.Vector3(); // not implemented
-var accelerationSpread = new THREE.Vector3(); // not implemented
+var acceleration = new THREE.Vector3();
+var accelerationSpread = new THREE.Vector3();
 var color = new THREE.Color();
 var colorSpread = 1.0;
 var opacity = 1.0;
@@ -43,7 +43,7 @@ export default class GPUParticleSystem extends THREE.Object3D {
 
         this.DPR = window.devicePixelRatio || 1;
         // if (this.DPR === 4) this.DPR = 2; // SGS7 issue
-        this.DPR = Math.sqrt(this.DPR);
+        // this.DPR = Math.sqrt(this.DPR);
 
         this.maxParticles = options.maxParticles || 1e5;
         this.particleNoiseTex = options.particleNoiseTex;
@@ -54,8 +54,8 @@ export default class GPUParticleSystem extends THREE.Object3D {
             positionSpread: new THREE.Vector3(),
             velocity: new THREE.Vector3(),
             velocitySpread: new THREE.Vector3(),
-            acceleration: new THREE.Vector3(), // not implemented
-            accelerationSpread: new THREE.Vector3(), // not implemented
+            acceleration: new THREE.Vector3(),
+            accelerationSpread: new THREE.Vector3(),
             color: 0xffffff,
             colorSpread: 1.,
             opacity: 1.,
@@ -126,7 +126,7 @@ export default class GPUParticleSystem extends THREE.Object3D {
         spreadVector3(acceleration, accelerationSpread);
         spreadColor(color, colorSpread);
         size += sizeSpread * getRandomSpread();
-        size /= this.DPR;
+        size *= this.DPR;
 
         i = this.PARTICLE_CURSOR;
 

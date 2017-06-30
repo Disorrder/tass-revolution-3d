@@ -4,7 +4,7 @@ import presets from './presets';
 var textureLoader = new THREE.TextureLoader();
 
 var schema = {
-    enabled: { type: 'boolean', default: true },
+    spawnEnabled: { type: 'boolean', default: true },
     preset: { type: 'string', default: 'default',
         // oneOf: ['default', 'test']
     },
@@ -111,7 +111,7 @@ AFRAME.registerComponent('gpu-particle-system', {
     _tick(time, dt) { // pulse
         time /= 1000; dt /= 1000;
 
-        if (this.data.enabled) {
+        if (this.data.spawnEnabled) {
             if (time - this._spawnLastTime >= this.particleOptions.lifetime) {
                 for (let i = 0; i < this.particleSystem.maxParticles; i++) {
                     this.particleSystem.spawnParticle(this.particleOptions);
@@ -127,7 +127,7 @@ AFRAME.registerComponent('gpu-particle-system', {
         time /= 1000; dt /= 1000;
         if (!this._spawnLastTime) return this._spawnLastTime = time;
 
-        if (this.data.enabled) {
+        if (this.data.spawnEnabled) {
             this._spawnDt = time - this._spawnLastTime;
 
             for ( this._spawnLastTime; this._spawnLastTime <= time-this._spawnTimeInterval; this._spawnLastTime += this._spawnTimeInterval ) {
