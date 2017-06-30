@@ -108,10 +108,6 @@ export default class Controller {
         setTimeout(() => {
             this.guiShow('#tip', '#tex-ui-tip-1');
         }, 5000);
-
-        // setTimeout(() => {
-        //     this.runRocket('#rocket1');
-        // }, 2000);
     }
 
     openPortal(selector, timeline) {
@@ -135,14 +131,11 @@ export default class Controller {
         .add({
             targets: `${selector} .animate`,
             width: size.x,
-            // height: 0.01 * size.y,
             duration: 200,
-            // elasticity: 0,
             easing: 'easeInQuad',
         })
         .add({
             targets: `${selector} .animate`,
-            // width: portal_texture.image.width,
             height: size.y,
             delay: 200,
             duration: 1500,
@@ -168,7 +161,6 @@ export default class Controller {
             targets: `${selector} .animate`,
             opacity: 0,
             duration: 1000,
-            // elasticity: 0,
             easing: 'easeInQuad',
             complete() {
                 $(selector)[0].setAttribute('visible', false);
@@ -306,7 +298,6 @@ export default class Controller {
         .add({
             targets: flare.object3D.position,
             y: 370,
-            // delay: 500,
             duration: 15000,
             easing: 'easeInOutQuad',
             run() {
@@ -329,9 +320,6 @@ export default class Controller {
                 flare.setAttribute('width', flareParams.size * smokeParams.opacity);
                 flare.setAttribute('height', flareParams.size * smokeParams.opacity);
             },
-            // complete() {
-            //     flare.setAttribute('visible', false);
-            // }
         })
 
         .add({
@@ -385,7 +373,6 @@ export default class Controller {
                 $('#fx-fire-1 .particles').each((k, v) => {
                     v.setAttribute('gpu-particle-system', 'size', 600);
                     v.setAttribute('gpu-particle-system', 'opacity', 0.2);
-                    // v.setAttribute('gpu-particle-system', 'velocity', '50 30 0');
                 });
             },
         })
@@ -395,7 +382,6 @@ export default class Controller {
             duration: p1_open.duration,
             begin() {
                 p1_open.play();
-                // $('#train3')[0].emit('run');
             },
             complete() {
                 trigger.visible = false;
@@ -410,19 +396,9 @@ export default class Controller {
             }
         })
 
-        // .add({
-        //     targets: '#img1',
-        //     opacity: 0,
-        //     height: { value: 0, delay: 4000, duration: 10 },
-        //     delay: 1000,
-        //     duration: this.debug ? 100 : 3000,
-        //     easing: 'easeInQuad',
-        // })
-
         .add({ // rotate user
             targets: {t:0}, t:0,
             delay: 500,
-            // offset: '-=2000',
             begin: () => {
                 var targets = $('#playerBox, #group1 .platform');
                 var rotation = _.map(targets, (v, k) => {
@@ -635,15 +611,6 @@ export default class Controller {
             }
         })
 
-        //.add({
-            //targets: '#img5, #img6, #img7',
-            //visible: true,
-            //opacity: 1,
-            //delay(el, i) { return i * 2500 },
-            //duration: 500,
-          //  easing: 'easeInQuad',
-      //  })
-
         var img8 = $('#img8')[0];
 
         timeline
@@ -658,17 +625,6 @@ export default class Controller {
                 $('#img8 a-sound')[0].components.sound.playSound();
             }
         })
-        // .add({
-        //     targets: img8.object3D.position,
-        //     y: 25,
-        //     offset: '-=500',
-        //     delay: 1000,
-        //     duration: 600,
-        //     easing: 'easeInOutQuart',
-        //     complete() {
-        //         $('#img3 a-sound')[0].components.sound.playSound();
-        //     }
-        // })
 
         .add({
             targets: '#img5, #img6, #img7, #img8',
@@ -684,7 +640,6 @@ export default class Controller {
 
         .add({
             targets: {t:0}, t:0,
-            // delay: $('#train1 [begin=ru2]').attr('dur'),
             duration: t1_off.duration,
             begin() {
                 t1_off.play();
@@ -702,86 +657,6 @@ export default class Controller {
                 $('#img10 a-sound')[0].components.sound.playSound();
             }
         })
-
-
-
-
-
-        //----
-        // .add({
-        //     targets: {t:0}, t:0,
-        //     delay: 1000,
-        //     duration: 500,
-        //     begin() {
-        //         anime({
-        //             targets: '#portal2 .animate',
-        //             height: 0,
-        //             opacity: 0,
-        //             duration: 500,
-        //         })
-        //     }
-        // })
-        //
-        // .add({
-        //     targets: '#img5',
-        //     height: $('#img5').attr('height'),
-        //     opacity: 1,
-        //     delay: 2000,
-        //     duration: 1000,
-        //     easing: 'easeInQuart',
-        //     begin() {
-        //         $('#img5 a-sound')[0].components.sound.playSound();
-        //     }
-        // })
-        //
-        // .add({
-        //     targets: {t:0}, t:0,
-        //     delay: 3000,
-        //     duration: 500,
-        //     begin: () => {
-        //         $('#train3')[0].emit('run');
-        //     }
-        // })
-        //
-        // .add({
-        //     targets: '#img6',
-        //     height: $('#img6').attr('height'),
-        //     opacity: 1,
-        //     delay: 2000,
-        //     duration: 500,
-        //     begin() {
-        //         $('#img6 a-sound')[0].components.sound.playSound();
-        //     }
-        //     // complete: () => {
-        //     //     $('#group6 > a-entity').append(this.triggers[1].element);
-        //     // }
-        // })
-        //
-
-        // .add({
-        //     targets: '#img5',
-        //     opacity: 0,
-        //     height: { value: 0, delay: 2000, duration: 100 },
-        //     delay: 2000,
-        //     duration: 500,
-        //     // easing: 'easeInQuart',
-        //     begin: () => {
-        //         $('#img5 a-sound')[1].components.sound.playSound();
-        //
-        //         var trigger = _.find(this.triggers, {id: '#trigger2'});
-        //         trigger.active = true;
-        //     }
-        // })
-        // .add({
-        //     targets: '#bg_sound',
-        //     volume: 1,
-        //     delay: 1000,
-        //     duration: 2000,
-        //     easing: 'linear',
-        //     begin: () => {
-        //         $('#bg_sound')[0].components.sound.playSound();
-        //     }
-        // })
     }
 
     runScene3(e, trigger) {
@@ -802,15 +677,6 @@ export default class Controller {
             },
         })
 
-        // .add({
-        //     targets: {t:0}, t:0,
-        //     // delay: 1000,
-        //     duration: p2_open.duration,
-        //     begin: () => {
-        //         console.log('werwer');
-        //         p2_open.play();
-        //     }
-        // })
         .add({
             targets: '#img12',
             opacity: 1,
@@ -821,14 +687,12 @@ export default class Controller {
             targets: '#img12',
             opacity: 0,
             delay: 1000,
-            // easing: 'easeInQuad',
         })
 
         .add({
             targets: '#img13',
             opacity: 1,
             delay: 1000,
-            // easing: 'easeInQuad',
             begin: () => {
                 $('#train3')[0].emit('run');
             }
@@ -840,13 +704,11 @@ export default class Controller {
             begin() {
                 $('#img13 a-sound')[0].components.sound.playSound();
             }
-            // easing: 'easeInQuad',
         })
         .add({
             targets: '#img14',
             opacity: 1,
             offset: '-=500',
-            // easing: 'easeInQuad',
         })
 
         .add({
@@ -856,18 +718,14 @@ export default class Controller {
             complete() {
                 $('#img14 a-sound')[0].components.sound.playSound();
             }
-            // easing: 'easeInQuad',
         })
 
         .add({
             targets: '#group1 a-light',
             intensity: 0,
-            // delay: 5000,
             duration: 2000,
             begin: () => {
                 $('.sky_weather.particle-snow').remove();
-                // var trigger = _.find(this.triggers, {id: '#trigger2'});
-                // $('#group6 > a-entity').append(trigger.element);
             }
         })
 
@@ -888,9 +746,9 @@ export default class Controller {
                     duration: 3000,
                     easing: 'linear',
                 })
-              },
-          complete() {
-                    $('#trigger2 a-sound')[0].components.sound.playSound();
+            },
+            complete() {
+                $('#trigger2 a-sound')[0].components.sound.playSound();
             }
         })
 
@@ -918,10 +776,8 @@ export default class Controller {
     // -- exporter --
     exportScene(selector = '#scene') {
         var exporter = new THREE.OBJExporter();
-        // var obj = this.scene;
         var obj = $(selector)[0].object3D;
         var data = exporter.parse(obj);
-        // console.log(data);
         downloadFile(data, selector+'.obj');
     }
 
@@ -942,7 +798,6 @@ export default class Controller {
         });
 
         loadImage(src).then((img) => {
-            // console.log(img, image, img.width, img.height);
             var factor = img.width / img.height;
             var height = 2;
             image.attr({
@@ -956,7 +811,6 @@ export default class Controller {
 
         var anim = [fadeIn, zoomIn];
         anim[_.random(anim.length-1)](image);
-        // fadeIn(image);
         return image;
     }
 }
