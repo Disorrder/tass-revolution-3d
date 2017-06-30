@@ -117,11 +117,11 @@ block scene
                     a-entity.a-path-point(position="755 500 -1100" geometry="primitive: box;")
                     a-entity.a-path-point(position="760 450 -1100" geometry="primitive: box;")
                     
-                a-entity#rocket1(position="-115 0 -1200")
+                a-entity#rocket1(position="-400 -20 -1200")
                     a-entity.smoke(gpu-particle-system="spawnEnabled: false; maxParticles: 800; lifetime: 15; spawnRate: 40; easeIn: 0.03; easeOut: 0.6; opacity: 0.2; size: 100; color: #f66; positionSpread: 2 3 2; velocity: 5 0 0; velocitySpread: 6 0.5 0; texture: #tex-particle-2;")
                     a-image.flare(position="0 0 0" src="#tex-particle-3" width="50" height="50" color="#fca" opacity="0.99" transparent="true" look-at="#player")
 
-                a-entity#rocket2(position="750 0 -1000")
+                a-entity#rocket2(position="1000 -20 -1000")
                     a-entity.smoke(gpu-particle-system="spawnEnabled: false; maxParticles: 800; lifetime: 15; spawnRate: 40; easeIn: 0.03; easeOut: 0.6; opacity: 0.2; size: 100; color: #f66; positionSpread: 2 3 2; velocity: 5 0 0; velocitySpread: 6 0.5 0; texture: #tex-particle-2;")
                     a-image.flare(position="0 0 0" src="#tex-particle-3" width="50" height="50" color="#fca" opacity="0.99" transparent="true" look-at="#player")
 
@@ -199,8 +199,7 @@ block scene
                     sound="src: #audio-click; volume: 50; on: click;"
                     mixin="sphere trigger"
                 )
-                    //- a-entity()
-                    a-entity(mixin="trigger-particles" _gpu-particle-system="size: 5;")
+                    a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: true;")
 
                     a-image(position="0 20 0" height="9" image-init="" src="#tex-text-16")
                     a-image.img-1(position="0 -1 0" height="7" image-init="" src="#tex-text-17" opacity="0")
@@ -215,7 +214,7 @@ block scene
             a-entity.pivot(rotation="0 -20 0")
                 a-image#img2(position="-100 7 -190" height="20" image-init="" src="#tex-text-1" opacity="0")
                     a-sound(src="#audio-text1" volume="70")
-                a-image#img3(position="50 7 -250" height="20" image-init="" src="#tex-text-2" opacity="0")
+                a-image#img3(position="50 7 -270" height="20" image-init="" src="#tex-text-2" opacity="0")
                     a-sound(src="#audio-text2" volume="80")
 
             a-entity.pivot(rotation="0 -78 0")
@@ -223,10 +222,10 @@ block scene
                     a-sound(src="#audio-sfx-2" volume="20")
 
                 a-entity#trigger2.interactive(position="0 3 -100"
-                    mixin="sphere trigger"
+                    mixin="sphere trigger" visible="false"
                     sound="src: #audio-trigger2; volume: 50; on: click;"
                 )
-                    a-entity(mixin="trigger-particles" _gpu-particle-system="size: 5;")
+                    a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
                     a-image.img-1(position="0 4 0" height="12" image-init="" src="#tex-text-4" opacity="0")
 
             a-entity.pivot(rotation="0 -160 0")
@@ -248,10 +247,10 @@ block scene
                 a-image#img11(position="0 5 -100" height="12" image-init="" src="#tex-text-10" opacity="0")
                   a-sound(src="#audio-text9" volume="20")
                 a-entity#trigger3.interactive(position="0 3 -100"
-                    mixin="sphere trigger"
+                    mixin="sphere trigger" visible="false"
                     sound="src: #audio-click; volume: 50; on: click;"
                 )
-                    a-entity(mixin="trigger-particles" gpu-particle-system="size: 5;")
+                    a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
 
                 //- a-image#img121(position="0 73 -900" width="800" image-init="" src="#tex-text-14" opacity="0")
 

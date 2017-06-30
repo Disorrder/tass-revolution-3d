@@ -19,8 +19,9 @@ class Trigger {
     constructor(options) {
         this.id = options.id;
         this.element = $(this.id)[0];
-        this.active = options.active;
-        this.visible = options.visible;
+        this.particlesElem = $(this.element).find('.particles')[0];
+        if (options.active != null) this.active = options.active;
+        if (options.visible != null) this.visible = options.visible;
 
         ['click', 'mouseenter', 'mouseleave'].forEach((event) => {
             this[event] = options[event];
@@ -39,9 +40,27 @@ class Trigger {
     set visible(v) {
         if (this.element) {
             this.element.setAttribute('visible', v);
+            this.spawnEnabled = v;
         }
     }
-}
+
+    get spawnEnabled() { return this.particlesElem ? this.particlesElem.getAttribute('gpu-particle-system', 'spawnEnabled') : null }
+    set spawnEnabled(v) {
+        if (this.particlesElem) {
+            this.particlesElem.setAttribute('gpu-particle-system', 'spawnEnabled', v);
+        }
+    }
+
+    hide() {
+        this.spawnEnabled = false;
+        setTimeout(() => { this.visible = false; }, 5000);
+    }
+
+    show() {
+        this.visible = true;
+        this.spawnEnabled = true;
+    }
+ }
 
 
 export default class Controller {
@@ -159,7 +178,7 @@ export default class Controller {
     closePortal(selector) {
         return anime({
             targets: `${selector} .animate`,
-            opacity: 0,
+            height: 0,
             duration: 1000,
             easing: 'easeInQuad',
             complete() {
@@ -192,7 +211,7 @@ export default class Controller {
         }),
         new Trigger({
             id: '#trigger2',
-            active: true,
+            active: false,
             visible: false,
             click: this.runScene2.bind(this),
             mouseenter: (e, trigger) => {
@@ -206,7 +225,7 @@ export default class Controller {
         }),
         new Trigger({
             id: '#trigger3',
-            active: true,
+            active: false,
             visible: false,
             click: this.runScene3.bind(this),
             mouseenter: (e, trigger) => {
@@ -223,23 +242,28 @@ export default class Controller {
     trainLightOff(selector) {
         var timeline = anime.timeline({autoplay: false});
 
-        // Train windows fade to black
-        var train_windows = $(`${selector} .wagon__passanger`);
-        var train_windows_mtl = train_windows.map((k, v) => v.object3D.findByName('Windows').material);
-        train_windows_mtl = _.uniq(train_windows_mtl);
+        // Fade train windows to black
+        var trainLightNames = ['Windows', 'Light_cone', 'Light_sphere'];
+        var trainLightMtl = [];
+        $(selector)[0].object3D.traverse((v) => {
+            if (trainLightNames.includes(v.name)) {
+                trainLightMtl.push(v.material);
+            }
+        })
+        trainLightMtl = _.uniq(trainLightMtl);
 
-        var train_windows_colors = train_windows_mtl.map((v) => {
-            return {color: '#'+v.color.getHexString()}
+        var trainLightColors = trainLightMtl.map((v) => {
+            return {color: '#'+v.emissive.getHexString()}
         });
 
         timeline.add({
-            targets: train_windows_colors,
+            targets: trainLightColors,
             delay: 0,
             elasticity: 0,
             color: '#000',
             update() {
-                train_windows_mtl.forEach((v, k) => {
-                    v.color.set(train_windows_colors[k].color);
+                trainLightMtl.forEach((v, k) => {
+                    v.emissive.set(trainLightColors[k].color);
                 })
             }
         });
@@ -384,8 +408,10 @@ export default class Controller {
                 p1_open.play();
             },
             complete() {
+                trigger.active = false;
+                trigger.spawnEnabled = false;
                 trigger.visible = false;
-                $('#trigger1').remove();
+                // trigger.hide();
             }
         })
         .add({
@@ -487,7 +513,8 @@ export default class Controller {
             easing: 'easeInQuad',
             begin: () => {
                 var trigger = _.find(this.triggers, {id: '#trigger2'});
-                trigger.visible = true;
+                // trigger.visible = true;
+                trigger.show();
             },
             complete: () => {
                 var trigger = _.find(this.triggers, {id: '#trigger2'});
@@ -498,6 +525,7 @@ export default class Controller {
 
     runScene2(e, trigger) {
         trigger.active = false;
+        // trigger.hide();
 
         var t1_off = this.trainLightOff('#train1');
 
@@ -508,6 +536,15 @@ export default class Controller {
             delay: 1000,
             begin: () => {
                 this.runRocket('#rocket2');
+            },
+        })
+        .add({
+            targets: '#trigger2 .img-1',
+            opacity: 0,
+            easing: 'easeInQuad',
+            complete() {
+                // trigger.visible = false;
+                trigger.hide();
             },
         })
         .add({
@@ -566,14 +603,15 @@ export default class Controller {
             }
         })
 
-        .add({
-            targets: '#trigger2 .img-1',
-            opacity: 0,
-            easing: 'easeInQuad',
-            complete() {
-                trigger.visible = false;
-            },
-        })
+        // .add({
+        //     targets: '#trigger2 .img-1',
+        //     opacity: 0,
+        //     easing: 'easeInQuad',
+        //     complete() {
+        //         // trigger.visible = false;
+        //         trigger.hide();
+        //     },
+        // })
 
         .add({
             targets: '#img5',
@@ -634,12 +672,15 @@ export default class Controller {
             easing: 'easeInQuad',
             complete: () => {
                 var trigger = _.find(this.triggers, {id: '#trigger3'});
-                trigger.visible = true;
+                // trigger.visible = true;
+                trigger.show();
+                trigger.active = true;
             }
         })
 
         .add({
             targets: {t:0}, t:0,
+            delay: 1000,
             duration: t1_off.duration,
             begin() {
                 t1_off.play();
@@ -670,32 +711,30 @@ export default class Controller {
         .add({
             targets: '#img10, #img11',
             opacity: 0,
-            delay: 1000,
+            delay: 2000,
             easing: 'easeInQuad',
             begin() {
-                trigger.visible = false;
+                // trigger.visible = false;
+                trigger.hide();
             },
         })
-
         .add({
             targets: '#img12',
             opacity: 1,
             delay: 1000,
         })
-
+        .add({
+            targets: '#img13',
+            opacity: 1,
+            delay: 2000,
+            begin: () => {
+                $('#train3')[0].emit('run');
+            }
+        })
         .add({
             targets: '#img12',
             opacity: 0,
             delay: 1000,
-        })
-
-        .add({
-            targets: '#img13',
-            opacity: 1,
-            delay: 1000,
-            begin: () => {
-                $('#train3')[0].emit('run');
-            }
         })
         .add({
             targets: '#img13',
@@ -714,7 +753,7 @@ export default class Controller {
         .add({
             targets: '#img13, #img14',
             opacity: 0,
-            delay: 1000,
+            delay: 3000,
             complete() {
                 $('#img14 a-sound')[0].components.sound.playSound();
             }
@@ -725,7 +764,7 @@ export default class Controller {
             intensity: 0,
             duration: 2000,
             begin: () => {
-                $('.sky_weather.particle-snow').remove();
+                $('.sky_weather.particle-snow')[0].setAttribute('gpu-particle-system', 'spawnEnabled', false);
             }
         })
 
