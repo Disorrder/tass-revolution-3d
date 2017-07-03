@@ -282,7 +282,7 @@ block scene
         a-sound#bg_sound(src="#audio-bg-1" volume="0" autoplay="true" loop="true")
         a-camera#player(wasd-controls="acceleration: 650;" fov="75")
             a-entity(position="0 0 -2")
-                a-cursor(material="color: #eee; opacity: 0.8" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events cursor-animation)
+                a-cursor(material="color: #eee; opacity: 0.8" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events cursor-animation="")
 
             a-entity#sound
             //- fov is 75, gui z is -0.7, when 1 is 100% width and about 95% height
