@@ -86,6 +86,8 @@ AFRAME.registerComponent('gpu-particle-system', {
             diff = Object.assign({}, preset, diff);
         }
 
+        console.log('ps update', diff);
+
         if (this.particleSystem) {
             if (diff.maxParticles) this.particleSystem.maxParticles = diff.maxParticles;
             if (diff.perspective != null) this.particleSystem.material.defines.HAS_PERSPECTIVE = diff.perspective;
