@@ -16,7 +16,7 @@ presets.default = {
     velocitySpread: new THREE.Vector3(),
     acceleration: new THREE.Vector3(),
     accelerationSpread: new THREE.Vector3(),
-    color: 0xff5566,
+    color: '#ff5566',
     colorSpread: 0.2,
     opacity: 1,
     lifetime: 1,

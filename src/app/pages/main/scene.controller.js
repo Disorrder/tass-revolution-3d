@@ -187,6 +187,12 @@ export default class Controller {
         })
     }
 
+    playSound(src, loop, volume) {
+        var sound = $('<a-sound>').attr({ autoplay: true, src, loop, volume });
+        sound.appendTo('#sound');
+        return sound;
+    }
+
     triggers = [
         new Trigger({
             id: '#trigger0',
@@ -430,6 +436,8 @@ export default class Controller {
                 var rotation = _.map(targets, (v, k) => {
                     return v.getAttribute('rotation');
                 });
+                var sound = this.playSound('#audio-platform', true, 0.7);
+
                 anime({
                     targets: rotation,
                     y: '-=90',
@@ -441,6 +449,9 @@ export default class Controller {
                             targets[i].setAttribute('rotation', `${v.x} ${v.y} ${v.z}`);
                             // targets[i].object3D.rotation.y = math.toRad(v.y);
                         });
+                    },
+                    complete() {
+                        sound.remove();
                     }
                 })
             }
@@ -567,6 +578,8 @@ export default class Controller {
                 var rotation = _.map(targets, (v, k) => {
                     return v.getAttribute('rotation');
                 });
+                var sound = this.playSound('#audio-platform', null, 0.7);
+
                 anime({
                     targets: rotation,
                     y: '-=90',
@@ -578,6 +591,9 @@ export default class Controller {
                             targets[i].setAttribute('rotation', `${v.x} ${v.y} ${v.z}`);
                             // targets[i].object3D.rotation.y = math.toRad(v.y);
                         });
+                    },
+                    complete() {
+                        sound.remove();
                     }
                 })
             }

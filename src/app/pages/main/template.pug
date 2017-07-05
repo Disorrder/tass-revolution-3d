@@ -46,7 +46,6 @@ block scene
 
 
         audio#audio-bg-1(src="/assets/audio/scene1/background1.wav")
-        audio#audio-pl(src="/assets/audio/scene1/platform_turning.mp3")
         audio#audio-click(src="/assets/audio/scene1/trigger_on.wav")
         audio#audio-text1(src="/assets/audio/scene1/text1.mp3")
         audio#audio-text2(src="/assets/audio/scene1/text2.wav")
@@ -56,6 +55,7 @@ block scene
         audio#audio-text7(src="/assets/audio/scene1/text7.wav")
         audio#audio-text9(src="/assets/audio/scene1/trigger_off.wav")
         audio#audio-text10(src="/assets/audio/scene1/trigger_on.wav")
+        audio#audio-platform(src="/assets/audio/scene1/platform_turning.mp3")
 
         audio#audio-sfx-11(src="/assets/audio/scene1/1_train_sound.wav")
         audio#audio-sfx-1(src="/assets/audio/scene1/1_train_back.mp3")
@@ -282,7 +282,7 @@ block scene
         a-sound#bg_sound(src="#audio-bg-1" volume="0" autoplay="true" loop="true")
         a-camera#player(wasd-controls="acceleration: 650;" fov="75")
             a-entity(position="0 0 -2")
-                a-cursor(material="color: #eee; opacity: 0.8" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events cursor-animation="")
+                a-cursor(material="color: #eee; opacity: 0.8; depthTest: false;" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events cursor-animation="")
 
             a-entity#sound
             //- fov is 75, gui z is -0.7, when 1 is 100% width and about 95% height
