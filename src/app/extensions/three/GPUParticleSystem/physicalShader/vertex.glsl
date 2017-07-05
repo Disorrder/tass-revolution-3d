@@ -2,7 +2,6 @@ precision highp float;
 
 uniform float uTime;
 uniform float uScale;
-// uniform sampler2D tNoise;
 
 attribute vec4 particlePositionTime;
 attribute vec3 particleVelocity;
@@ -58,5 +57,4 @@ void main() {
     #endif
 
     gl_PointSize = perspective * pointSize;
-    // gl_PointSize = 0;
 }

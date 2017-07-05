@@ -12,7 +12,6 @@ var schema = {
     maxParticles: { type: 'number' },
     spawnRate: { type: 'number' },
     texture: { type: 'map' },
-    // texture: { type: 'map' },
     perspective: { type: 'boolean' },
     easeIn: { type: 'number' },
     easeOut: { type: 'number' },
@@ -44,7 +43,7 @@ AFRAME.registerComponent('gpu-particle-system', {
     init() {
         this.options = {
             maxParticles: this.data.maxParticles,
-            particleSpriteTex: textureLoader.load(this.data.texture),
+            particleSpriteTex: textureLoader.load(this.data.texture.src),
         }
 
         this.particleOptions = {};
@@ -85,8 +84,6 @@ AFRAME.registerComponent('gpu-particle-system', {
             let preset = presets[diff.preset];
             diff = Object.assign({}, preset, diff);
         }
-
-        console.log('ps update', diff);
 
         if (this.particleSystem) {
             if (diff.maxParticles) this.particleSystem.maxParticles = diff.maxParticles;

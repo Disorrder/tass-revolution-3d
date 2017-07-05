@@ -66,7 +66,6 @@ export default class GPUParticleSystem extends THREE.Object3D {
         };
         Object.assign(this.particleOptions, particleOptions);
 
-
         this.PARTICLE_CURSOR = this.particleCursor = 0;
         this.time = 0; // in seconds
     	this.particleUpdate = false;
@@ -150,6 +149,7 @@ export default class GPUParticleSystem extends THREE.Object3D {
         attr.array[i * 4 + 1] = color.g;
         attr.array[i * 4 + 2] = color.b;
         attr.array[i * 4 + 3] = opacity;
+        // console.log('pColor', color, opacity);
 
         attr = this.geometry.getAttribute('particleSize');
         attr.array[i * 1 + 0] = size;

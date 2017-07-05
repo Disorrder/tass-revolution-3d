@@ -10,9 +10,6 @@ varying vec4 vColor;
 uniform sampler2D tSprite;
 
 void main() {
-    float opacity = vColor.a;
-
     vec4 tex = texture2D( tSprite, gl_PointCoord );
     gl_FragColor = tex * vColor;
-    gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
 }
