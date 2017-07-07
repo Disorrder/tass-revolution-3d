@@ -1,37 +1,35 @@
-export var lastAnimation; //?
-
-export function fadeIn(selector, options = {}) {
+export function fadeIn(targets, options = {}) {
     return anime({
-        targets: selector,
+        targets,
         opacity: 1,
         delay: options.delay || 0,
         duration: options.duration || 300,
         easing: 'easeInQuad',
         begin() {
-            show(selector);
+            show(targets);
         }
     });
 }
 
-export function fadeOut(selector, options = {}) {
+export function fadeOut(targets, options = {}) {
     return anime({
-        targets: selector,
-        opacity: 1,
+        targets,
+        opacity: 0,
         delay: options.delay || 0,
         duration: options.duration || 300,
         easing: 'easeInQuad',
         complete() {
-            hide(selector);
+            hide(targets);
         }
     });
 }
 
-export function show(selector) {
-    $(selector).attr('visible', true);
+export function show(targets) {
+    $(targets).attr('visible', true);
 }
 
-export function hide(selector) {
-    $(selector).attr({
+export function hide(targets) {
+    $(targets).attr({
         opacity: 0,
         visible: false
     });

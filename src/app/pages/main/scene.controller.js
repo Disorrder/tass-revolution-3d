@@ -5,9 +5,8 @@ import * as math from 'app/extensions/math';
 import fadeIn from 'app/extensions/aframe/animate/fadeIn';
 import zoomIn from 'app/extensions/aframe/animate/zoomIn';
 import * as animate from 'app/extensions/anime';
-import anime from 'animejs';
 import './objects/gen-train';
-window.anime = anime;
+import './tip.service.js';
 
 const FUSE_TIMEOUT = 1500;
 
@@ -67,6 +66,8 @@ export default class Controller {
     constructor() {
         // this.debug = true;
         this.scene = $('#scene')[0];
+        this.tipService = this.scene.systems.tip;
+
         this.photos = photoNames;
         this.photosElem = $('#photos');
 
@@ -99,11 +100,6 @@ export default class Controller {
             this.scene.camera.updateProjectionMatrix();
         })
     }
-    initGuiVR() { // not working idk why
-        this.guivr = dat.GUIVR.create('Photos');
-        this.guivr.add(this, 'addImage');
-        $('#scene')[0].object3D.add(this.guivr);
-    }
 
     onStart() {
         this.initGui();
@@ -125,8 +121,9 @@ export default class Controller {
         });
 
         setTimeout(() => {
-            this.guiShow('#tip', '#tex-ui-tip-1');
-        }, 5000);
+            // this.guiShow('#tip', '#tex-ui-tip-1');
+            this.tipService.create('#tex-ui-tip-1')
+        }, 2000);
     }
 
     openPortal(selector, timeline) {
