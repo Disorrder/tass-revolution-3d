@@ -43,7 +43,7 @@ class Trigger {
         }
     }
 
-    get spawnEnabled() { return this.particlesElem ? this.particlesElem.getAttribute('gpu-particle-system', 'spawnEnabled') : null }
+    get spawnEnabled() { return this.particlesElem ? this.particlesElem.getAttribute('gpu-particle-system').spawnEnabled : null }
     set spawnEnabled(v) {
         if (this.particlesElem) {
             this.particlesElem.setAttribute('gpu-particle-system', 'spawnEnabled', v);
@@ -184,9 +184,20 @@ export default class Controller {
         })
     }
 
-    playSound(src, loop, volume) {
-        var sound = $('<a-sound>').attr({ autoplay: true, src, loop, volume });
-        sound.appendTo('#sound');
+    playSound(options) {
+        options = Object.assign({
+            src: null,
+            loop: true,
+            volume: null,
+            appendTo: '#sound'
+        }, options);
+        var sound = $('<a-sound>').attr({
+            autoplay: true,
+            src: options.src,
+            loop: options.loop,
+            volume: options.loop
+        });
+        sound.appendTo(options.appendTo);
         return sound;
     }
 
@@ -378,11 +389,14 @@ export default class Controller {
             volume: 0,
             duration: 3000,
             easing: 'linear',
+            begin() {
+                this.__volume = $('#bg_sound')[0].getAttribute('sound').volume;
+            },
             complete() {
                 $('#bg_sound')[0].components.sound.stopSound();
+                $('#bg_sound')[0].setAttribute('sound', 'volume', this.__volume);
             }
         });
-
 
         var timeline = anime.timeline();
         timeline
@@ -433,7 +447,7 @@ export default class Controller {
                 var rotation = _.map(targets, (v, k) => {
                     return v.getAttribute('rotation');
                 });
-                var sound = this.playSound('#audio-platform', true, 0.7);
+                var sound = this.playSound({src: '#audio-platform', volume: 0.3});
 
                 anime({
                     targets: rotation,
@@ -575,7 +589,7 @@ export default class Controller {
                 var rotation = _.map(targets, (v, k) => {
                     return v.getAttribute('rotation');
                 });
-                var sound = this.playSound('#audio-platform', null, 0.7);
+                var sound = this.playSound({src: '#audio-platform', volume: 0.3});
 
                 anime({
                     targets: rotation,
@@ -800,7 +814,7 @@ export default class Controller {
                 })
             },
             complete() {
-                $('#trigger2 a-sound')[0].components.sound.playSound();
+                $('#trigger2')[0].components.sound.playSound();
             }
         })
 
@@ -809,6 +823,9 @@ export default class Controller {
             color: '#faa',
             duration: 2000,
             easing: 'linear',
+            begin() {
+                $('#bg_sound')[0].components.sound.playSound();
+            }
         })
     }
 
