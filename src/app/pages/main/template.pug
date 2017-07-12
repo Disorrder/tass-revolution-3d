@@ -201,6 +201,8 @@ block scene
                 )
                     a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: true;")
 
+                    a-plane(position="0 5 1" height="9" width="20" _image-init="" color="#bad" shader="flat")
+                        a-text(position="-4 0 1" scale="12 12 12" value="START" color="#fff" shader="flat")
                     a-image(position="0 20 0" height="9" image-init="" src="#tex-text-16")
                     a-image.img-1(position="0 -1 0" height="7" image-init="" src="#tex-text-17" opacity="0")
 
@@ -279,10 +281,10 @@ block scene
 
     //- global objects
     a-entity#playerBox(position="0 2 0" rotation="0 20 0")
-        a-sound#bg_sound(src="#audio-bg-1" volume="1.7" autoplay="true" loop="true")
+        a-sound#bg_sound(src="#audio-bg-1" volume="0.6" autoplay="true" loop="true")
         a-camera#player(wasd-controls="acceleration: 650;" fov="75")
             a-entity(position="0 0 -2")
-                a-cursor(material="color: #eee; opacity: 0.8; depthTest: false;" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive" cursor-events cursor-animation="")
+                a-cursor(material="color: #eee; opacity: 0.8; depthTest: false;" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive;" cursor-events="" cursor-animation="")
 
             a-entity#sound
             //- fov is 75, gui z is -0.7, when 1 is 100% width and about 95% height

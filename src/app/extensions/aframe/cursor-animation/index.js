@@ -31,7 +31,7 @@ AFRAME.registerComponent('cursor-animation', {
         if (this.activeAnimation) this.activeAnimation.pause();
         anime({
             targets: this.params,
-            scale: 1.7,
+            scale: 11.7,
             duration: 200,
             easing: 'easeInQuad',
             update: this.applyParams.bind(this),

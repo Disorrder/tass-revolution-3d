@@ -535,7 +535,6 @@ export default class Controller {
             easing: 'easeInQuad',
             begin: () => {
                 var trigger = _.find(this.triggers, {id: '#trigger2'});
-                // trigger.visible = true;
                 trigger.show();
             },
             complete: () => {
@@ -547,7 +546,6 @@ export default class Controller {
 
     runScene2(e, trigger) {
         trigger.active = false;
-        // trigger.hide();
 
         var t1_off = this.trainLightOff('#train1');
 
@@ -565,7 +563,6 @@ export default class Controller {
             opacity: 0,
             easing: 'easeInQuad',
             complete() {
-                // trigger.visible = false;
                 trigger.hide();
             },
         })

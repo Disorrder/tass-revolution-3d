@@ -132,7 +132,7 @@ export default class GPUParticleSystem extends THREE.Object3D {
 		attr.array[i * 4 + 0] = position.x;
 		attr.array[i * 4 + 1] = position.y;
 		attr.array[i * 4 + 2] = position.z;
-		attr.array[i * 4 + 3] = this.time; // + (getRandomSpread() * 2e-2); //startTime
+		attr.array[i * 4 + 3] = options.time || this.time; //startTime
 
         attr = this.geometry.getAttribute('particleVelocity');
         attr.array[i * 3 + 0] = velocity.x;
