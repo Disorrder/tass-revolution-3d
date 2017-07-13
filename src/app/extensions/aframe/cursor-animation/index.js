@@ -5,7 +5,7 @@ AFRAME.registerComponent('cursor-animation', {
         this.params = {
             thetaStart: 0,
             thetaLength: 360,
-            scale: 1
+            scale: 0.5
         }
 
         this.el.addEventListener('mouseenter', this._mouseenterHandle = this.mouseenterHandle.bind(this));
@@ -31,7 +31,7 @@ AFRAME.registerComponent('cursor-animation', {
         if (this.activeAnimation) this.activeAnimation.pause();
         anime({
             targets: this.params,
-            scale: 11.7,
+            scale: 12,
             duration: 200,
             easing: 'easeInQuad',
             update: this.applyParams.bind(this),
@@ -70,7 +70,7 @@ AFRAME.registerComponent('cursor-animation', {
         this.activeAnimation = anime({
             targets: this.params,
             thetaLength: 360,
-            scale: 1,
+            scale: 0.5,
             duration: 200,
             easing: 'easeInQuad',
             update: this.applyParams.bind(this),

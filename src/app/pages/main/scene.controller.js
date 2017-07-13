@@ -6,7 +6,7 @@ import fadeIn from 'app/extensions/aframe/animate/fadeIn';
 import zoomIn from 'app/extensions/aframe/animate/zoomIn';
 import * as animate from 'app/extensions/anime';
 import './objects/gen-train';
-import './tip.service.js';
+import './message.service.js';
 
 const FUSE_TIMEOUT = 1500;
 
@@ -66,7 +66,7 @@ export default class Controller {
     constructor() {
         // this.debug = true;
         this.scene = $('#scene')[0];
-        this.tipService = this.scene.systems.tip;
+        this.messageService = this.scene.systems.message;
 
         this.photos = photoNames;
         this.photosElem = $('#photos');
@@ -121,8 +121,8 @@ export default class Controller {
         });
 
         setTimeout(() => {
-            // this.guiShow('#tip', '#tex-ui-tip-1');
-            this.tipService.create('#tex-ui-tip-1')
+            // this.guiShow('#messages', '#tex-ui-tip-1');
+            this.messageService.create('#tex-ui-tip-1')
         }, 2000);
     }
 
@@ -215,7 +215,7 @@ export default class Controller {
             click: this.runScene1.bind(this),
             mouseenter: (e, trigger) => {
                 trigger.__fuseAnimation = animate.fadeIn('#trigger1 .img-1', {duration: FUSE_TIMEOUT});
-                this.guiHide('#tip');
+                this.guiHide('#messages');
             },
             mouseleave: (e, trigger) => {
                 trigger.__fuseAnimation.pause();

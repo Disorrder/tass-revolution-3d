@@ -284,12 +284,12 @@ block scene
         a-sound#bg_sound(src="#audio-bg-1" volume="0.6" autoplay="true" loop="true")
         a-camera#player(wasd-controls="acceleration: 650;" fov="75")
             a-entity(position="0 0 -2")
-                a-cursor(material="color: #eee; opacity: 0.8; depthTest: false;" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive;" cursor-events="" cursor-animation="")
+                a-cursor(scale="0.5 0.5 0.5" material="color: #eee; opacity: 0.8; depthTest: false;" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive;" cursor-events="" cursor-animation="")
 
             a-entity#sound
             //- fov is 75, gui z is -0.7, when 1 is 100% width and about 95% height
             a-entity#gui(position="0 0 -0.07" scale="0.1 0.1 0.1")
-                a-entity#tips(position="0 0.3 0")
+                a-entity#messages(position="0 0.3 0")
                 //- a-image#tip(position="0 0.3 0" width="0.5" src="" npot="true" image-init="" opacity="0" visible="false")
 
 block ui
