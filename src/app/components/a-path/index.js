@@ -1,3 +1,3 @@
 import './component';
 import './primitive';
-import './moveByPath.component';
+import './followPath.component';

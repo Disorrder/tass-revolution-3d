@@ -7,6 +7,7 @@ import zoomIn from 'app/extensions/aframe/animate/zoomIn';
 import * as animate from 'app/extensions/anime';
 import './objects/gen-train';
 import './message.service.js';
+import './fairy.controller.js';
 
 const FUSE_TIMEOUT = 1500;
 
@@ -398,6 +399,28 @@ export default class Controller {
             }
         });
 
+        // fairy run
+        var fairyMesh = $('#fairy .mesh')[0];
+        var fairyParticles = $('#fairy .particles')[0];
+        var fairyFollow = fairyMesh.getAttribute('follow-path');
+        anime({
+            targets: fairyFollow,
+            position: 1,
+            // delay: 10000,
+            duration: 10000,
+            loop: 3,
+            easing: 'easeInOutQuad',
+            begin() {
+                fairyParticles.setAttribute('gpu-particle-system', 'spawnEnabled', true);
+            },
+            complete() {
+                fairyParticles.setAttribute('gpu-particle-system', 'spawnEnabled', false);
+            },
+            run() {
+                fairyMesh.setAttribute('follow-path', 'position', fairyFollow.position);
+            },
+        })
+
         var timeline = anime.timeline();
         timeline
         .add({
@@ -548,6 +571,33 @@ export default class Controller {
         trigger.active = false;
 
         var t1_off = this.trainLightOff('#train1');
+
+        // fairy run
+        var fairyMesh = $('#fairy .mesh')[0];
+        var fairyParticles = $('#fairy .particles')[0];
+        var fairyFollow = fairyMesh.getAttribute('follow-path');
+        fairyMesh.setAttribute('follow-path', {
+            path: '#path3',
+            position: 0
+        });
+        anime({
+            targets: fairyFollow,
+            position: 1,
+            // delay: 10000,
+            duration: 10000,
+            loop: 3,
+            easing: 'easeInOutQuad',
+            begin() {
+                fairyParticles.setAttribute('gpu-particle-system', 'spawnEnabled', true);
+            },
+            complete() {
+                fairyParticles.setAttribute('gpu-particle-system', 'spawnEnabled', false);
+            },
+            run() {
+                fairyMesh.setAttribute('follow-path', 'position', fairyFollow.position);
+            },
+        })
+
 
         var timeline = anime.timeline();
         timeline

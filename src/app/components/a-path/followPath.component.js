@@ -1,6 +1,6 @@
 const UPDATE_TIMEOUT = 1000;
 
-AFRAME.registerComponent('move-by-path', {
+AFRAME.registerComponent('follow-path', {
     schema: {
         path: { type: 'string' },
         position: { type: 'number', default: 0 }
