@@ -7,299 +7,160 @@ mixin house(color)
 
 block scene
     a-assets
-        //- img#skyTexture(crossorigin src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/city.jpg")
-        //- img#skyTexture(crossorigin src="https://cdn.aframe.io/360-image-gallery-boilerplate/img/sechelt.jpg")
-        img#groundTexture(crossorigin src="https://cdn.aframe.io/a-painter/images/floor.jpg")
+        include ./template.assets.pug
 
-        img#tex-bg-forest(src="/assets/textures/forest3.png")
-        img#tex-bg-piter(src="/assets/textures/piter2.png")
-        img#tex-photo-1(src="/assets/photos/scene1/portal1.png")
-        img#tex-photo-2(src="/assets/photos/scene1/portal2.png")
-        img#tex-photo-3(src="/assets/photos/scene1/Nickolay_black.png")
-        img#tex-photo-4(src="/assets/photos/scene1/hleb.png")
-        img#tex-photo-5(src="/assets/photos/scene1/red dawn.png")
-        img#tex-photo-6(src="/assets/photos/scene1/petrograd.png")
-
-        img#tex-text-1(src="/assets/photos/scene1/text1.png")
-        img#tex-text-2(src="/assets/photos/scene1/text2.png")
-        img#tex-text-3(src="/assets/photos/scene1/text3.png")
-        img#tex-text-4(src="/assets/photos/scene1/text4.png")
-        img#tex-text-5(src="/assets/photos/scene1/text5.png")
-        img#tex-text-6(src="/assets/photos/scene1/text6.png")
-        img#tex-text-7(src="/assets/photos/scene1/text7.png")
-        img#tex-text-8(src="/assets/photos/scene1/text8.png")
-        img#tex-text-9(src="/assets/photos/scene1/text9.png")
-        img#tex-text-10(src="/assets/photos/scene1/text10.png")
-        img#tex-text-11(src="/assets/photos/scene1/text11.png")
-        img#tex-text-12(src="/assets/photos/scene1/text12.png")
-        img#tex-text-13(src="/assets/photos/scene1/text13.png")
-        img#tex-text-14(src="/assets/photos/scene1/text14.png")
-        img#tex-text-15(src="/assets/photos/scene1/text15.png")
-        img#tex-text-16(src="/assets/photos/scene1/winter.png")
-        img#tex-text-17(src="/assets/photos/scene1/Russia.png")
-
-        img#tex-ui-tip-1(src="/assets/photos/scene1/tip1.png")
-
-        img#tex-particle-1(src="/assets/textures/explosion_map.png")
-        img#tex-particle-2(src="/assets/textures/particle-smoke.jpg")
-        img#tex-particle-3(src="/assets/textures/flare2.png")
+    a-entity#global
+        a-sky(color="#000")
+        a-light.sky_light(type="ambient" color="#fff" intensity="0.2")
+        a-light.sky_light(type="point" position="0 4 0" color="#fff" intensity="0.2")
+        a-entity.sky_weather.particle-snow(position="0 0 0" gpu-particle-system="preset: snow; maxParticles: 500; spawnRate: 50; texture: #tex-particle-1;")
 
 
-        audio#audio-bg-1(src="/assets/audio/scene1/background1.wav")
-        audio#audio-click(src="/assets/audio/scene1/trigger_on.wav")
-        audio#audio-text1(src="/assets/audio/scene1/text1.mp3")
-        audio#audio-text2(src="/assets/audio/scene1/text2.wav")
-        audio#audio-trigger2(src="/assets/audio/scene1/2_train_horn.mp3")
-        audio#audio-text5(src="/assets/audio/scene1/text5.wav")
-        audio#audio-text6(src="/assets/audio/scene1/text6.wav")
-        audio#audio-text7(src="/assets/audio/scene1/text7.wav")
-        audio#audio-text9(src="/assets/audio/scene1/trigger_off.wav")
-        audio#audio-text10(src="/assets/audio/scene1/trigger_on.wav")
-        audio#audio-platform(src="/assets/audio/scene1/platform_turning.mp3")
+    a-entity#world        
+        a-entity#layer0
+            a-entity.background-fx
+                //- a-path#bg-fire-path(position="0 100 0" line-geometry="" visible="true")
+                    a-entity.a-path-point(position="-360 0 -1050" geometry="primitive: box;")
+                    a-entity.a-path-point(position="-132 0 -1064" geometry="primitive: box;")
+                    a-entity.a-path-point(position="603 0 -946" geometry="primitive: box;")
+                    a-entity.a-path-point(position="1128 0 -45" geometry="primitive: box;")
+                    a-entity.a-path-point(position="892 0 650" geometry="primitive: box;")
 
-        audio#audio-sfx-11(src="/assets/audio/scene1/1_train_sound.wav")
-        audio#audio-sfx-1(src="/assets/audio/scene1/1_train_back.mp3")
-        audio#audio-sfx-2(src="/assets/audio/scene1/img_appear-1.wav")
-        audio#audio-sfx-3(src="/assets/audio/scene1/img_appear-2.wav")
-        audio#audio-sfx-4(src="/assets/audio/scene1/2_train_back.mp3")
-        audio#audio-sfx-5(src="/assets/audio/scene1/nikolay_deleted.wav")
-
-        //- mixins
-        a-mixin#debug(material="visible: true; wireframe: true; color: red; shader: flat; opacity: 0.4")
-        a-mixin#debug-ray(geometry="primitive: box; width: 0.1; depth: 2000;" material="shader: flat; color: yellow; opacity: 0.5")
-
-        a-mixin#halfSphere(geometry="primitive: sphere; radius: 15; thetaLength: 90;")
-        a-mixin#sphere(geometry="primitive: sphere; radius: 15;")
-
-        a-mixin#trigger(material="visible: false;" trigger="")
-        a-mixin#trigger-particles(class="particles" gpu-particle-system="maxParticles: 100; lifetime: 4; spawnRate: 20; opacity: 0.7; size: 2; color: #f53; positionSpread: 20 0 20; velocity: 0 2 0; velocitySpread: 2 1 0; accelerationSpread: 1 1 1; texture: #tex-particle-1;")
-
-        a-mixin#black(material="shader: flat; color: #000;")
-        a-mixin#grey(material="color: #aaa; roughness: 1;")
-
-
-    a-sky(color="#000")
-
-    a-light.sky_light(type="ambient" color="#fff" intensity="0")
-    a-light.sky_light(type="point" position="0 4 0" color="#fff" intensity="0")
-
-    //- scene fragments
-    a-entity#world
-        a-entity#backlight(position="0 0 0")
-            //- a-path#bg-fire-path(position="0 100 0" line-geometry="" visible="true")
-                a-entity.a-path-point(position="-360 0 -1050" geometry="primitive: box;")
-                a-entity.a-path-point(position="-132 0 -1064" geometry="primitive: box;")
-                a-entity.a-path-point(position="603 0 -946" geometry="primitive: box;")
-                a-entity.a-path-point(position="1128 0 -45" geometry="primitive: box;")
-                a-entity.a-path-point(position="892 0 650" geometry="primitive: box;")
-
-            a-entity.pivot(rotation="0 -10 0")
-                a-entity#fx-fire-1
+                //- a-entity#fx-fire-1
                     a-entity.particles(position="0 0.11 -1050" gpu-particle-system="maxParticles: 60; lifetime: 5; spawnRate: 7; easeIn: 0.3; easeOut: 0.5; opacity: 0.1; size: 300; color: #a11; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
                     a-entity.particles(position="0 0.11 -1050" gpu-particle-system="maxParticles: 60; lifetime: 3; spawnRate: 8; easeIn: 0.5; easeOut: 0.6; opacity: 0.1; size: 300; color: #e42; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
-            a-entity.pivot(rotation="0 -30 0")
-                a-entity#fx-fire-2
-                    a-entity.particles(position="0 0.11 -1050" gpu-particle-system="maxParticles: 30; lifetime: 3; spawnRate: 10; easeOut: 0.4; opacity: 0.1; size: 300; color: #e25822; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+                a-entity#fx-fire-2(position="527 0 -913")
+                    a-entity.particles(look-at="0 0 0" gpu-particle-system="maxParticles: 30; lifetime: 3; spawnRate: 10; easeOut: 0.4; opacity: 0.1; size: 300; color: #e25822; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
-            a-entity.pivot(rotation="0 -50 0")
-                a-entity#fx-fire-3
-                    a-entity.particles(position="0 0.11 -1050" gpu-particle-system="maxParticles: 100; lifetime: 5; spawnRate: 20; easeOut: 0.4; opacity: 0.1; size: 300; color: #911; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+                a-entity#fx-fire-3(position="806 0 -671")
+                    a-entity.particles(look-at="0 0 0" gpu-particle-system="maxParticles: 100; lifetime: 5; spawnRate: 20; easeOut: 0.4; opacity: 0.1; size: 300; color: #911; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
-            //- a-entity.pivot(rotation="0 -90 0")
-                a-entity
-                    a-entity.particle-fire.small(position="200 -10.11 -1010" gpu-particle-system="maxParticles: 10; lifetime: 0.5; spawnRate: 1; opacity: 0.8; size: 750; color: orange; positionSpread: 800 10 1; velocity: 10 5 0; texture: #tex-particle-1;")
-                    a-entity.particle-fire.small(position="200 -10.11 -1010" gpu-particle-system="maxParticles: 10; lifetime: 0.5; spawnRate: 1; opacity: 0.8; size: 750; color: red; positionSpread: 800 10 1; velocity: 10 5 0; texture: #tex-particle-1;")
+            a-entity.background
+                a-cylinder.forest(position="0 40 0" geometry="height: 270; radius: 1000; segmentsHeight: 1; thetaStart: 55; thetaLength: 145; openEnded: true;" src="#tex-bg-forest" repeat="2.5 0.9" shader="flat" transparent="true" side="back" color="#f00")
+                a-cylinder.forest(position="0 -70 0" geometry="height: 100; radius: 1000; segmentsHeight: 1; thetaStart: 55; thetaLength: 145; openEnded: true;" shader="flat" color="#000" side="back")
+                a-cylinder.town(position="0 50 0" geometry="height: 200; radius: 1000; segmentsHeight: 1; thetaStart: 288; thetaLength: 45; openEnded: true;" src="#tex-bg-piter" repeat="1 0.9" shader="flat" transparent="true" side="back" color="#f00")
 
-            a-entity#rockets
-                //- a-path#rocket-path-1(position="0 0 0" line-geometry="" visible="true")
-                    a-entity.a-path-point(position="745 0 -1100" geometry="primitive: box;")
-                    a-entity.a-path-point(position="755 500 -1100" geometry="primitive: box;")
-                    a-entity.a-path-point(position="760 450 -1100" geometry="primitive: box;")
-                    
-                a-entity#rocket1(position="-400 -20 -1200")
-                    a-entity.smoke(gpu-particle-system="spawnEnabled: false; maxParticles: 800; lifetime: 15; spawnRate: 40; easeIn: 0.03; easeOut: 0.6; opacity: 0.2; size: 100; color: #f66; positionSpread: 2 3 2; velocity: 5 0 0; velocitySpread: 6 0.5 0; texture: #tex-particle-2;")
-                    a-image.flare(position="0 0 0" src="#tex-particle-3" width="50" height="50" color="#fca" opacity="0.99" transparent="true" look-at="#player")
+            a-entity.items
+                a-light(position="0 5 0" type="point" distance="9" intensity="1")
+                a-box.platform(position="0 1 0" rotation="0 0 0" width="30" height="0.3" depth="5" _src="/assets/textures/wooden_floor.jpg" repeat="1 1" _color="#ccc" roughness="1")
+                a-entity#trigger0.interactive(position="0 2 0" mixin="sphere trigger" geometry="radius: 0.7;" material="opacity: 0.1;")
 
-                a-entity#rocket2(position="1000 -20 -1000")
-                    a-entity.smoke(gpu-particle-system="spawnEnabled: false; maxParticles: 800; lifetime: 15; spawnRate: 40; easeIn: 0.03; easeOut: 0.6; opacity: 0.2; size: 100; color: #f66; positionSpread: 2 3 2; velocity: 5 0 0; velocitySpread: 6 0.5 0; texture: #tex-particle-2;")
-                    a-image.flare(position="0 0 0" src="#tex-particle-3" width="50" height="50" color="#fca" opacity="0.99" transparent="true" look-at="#player")
+                
+        a-entity#layer1-idle(visible="true")
+            a-entity.items
+                //- a-image#ttt(position="-10 5 -20" look-at="0 0 0" src="#tex-photo-2" height="9" image-init=""
+                //-     fx-dissolve="alphaMap: url(/assets/textures/alphaMaps/portal.jpeg); amount: 0;"
+                //- )
+                a-entity.trigger-group(position="-100 3 0" look-at="0 0 0")
+                    a-entity#trigger1.interactive(
+                        __sound="src: #audio-click; volume: 50; on: click;"
+                        mixin="sphere trigger debug"
+                    )
+                        a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: true;")
 
-            //- Horizon textures
-            a-cylinder.background(position="0 40 0" geometry="height: 270; radius: 1000; segmentsHeight: 1; thetaStart: 55; thetaLength: 145; openEnded: true;" src="#tex-bg-forest" repeat="2.5 0.9" shader="flat" transparent="true" side="back" color="#000")
-            a-cylinder.background(position="0 -70 0" geometry="height: 100; radius: 1000; segmentsHeight: 1; thetaStart: 55; thetaLength: 145; openEnded: true;" _shader="flat" color="#010" side="back")
-            //- Horizon Piter
-            a-entity.pivot(rotation="0 -230 0")
-                //- a-image#img12(position="0 230 -1200" width="1000" image-init="" src="#tex-photo-2" _opacity="0")
-                a-image#img12(position="0 73 -1200" width="1000" image-init="" src="#tex-text-12" opacity="0")
-                a-image#img121(position="0 500 -1100" width="1000" image-init="" src="#tex-photo-6" opacity="0" color="#fff")
-            a-cylinder.background(position="0 50 0" geometry="height: 200; radius: 1000; segmentsHeight: 1; thetaStart: 288; thetaLength: 45; openEnded: true;" src="#tex-bg-piter" repeat="1 0.9" shader="flat" transparent="true" side="back" color="#000")
-            //- a-cylinder.background(position="0 50 0" geometry="height: 200; radius: 1100; segmentsHeight: 1; thetaStart: 288; thetaLength: 45; openEnded: true;" _src="#tex-bg-piter" _repeat="1 0.9" shader="flat" _transparent="true" side="back" color="#532")
-
-
-        //- player's platform
-        a-entity#group1(rotation="0 -40 0" sound="src: #audio-pl; volume: 90; loop: false; on: run")
-            a-light(position="0 5 0" type="point" distance="9" intensity="1")
-            a-box.platform(position="0 2 0" rotation="0 0 0" width="30" height="0.3" depth="5" _src="/assets/textures/wooden_floor.jpg" repeat="1 1" _color="#ccc" roughness="1")
-            a-entity#trigger0.interactive(position="0 2 0" mixin="sphere trigger" geometry="radius: 0.7;" material="opacity: 0.1;")
-
-        //- railways
-        a-entity#group2
-            a-path#railway-1(position="0 0 0" line-geometry="" shader="line" visible="false")
+                    a-text(position="-4 5 0" scale="12 12 12" value="START" color="#fff" shader="flat")
+                
+            
+        a-entity#layer1(visible="false")
+            a-path#railway1(position="0 0 0" line-geometry="" shader="line" _visible="false")
                 a-entity.a-path-point(position="-314 0 -328" geometry="primitive: box;")
                 a-entity.a-path-point(position="491 0 -34" geometry="primitive: box;")
                 a-entity.a-path-point(position="-231 0 157" geometry="primitive: box;")
-                //- a-entity.a-path-point(position="" geometry="primitive: box;")
-                //- a-entity.a-path-point(position="" geometry="primitive: box;")
-            
-            a-entity#train1(scale="2.2 2.2 2.2"
-                follow-path="path: #railway-1; position: 0;"
-                __material="shader: flat; color: #000;" __common-material
-                gen-train="wagonMap: head,passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
-                sound="src: #audio-sfx-1; volume: 90; loop: false; on: run;"
-            )
-                a-animation(begin="run" dur="11000" attribute="follow-path.position" to="0.6" easing="linear")
-                a-animation(begin="run2" dur="11000" attribute="follow-path.position" to="1" easing="ease-out-sine")
                 
-            a-entity.particle-snow(position="-213 30 151" rotation="0 14.3 0" gpu-particle-system="spawnEnabled: false; preset: snow; maxParticles: 3000; spawnRate: 200; size: 2; positionSpread: 10 100 50; velocity: 100 -10 0; texture: #tex-particle-1;")
+            a-path#railway2(position="0 0 0" line-geometry="" shader="line" _visible="false")
+                a-entity.a-path-point(position="-300 0 -4.4" geometry="primitive: box;")
+                a-entity.a-path-point(position="500 0 -4.4" geometry="primitive: box;")
             
+            a-entity.items
+                a-entity.trigger-group(position="-100 0 0" look-at="0 0 0")
+                    a-image(position="0 16 0" height="9" image-init="" src="#tex-text-16" _opacity="0")
+                    a-image(position="0 1 0" height="7" image-init="" src="#tex-text-17" _opacity="0")
 
-        a-entity#group3(rotation="0 -20 0")
-            a-entity(position="0 0 -200")
-                a-entity.railway
-                    a-box(position="0 -0.4 0" width="2000" height="1" depth="100" mixin="black")
-                    a-box(position="-500 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
-                    a-box(position="290 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
-
-        a-entity#group4(rotation="0 -160 0")
-            a-entity(position="-50 0 -70")
-                a-entity.railway
-                    a-box(position="0 -0.4 0" width="2000" height="1" depth="100" mixin="black")
-                    a-box(position="-300 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
-
-                a-entity.houses
-                    +house()(position="-40 0 -20" scale="5 5 5")
-                    +house()(position="10 0 -40" scale="5 5 5")
-                    +house()(position="25 0 -20" scale="5 5 5")
-
-        a-entity#group5(rotation="0 -40 0")
-            a-entity(position="-200 0 10")
-                a-entity.railway
-                    //- a-box(position="0 -0.4 0" width="2000" height="1" depth="100" mixin="black")
-                    a-entity#train3(position="-200 0 0" rotation="0 90 0" scale="4 4 4"
-                        gen-train="wagonMap: head,passanger,passanger,generic,platform,platform,tanker,tanker,passanger,passanger,passanger"
-                    )
-                        a-animation(begin="run" _delay="2000" dur="10000" attribute="position" to="715 0 0" easing="ease-out-sine")
-                    
-                    a-box(position="-300 4 0" width="300" height="9" depth="20" mixin="black" color="#000")
-
-        a-entity#group6
-            a-path#path2(line-geometry="" shader="line" visible="false")
-                a-entity.a-path-point(position="-70 15 -57" geometry="primitive: box;")
-                a-entity.a-path-point(position="3 15 -80" geometry="primitive: box;")
-                a-entity.a-path-point(position="76 15 -22" geometry="primitive: box;")
-            a-path#path3(line-geometry="" shader="line" visible="false")
-                a-entity.a-path-point(position="76 15 -22" geometry="primitive: box;")
-                a-entity.a-path-point(position="37 15 50" geometry="primitive: box;")
-                a-entity.a-path-point(position="-65 15 50" geometry="primitive: box;")
-            
-            a-entity#fairy(fairy-controller="")
-                a-entity.mesh(follow-path="path: #path2; position: 0;" color="pink" shader="flat")
-                a-entity.particles(gpu-particle-system="spawnEnabled: false; maxParticles: 100; spawnRate: 40; lifetime: 1; size: 1; color: orange; opacity: 1; positionSpread: 1 1 1; velocity: 0 2 0; velocitySpread: 7 7 7; texture: #tex-particle-1;")
-                    
-
-        a-entity.radial#images
-            a-entity.pivot(rotation="0 50 0")
-                a-entity#trigger1.interactive(position="0 3 -100" _scale="1 1 1"
-                    sound="src: #audio-click; volume: 50; on: click;"
-                    mixin="sphere trigger"
+                a-entity#train1(scale="2.2 2.2 2.2"
+                    follow-path="path: #railway1; position: 0;"
+                    __material="shader: flat; color: #000;" __common-material
+                    gen-train="wagonMap: head,passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
+                    __sound="src: #audio-sfx-1; volume: 90; loop: false; on: run;"
                 )
-                    a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: true;")
+                    a-animation(begin="run" dur="11000" attribute="follow-path.position" to="0.6" easing="linear")
+                    a-animation(begin="run2" dur="11000" attribute="follow-path.position" to="1" easing="ease-out-sine")
+                
+                a-entity#train2(scale="2.2 2.2 2.2"
+                    follow-path="path: #railway2; position: 0;"
+                    __material="shader: flat; color: #000;" __common-material
+                    gen-train="wagonMap: head,passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
+                    __sound="src: #audio-sfx-1; volume: 90; loop: false; on: run;"
+                )
+                    a-animation(begin="run" dur="11000" attribute="follow-path.position" to="1" easing="linear")
 
-                    //- a-plane(position="0 5 1" height="9" width="20" _image-init="" color="#bad" shader="flat")
-                    a-text(position="-4 5 0" scale="12 12 12" value="START" color="#fff" shader="flat")
-                    a-image(position="0 20 0" height="9" image-init="" src="#tex-text-16")
-                    a-image.img-1(position="0 -1 0" height="7" image-init="" src="#tex-text-17" opacity="0")
-
-                //- a-image#img1(position="0 12 -16" width="12" image-init="" src="#tex-photo-1" opacity="0")
-                a-entity#portal1(position="0 7 -18" size="12 auto")
-                    a-plane.animate(scale="1.1 1.1 1" width="0" height="0" shader="flat" color="#fff")
-                    a-image.animate(position="0 0 1" color="red" width="0" height="0" src="#tex-photo-1" opacity="0")
-                    a-sound(src="#audio-sfx-3" volume="10")
+                a-image#portal1(position="0 0 1" height="12" image-init="" src="#tex-photo-1" visible="false"
+                    fx-dissolve="alphaMap: url(/assets/textures/alphaMaps/portal.jpeg); amount: 0;"
+                )
 
 
-            a-entity.pivot(rotation="0 -20 0")
-                a-image#img2(position="-100 7 -190" height="20" image-init="" src="#tex-text-1" opacity="0")
-                    a-sound(src="#audio-text1" volume="300")
-                a-image#img3(position="50 7 -270" height="20" image-init="" src="#tex-text-2" opacity="0")
-                    a-sound(src="#audio-text2" volume="200")
-
-            a-entity.pivot(rotation="0 -78 0")
-                a-image#img4(position="0 7 -100" height="12" image-init="" src="#tex-text-3" opacity="0")
-                    a-sound(src="#audio-sfx-2" volume="20")
-
-                a-entity#trigger2.interactive(position="0 3 -100"
-                    mixin="sphere trigger" visible="false"
-                    sound="src: #audio-trigger2; volume: 50; on: click;"
+        a-entity#layer2-idle(visible="false" _scale="0 0 0")
+            a-entity.items
+                a-entity#trigger2.interactive(position="50 3 -100"
+                    mixin="sphere trigger debug" _visible="false"
+                    __sound="src: #audio-trigger2; volume: 50; on: click;"
                 )
                     a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
-                    a-image.img-1(position="0 4 0" height="12" image-init="" src="#tex-text-4" opacity="0")
+            
+            
+        a-entity#layer2(visible="false" _scale="0 0 0")
+            a-entity.items
+                a-image(position="50 3 -100" look-at="0 0 0" height="12" image-init="" src="#tex-text-4" _opacity="0")
 
-            a-entity.pivot(rotation="0 -160 0")
-                a-image#img5(position="-54.4 7 -110" look-at="#playerBox" height="12" image-init="" src="#tex-text-5" opacity="0")
-                    a-sound(src="#audio-text5" volume="40")
-                a-image#img6(position="0 7 -110" look-at="#playerBox" height="11" image-init="" src="#tex-text-6" opacity="0")
-                    a-sound(src="#audio-text6" volume="40")
-                a-image#img7(position="47 4 -66" height="10" image-init="" src="#tex-text-7" opacity="0")
-                    a-sound(src="#audio-text7" volume="40")
-                a-image#img8(position="270 25 -100" rotation="0 -90 0" height="50" image-init="" src="#tex-text-8" opacity="0")
-                    a-sound(src="#audio-text2" volume="80")
-                a-image#img9(position="200 43 -100" look-at="#playerBox" height="12" image-init="" src="#tex-text-9" opacity="0")
-                    a-sound(src="#audio-text9" volume="70")
 
-            a-entity.pivot(rotation="0 -230 0")
-                a-image#img10(position="0 25 -100" height="12" image-init="" src="#tex-text-9" opacity="0")
-                  a-sound(src="#audio-text9" volume="20")
-                a-image#img11(position="0 5 -100" height="12" image-init="" src="#tex-text-10" opacity="0")
-                  a-sound(src="#audio-text9" volume="20")
-                a-entity#trigger3.interactive(position="0 3 -100"
-                    mixin="sphere trigger" visible="false"
-                    sound="src: #audio-click; volume: 50; on: click;"
+        a-entity#layer3-idle(visible="false" _scale="0 0 0")
+            a-entity.items
+                a-entity#trigger3.interactive(position="100 3 50"
+                    mixin="sphere trigger debug" _visible="false"
+                    __sound="src: #audio-click; volume: 50; on: click;"
                 )
                     a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
+            
+            
+        a-entity#layer3(visible="false" _scale="0 0 0")
+            a-path#railway3(position="0 0 0" line-geometry="" shader="line" _visible="false")
+                a-entity.a-path-point(position="-300 0 4.4" geometry="primitive: box;")
+                a-entity.a-path-point(position="500 0 4.4" geometry="primitive: box;")
+            
+            a-entity.items
+                a-image(position="50 3 -100" look-at="0 0 0" height="12" image-init="" src="#tex-text-4" _opacity="0")
 
-                //- a-image#img121(position="0 73 -900" width="800" image-init="" src="#tex-text-14" opacity="0")
-
-                //- a-entity#portal2(position="0 35 -1300" size="1000 auto")
-                    a-plane.animate(scale="1.02 1.02 1" width="0" height="0" shader="flat" color="#fff")
-                    a-image.animate(position="0 0 1" width="0" height="0" src="#tex-photo-6" opacity="0")
-                    //- rect-light.animate(width="0" height="0" distance="10")
-                    //- a-sound(src="#audio-sfx-3" volume="20")
-
-            a-entity.pivot(rotation="0 -220 0")
-                a-entity(position="0 5.5 -15")
-                    //- a-image#img13(position="0 5 -100" height="12" image-init="" src="#tex-photo-3" _opacity="0")
-                    //- a-image#img13(position="0 5 -100" height="12" image-init="" src="#tex-photo-3" _opacity="0")
-
-                    a-image#img13(width="20" image-init="" src="#tex-photo-3" _transparent="true" opacity="0" color="#fff")
-                        a-sound(src="#audio-sfx-2" volume="7")
-                        a-sound(src="#audio-sfx-4" volume="20")
-
-                    a-image#img14(position="0 1.8 1" width="9" image-init="" src="#tex-photo-4" opacity="0")
-                        a-sound(src="#audio-sfx-3" volume="7")
+                
+                a-entity#train3(scale="2.2 2.2 2.2"
+                    follow-path="path: #railway3; position: 0;"
+                    __material="shader: flat; color: #000;" __common-material
+                    gen-train="wagonMap: head,passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
+                    __sound="src: #audio-sfx-1; volume: 90; loop: false; on: run;"
+                )
+                    a-animation(begin="run" dur="11000" attribute="follow-path.position" to="1" easing="linear")
 
 
-    //- a-entity.sky_weather.particle-snow(position="0 0 0" particle-system="preset: snow; particleCount: 1000; velocityValue: 1 4 1;")
-    a-entity.sky_weather.particle-snow(position="0 0 0" gpu-particle-system="preset: snow; maxParticles: 500; spawnRate: 50; texture: #tex-particle-1;")
 
-    //- global objects
-    a-entity#playerBox(position="0 2 0" rotation="0 20 0")
-        a-sound#bg_sound(src="#audio-bg-1" volume="0.6" autoplay="true" loop="true")
+
+
+
+
+
+
+
+
+
+    a-entity#music(volume="0.6")
+        a-sound#bg_music(sound="positional: false;" src="#audio-bg-1" volume="0.6" autoplay="true" loop="true")
+        
+    a-entity#sounds(volume="0.6")
+        
+
+    a-entity#playerBox(position="0 1 0" rotation="0 20 0")
         a-camera#player(wasd-controls="acceleration: 650;" fov="75")
             a-entity(position="0 0 -2")
                 a-cursor(scale="0.5 0.5 0.5" material="color: #eee; opacity: 0.8; depthTest: false;" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive;" cursor-events="" cursor-animation="")
 
-            a-entity#sound
             //- fov is 75, gui z is -0.7, when 1 is 100% width and about 95% height
             a-entity#gui(position="0 0 -0.07" scale="0.1 0.1 0.1")
                 a-entity#messages(position="0 0.3 0")

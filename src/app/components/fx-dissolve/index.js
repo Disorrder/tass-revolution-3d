@@ -31,20 +31,23 @@ AFRAME.registerComponent('fx-dissolve', {
         }
     },
 
-    animate(amount = 0) {
-        return anime({
-            autoplay: false,
+    getAnimationParams() {
+        return {
             targets: this.material.uniforms.amount,
-            value: amount,
-            duration: 700,
+            value: 1,
+            duration: 500,
             easing: 'easeOutQuad'
-        });
+        };
     },
 
     hide() {
-        return this.animate(1).play();
+        var params = this.getAnimationParams();
+        params.value = 1;
+        return anime(params);
     },
     show() {
-        return this.animate(0).play();
+        var params = this.getAnimationParams();
+        params.value = 0;
+        return anime(params);
     },
 });

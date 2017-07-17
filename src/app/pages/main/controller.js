@@ -41,6 +41,7 @@ class Trigger {
         if (this.element) {
             this.element.setAttribute('visible', v);
             this.spawnEnabled = v;
+
         }
     }
 
@@ -123,66 +124,8 @@ export default class Controller {
 
         setTimeout(() => {
             // this.guiShow('#messages', '#tex-ui-tip-1');
-            this.messageService.create('#tex-ui-tip-1')
+            this.messageService.create('MSG_TIP_TRIGGER')
         }, 2000);
-    }
-
-    openPortal(selector, timeline) {
-        var portal_texture = $(`${selector} a-image`)[0].getObject3D('mesh').material.map;
-        var size = $(selector).attr('size') || 'auto auto';
-        var wh = portal_texture.image.width / portal_texture.image.height;
-
-        {
-            let [x, y] = size.split(' ');
-            if (x !== 'auto') x = +x || portal_texture.image.width;
-            if (y !== 'auto') y = +y || portal_texture.image.height;
-            if (x === 'auto') x = (y * wh) || portal_texture.image.width;
-            if (y === 'auto') y = (x / wh) || portal_texture.image.height;
-
-            size = {x, y};
-        }
-
-        if (!timeline) timeline = anime.timeline({autoplay: false});
-
-        return timeline
-        .add({
-            targets: `${selector} .animate`,
-            width: size.x,
-            duration: 200,
-            easing: 'easeInQuad',
-        })
-        .add({
-            targets: `${selector} .animate`,
-            height: size.y,
-            delay: 200,
-            duration: 1500,
-            elasticity: 0,
-            easing: 'easeInQuad',
-        })
-        .add({
-            targets: `${selector} a-image`,
-            opacity: 1,
-            delay: 500,
-            duration: 500,
-            easing: 'easeInQuad',
-            elasticity: 100,
-            begin() {
-                var sound = $(`${selector} a-sound`)[0].components.sound;
-                if (sound) sound.playSound();
-            }
-        })
-    }
-
-    closePortal(selector) {
-        return anime({
-            targets: `${selector} .animate`,
-            height: 0,
-            duration: 1000,
-            easing: 'easeInQuad',
-            complete() {
-                $(selector)[0].setAttribute('visible', false);
-            }
-        })
     }
 
     playSound(options) {
@@ -227,7 +170,7 @@ export default class Controller {
         new Trigger({
             id: '#trigger2',
             active: false,
-            visible: false,
+            visible: true,
             click: this.runScene2.bind(this),
             mouseenter: (e, trigger) => {
                 trigger.__fuseAnimation = animate.fadeIn('#trigger2 .img-1', {duration: FUSE_TIMEOUT});
@@ -241,7 +184,7 @@ export default class Controller {
         new Trigger({
             id: '#trigger3',
             active: false,
-            visible: false,
+            visible: true,
             click: this.runScene3.bind(this),
             mouseenter: (e, trigger) => {
                 trigger.__fuseAnimation = animate.fadeIn('#img11', {duration: FUSE_TIMEOUT});
