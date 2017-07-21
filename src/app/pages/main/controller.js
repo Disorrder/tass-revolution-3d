@@ -171,8 +171,8 @@ export default class Controller {
         });
         this.triggers.create({
             id: '#trigger2',
-            active: true,
-            visible: true,
+            active: false,
+            visible: false,
             click: this.runScene2.bind(this),
             mouseenter: (e, trigger) => {
                 trigger.__fuseAnimation = animate.fadeIn('#trigger2 .img-1', {duration: FUSE_TIMEOUT});
@@ -185,8 +185,8 @@ export default class Controller {
         });
         this.triggers.create({
             id: '#trigger3',
-            active: true,
-            visible: true,
+            active: false,
+            visible: false,
             click: this.runScene3.bind(this),
             mouseenter: (e, trigger) => {
                 trigger.__fuseAnimation = animate.fadeIn('#img11', {duration: FUSE_TIMEOUT});
@@ -367,34 +367,9 @@ export default class Controller {
         })
     }
 
-    showLayer(selector) {
-        return $(selector).attr({visible: true});
-    }
-    hideLayer(selector) {
-        return $(selector).attr({visible: false});
-    }
-
-
-    // runScene1(e, trigger) {
-    //     this.showLayer('#layer1');
-    //     trigger.active = false;
-    //
-    //     var timeline = anime.timeline();
-    //
-    //     timeline
-    //     .add({
-    //         targets: {t:0}, t: 0,
-    //         duration: 3000,
-    //         begin(anim) {
-    //             console.log(anim, this);
-    //         }
-    //     })
-    //
-    //
-    // }
 
     runScene1(e, trigger) {
-        this.showLayer('#layer1');
+        $('#layer1').attr({visible: true});
         trigger.active = false;
 
         var timeline = anime.timeline();
@@ -417,11 +392,9 @@ export default class Controller {
             opacity: 1,
             offset: '-=3000',
             duration: 500,
-            easing: 'easeInOutQuad',
-            begin(anim) {
-                anim.animatables.forEach((v) => {
-                    v.target.setAttribute('visible');
-                });
+            easing: 'easeInQuad',
+            begin() {
+                $('#img1-1').attr({visible: true});
             }
         })
 
@@ -439,11 +412,21 @@ export default class Controller {
             },
         })
 
+        .add({ // basic fadeOut
+            targets: '#img1-1',
+            opacity: 0,
+            duration: 500,
+            easing: 'easeInQuad',
+            complete() {
+                $('#img1-1').attr({visible: false});
+            }
+        })
+
         .add({
             targets: {t:0}, t:0,
             // delay: 1000,
             duration: 700,
-            begin: () => {
+            begin: (anim) => {
                 this.triggers.get('#trigger1').hide();
                 var elem = $('#portal1')[0];
                 elem.setAttribute('visible', true);
@@ -535,7 +518,6 @@ export default class Controller {
             delay: 500,
             duration: 500,
             begin(anim) {
-                // $('#layer1-train').attr({visible: true});
                 $('#train1').attr({visible: true})[0].emit('run');
             }
         })
@@ -583,29 +565,73 @@ export default class Controller {
         })
 
         .add({
-            targets: '#img3',
+            targets: '#img1-2',
             opacity: 0,
-            delay: 4000,
             duration: 500,
             easing: 'easeInQuad',
-            begin: () => {
-                $('#layer2-idle').attr({visible: true});
-                var trigger = this.triggers.get('#trigger2');
-                trigger.show();
-            },
-            complete: () => {
-                var trigger = this.triggers.get('#trigger2');
-                trigger.active = true;
+            complete() {
+                $('#img1-2').attr({visible: false});
             }
+        })
+
+        .add({
+            targets: '#img1-3',
+            opacity: 0,
+            duration: 500,
+            easing: 'easeInQuad',
+            complete() {
+                $('#img1-3').attr({visible: false});
+            }
+        })
+
+        .add({
+            targets: '#img1-4',
+            opacity: 0,
+            duration: 500,
+            easing: 'easeInQuad',
+            complete() {
+                $('#img1-4').attr({visible: false});
+            }
+        })
+        .add({
+            targets: '#img1-5',
+            opacity: 0,
+            duration: 500,
+            easing: 'easeInQuad',
+            complete() {
+                $('#img1-5').attr({visible: false});
+            }
+        })
+
+        .add({
+            targets: {t:0}, t: 0,
+            delay: 4000,
+            duration: 500,
+            begin: (anim) => {
+                $('#layer2-idle').attr({visible: true});
+                anim.trigger = this.triggers.get('#trigger2');
+                anim.trigger.show();
+            },
+            complete: (anim) => {
+                anim.trigger.active = true;
+            }
+        })
+        .add({
+            targets: '#img2-1',
+            opacity: 1,
+            easing: 'easeInQuad',
+            begin() {
+                $('#img2-1').attr({visible: true});
+            },
         })
     }
 
 
     runScene2(e, trigger) {
-        // trigger.active = false;
-        // $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: true});
+        trigger.active = false;
+        $('#layer2').attr({visible: true});
 
-        var t1_off = this.trainLightOff('#train1');
+        // var t1_off = this.trainLightOff('#train1');
 
         var timeline = anime.timeline();
         timeline
@@ -617,11 +643,14 @@ export default class Controller {
             },
         })
         .add({
-            targets: '#trigger2 .img-1',
+            targets: '#img2-1',
             opacity: 0,
             easing: 'easeInQuad',
-            complete() {
+            begin() {
                 trigger.hide();
+            },
+            complete() {
+                $('#img2-1').attr({visible: false});
             },
         })
         .add({
@@ -638,9 +667,8 @@ export default class Controller {
         .add({ // rotate user
             targets: {t:0}, t:0,
             delay: 500,
-            // offset: '-=2000',
             begin: () => {
-                var targets = $('#playerBox, #group1 .platform');
+                var targets = $('#playerBox, #layer0 .platform');
                 var rotation = _.map(targets, (v, k) => {
                     return v.getAttribute('rotation');
                 });
@@ -650,12 +678,10 @@ export default class Controller {
                     targets: rotation,
                     y: '-=90',
                     duration: 11000,
-                    // elasticity: 0,
                     easing: 'linear',
                     run() {
                         rotation.forEach((v, i) => {
-                            targets[i].setAttribute('rotation', `${v.x} ${v.y} ${v.z}`);
-                            // targets[i].object3D.rotation.y = math.toRad(v.y);
+                            targets[i].setAttribute('rotation', v);
                         });
                     },
                     complete() {
@@ -664,222 +690,217 @@ export default class Controller {
                 })
             }
         })
+
         .add({
             targets: {t:0}, t:0,
             delay: 2000,
             // duration: $('#train1 [begin=run2]').attr('dur'),
-            begin: () => {
+            begin() {
                 $('#train1')[0].emit('run2');
-                $('#group2 .particle-snow')[0].setAttribute('gpu-particle-system', 'spawnEnabled', true);
+                $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: true});
 
-                var t1_sound = $('#train1')[0].components.sound;
-                anime({
-                    targets: t1_sound,
-                    volume: 0,
-                    delay: +$('#train1 [begin=run2]').attr('dur'),
-                    duration: 5000,
-                    complete() {
-                        t1_sound.stopSound();
-                    }
-                })
+                // var t1_sound = $('#train1')[0].components.sound;
+                // anime({
+                //     targets: t1_sound,
+                //     volume: 0,
+                //     delay: +$('#train1 [begin=run2]').attr('dur'),
+                //     duration: 5000,
+                //     complete() {
+                //         t1_sound.stopSound();
+                //     }
+                // })
             }
         })
 
-        // .add({
-        //     targets: '#trigger2 .img-1',
-        //     opacity: 0,
-        //     easing: 'easeInQuad',
-        //     complete() {
-        //         // trigger.visible = false;
-        //         trigger.hide();
-        //     },
-        // })
-
         .add({
-            targets: '#img5',
-            visible: true,
+            targets: '#img2-2',
             opacity: 1,
             delay: 2000,
             duration: 1000,
             easing: 'easeInQuad',
             begin() {
-                $('#img5 a-sound')[0].components.sound.playSound();
+                $('#img2-2').attr({visible: true});
+                // $('#img2-2 a-sound')[0].components.sound.playSound();
             }
         })
 
         .add({
-            targets: '#img6',
-            visible: true,
+            targets: '#img2-3',
             opacity: 1,
             delay: 2000,
             duration: 1000,
             easing: 'easeInQuad',
             begin() {
-                $('#img6 a-sound')[0].components.sound.playSound();
+                $('#img2-3').attr({visible: true});
+                // $('#img2-3 a-sound')[0].components.sound.playSound();
             }
         })
 
         .add({
-            targets: '#img7',
+            targets: '#img2-4',
             visible: true,
             opacity: 1,
             delay: 1000,
             duration: 1000,
             easing: 'easeInQuad',
             begin() {
-                $('#img7 a-sound')[0].components.sound.playSound();
+                $('#img2-4').attr({visible: true});
+                // $('#img2-4 a-sound')[0].components.sound.playSound();
             }
         })
 
-        var img8 = $('#img8')[0];
-
-        timeline
         .add({
-            targets: '#img8',
+            targets: '#img2-5',
             visible: true,
             opacity: 1,
             delay: 1000,
             duration: 1000,
             easing: 'easeInQuad',
             begin() {
-                $('#img8 a-sound')[0].components.sound.playSound();
+                $('#img2-5').attr({visible: true});
+                // $('#img2-5 a-sound')[0].components.sound.playSound();
             }
         })
 
         .add({
-            targets: '#img5, #img6, #img7, #img8',
+            targets: '#img2-2, #img2-3, #img2-4, #img2-5',
             opacity: 0,
             delay: 5000,
             duration: 200,
             easing: 'easeInQuad',
-            complete: () => {
-                var trigger = _.find(this.triggers, {id: '#trigger3'});
-                // trigger.visible = true;
-                trigger.show();
+            complete: (anim) => {
+                anim.trigger = this.triggers.get('#trigger3');
+                anim.trigger.show();
                 trigger.active = true;
             }
         })
 
         .add({
-            targets: {t:0}, t:0,
-            delay: 1000,
-            duration: t1_off.duration,
-            begin() {
-                t1_off.play();
+            targets: {t:0}, t: 0,
+            delay: 4000,
+            duration: 500,
+            begin: (anim) => {
+                $('#layer3-idle').attr({visible: true});
+                anim.trigger = this.triggers.get('#trigger3');
+                anim.trigger.show();
+            },
+            complete: (anim) => {
+                anim.trigger.active = true;
             }
         })
-
         .add({
-            targets: '#img10',
-            visible: true,
+            targets: '#img3-1',
             opacity: 1,
-            delay: 2000,
-            duration: 500,
             easing: 'easeInQuad',
-            complete() {
-                $('#img10 a-sound')[0].components.sound.playSound();
-            }
+            begin() {
+                $('#img2-1').attr({visible: true});
+            },
         })
     }
 
+
     runScene3(e, trigger) {
         trigger.active = false;
-
-        // var p2_open = this.openPortal('#portal2');
-        // $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: false});
+        $('#layer3').attr({visible: true});
+        $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: false});
 
         var timeline = anime.timeline();
         timeline
         .add({
-            targets: '#img10, #img11',
+            targets: '#img3-1',
             opacity: 0,
             delay: 2000,
             easing: 'easeInQuad',
             begin() {
-                // trigger.visible = false;
                 trigger.hide();
             },
-        })
-        .add({
-            targets: '#img12',
-            opacity: 1,
-            delay: 1000,
-        })
-        .add({
-            targets: '#img13',
-            opacity: 1,
-            delay: 2000,
-            begin: () => {
-                $('#train3')[0].emit('run');
+            complete() {
+                $('#img3-1').attr({visible: false});
             }
         })
         .add({
-            targets: '#img12',
-            opacity: 0,
+            targets: '#img3-2',
+            opacity: 1,
             delay: 1000,
+            easing: 'easeInQuad',
+            begin() {
+                $('#img3-2').attr({visible: true});
+                // $('#img2-2 a-sound')[0].components.sound.playSound();
+            }
         })
         .add({
-            targets: '#img13',
+            targets: '#img3-3',
+            opacity: 1,
+            delay: 1000,
+            easing: 'easeInQuad',
+            begin() {
+                $('#img3-3').attr({visible: true});
+                // $('#img2-2 a-sound')[0].components.sound.playSound();
+            }
+        })
+
+        .add({
+            targets: '#img3-2',
+            opacity: 0,
+            easing: 'easeInQuad',
+            complete() {
+                $('#img3-2').attr({visible: false});
+            }
+        })
+
+        .add({
+            targets: '#img3-4',
+            opacity: 1,
+            delay: 1000,
+            easing: 'easeInQuad',
+            begin() {
+                $('#img3-4').attr({visible: true});
+                // $('#img2-2 a-sound')[0].components.sound.playSound();
+                $('#train3').attr({visible: true})[0].emit('run');
+            }
+        })
+
+        .add({
+            targets: '#img3-4',
             color: '#fcc',
             delay: 2000,
             begin() {
-                $('#img13 a-sound')[0].components.sound.playSound();
+                // $('#img13 a-sound')[0].components.sound.playSound();
             }
         })
         .add({
-            targets: '#img14',
+            targets: '#img3-5',
             opacity: 1,
             offset: '-=500',
+            begin() {
+                $('img3-5').attr({visible: true});
+            }
         })
 
         .add({
-            targets: '#img13, #img14',
+            targets: '#img3-5, #img3-5',
             opacity: 0,
             delay: 3000,
             complete() {
-                $('#img14 a-sound')[0].components.sound.playSound();
+                $('#img3-3, #img3-4').attr({visible: false});
+                // $('#img14 a-sound')[0].components.sound.playSound();
             }
         })
 
         .add({
-            targets: '#group1 a-light',
+            targets: '#img3-6',
+            opacity: 1,
+            begin() {
+                $('img3-6').attr({visible: true});
+            }
+        })
+
+        .add({
+            targets: '#layer0 a-light',
             intensity: 0,
             duration: 2000,
-            begin: () => {
-                $('.sky_weather.particle-snow')[0].setAttribute('gpu-particle-system', 'spawnEnabled', false);
-            }
-        })
-
-        var img12 = $('#img12')[0];
-        timeline
-        .add({
-            targets: '#img121',
-            opacity: 1,
-            delay: 2000,
             begin() {
-                img12.setAttribute('src', '#tex-photo-5');
-                img12.setAttribute('scale', '0 0 1');
-                img12.setAttribute('opacity', 1);
-
-                anime({
-                    targets: img12.object3D.scale,
-                    x: 1, y: 1,
-                    duration: 3000,
-                    easing: 'linear',
-                })
-            },
-            complete() {
-                $('#trigger2')[0].components.sound.playSound();
-            }
-        })
-
-        .add({
-            targets: '#img121',
-            color: '#faa',
-            duration: 2000,
-            easing: 'linear',
-            begin() {
-                $('#bg_music')[0].components.sound.playSound();
+                $('#layer1-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: false});
             }
         })
     }
