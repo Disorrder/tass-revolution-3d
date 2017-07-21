@@ -14,12 +14,28 @@ const FUSE_TIMEOUT = 1500;
 var photoCtx = require.context("assets/photos", true, /\.(png|jpg)$/);
 var photoNames = photoCtx.keys();
 
+function __animeAttr(params) {
+    var targets = $(params.targets).map((k, v) => v.getAttribute(params.attribute));
+    params.targets = targets;
+    var run = params.run;
+    params.run = function(anim) {
+        anim.animatables.forEach((v, k) => {
+            v.setAttribute(params.attribute, targets[k]);
+        });
+        if (run) run.apply(this, attributes);
+    }
+
+    return params;
+}
 
 class Trigger {
     constructor(options) {
         this.id = options.id;
         this.element = $(this.id)[0];
         this.particlesElem = $(this.element).find('.particles')[0];
+        this.mesh = this.element.getObject3D('mesh');
+        console.log('TRIGG', this.id, this.mesh);
+        // this.particlesElem = $(this.element).find('.particles')[0];
         if (options.active != null) this.active = options.active;
         if (options.visible != null) this.visible = options.visible;
 
@@ -40,8 +56,9 @@ class Trigger {
     set visible(v) {
         if (this.element) {
             this.element.setAttribute('visible', v);
+            this.mesh.visible = v;
             this.spawnEnabled = v;
-
+            console.log('vis', v, this.mesh, this.element);
         }
     }
 
@@ -53,14 +70,52 @@ class Trigger {
     }
 
     hide() {
-        this.spawnEnabled = false;
-        setTimeout(() => { this.visible = false; }, 5000);
+        // this.spawnEnabled = false;
+        // setTimeout(() => { this.visible = false; }, 5000);
+        return anime({
+            targets: this,
+            spawnEnabled: false,
+            duration: 5000,
+            complete: () => {
+                this.visible = false;
+            }
+        })
     }
 
     show() {
         this.visible = true;
         this.spawnEnabled = true;
     }
+ }
+
+ class Collection {
+     constructor(Item) {
+         this.Item = Item;
+     }
+
+     items = []
+     createId() {
+         return `#${this.Item.name.toLowerCase()}${this.items.length}`;
+     }
+     create(options) {
+         if (!options.id) options.id = this.createId();
+         this.add(new this.Item(options));
+         return this;
+     }
+
+     add(item) {
+         this.items.push(item);
+         return this;
+     }
+
+     get(id) {
+         return this.items.find((v) => v.id === id);
+     }
+
+     delete(id) {
+         // TODO
+         return this;
+     }
  }
 
 
@@ -70,8 +125,7 @@ export default class Controller {
         this.scene = $('#scene')[0];
         this.messageService = this.scene.systems.message;
 
-        this.photos = photoNames;
-        this.photosElem = $('#photos');
+        this.triggers = new Collection(Trigger);
 
         if (this.scene.hasLoaded) {
             this.onStart();
@@ -81,6 +135,72 @@ export default class Controller {
 
         window.exportScene = this.exportScene.bind(this);
         window.ctrl = this;
+    }
+
+    onStart() {
+        this.initGui();
+        // $('.a-enter-vr-button').remove();
+
+        if (AFRAME.utils.device.isGearVR()
+            || AFRAME.utils.device.isMobile()
+        ) {
+            $('.a-enter-vr-button').click();
+        }
+
+        // Init triggers
+        this.triggers.create({
+            id: '#trigger0',
+            active: true,
+            click() {
+                location = location.href;
+            },
+        });
+        this.triggers.create({
+            id: '#trigger1',
+            active: true,
+            click: this.runScene1.bind(this),
+            mouseenter: (e, trigger) => {
+                trigger.__fuseAnimation = animate.fadeIn('#trigger1 .img-1', {duration: FUSE_TIMEOUT});
+                this.guiHide('#messages');
+            },
+            mouseleave: (e, trigger) => {
+                trigger.__fuseAnimation.pause();
+                trigger.__fuseAnimation = null;
+                animate.hide('#trigger1 .img-1');
+            },
+        });
+        this.triggers.create({
+            id: '#trigger2',
+            active: true,
+            visible: true,
+            click: this.runScene2.bind(this),
+            mouseenter: (e, trigger) => {
+                trigger.__fuseAnimation = animate.fadeIn('#trigger2 .img-1', {duration: FUSE_TIMEOUT});
+            },
+            mouseleave: (e, trigger) => {
+                trigger.__fuseAnimation.pause();
+                trigger.__fuseAnimation = null;
+                animate.hide('#trigger2 .img-1');
+            },
+        });
+        this.triggers.create({
+            id: '#trigger3',
+            active: true,
+            visible: true,
+            click: this.runScene3.bind(this),
+            mouseenter: (e, trigger) => {
+                trigger.__fuseAnimation = animate.fadeIn('#img11', {duration: FUSE_TIMEOUT});
+            },
+            mouseleave: (e, trigger) => {
+                trigger.__fuseAnimation.pause();
+                trigger.__fuseAnimation = null;
+                animate.hide('#img11');
+            },
+        });
+
+        setTimeout(() => {
+            this.messageService.create('MSG_TIP_TRIGGER')
+        }, 5000);
     }
 
     initGui() {
@@ -103,99 +223,23 @@ export default class Controller {
         })
     }
 
-    onStart() {
-        this.initGui();
-        // $('.a-enter-vr-button').remove();
-
-        if (AFRAME.utils.device.isGearVR()
-            || AFRAME.utils.device.isMobile()
-        ) {
-            setTimeout(() => {
-                $('.a-enter-vr-button').click();
-            }, 1000);
-        }
-
-        anime({
-            targets: '#images a-image[opacity=0]',
-            height: 0,
-            visible: false,
-            duration: 100,
-        });
-
-        setTimeout(() => {
-            // this.guiShow('#messages', '#tex-ui-tip-1');
-            this.messageService.create('MSG_TIP_TRIGGER')
-        }, 2000);
-    }
 
     playSound(options) {
         options = Object.assign({
             src: null,
             loop: true,
             volume: null,
-            appendTo: '#sound'
+            appendTo: '#sounds'
         }, options);
         var sound = $('<a-sound>').attr({
             autoplay: true,
             src: options.src,
             loop: options.loop,
-            volume: options.loop
+            volume: options.volume
         });
         sound.appendTo(options.appendTo);
         return sound;
     }
-
-    triggers = [
-        new Trigger({
-            id: '#trigger0',
-            active: true,
-            click() {
-                location = location.href;
-            },
-        }),
-        new Trigger({
-            id: '#trigger1',
-            active: true,
-            click: this.runScene1.bind(this),
-            mouseenter: (e, trigger) => {
-                trigger.__fuseAnimation = animate.fadeIn('#trigger1 .img-1', {duration: FUSE_TIMEOUT});
-                this.guiHide('#messages');
-            },
-            mouseleave: (e, trigger) => {
-                trigger.__fuseAnimation.pause();
-                trigger.__fuseAnimation = null;
-                animate.hide('#trigger1 .img-1');
-            },
-        }),
-        new Trigger({
-            id: '#trigger2',
-            active: false,
-            visible: true,
-            click: this.runScene2.bind(this),
-            mouseenter: (e, trigger) => {
-                trigger.__fuseAnimation = animate.fadeIn('#trigger2 .img-1', {duration: FUSE_TIMEOUT});
-            },
-            mouseleave: (e, trigger) => {
-                trigger.__fuseAnimation.pause();
-                trigger.__fuseAnimation = null;
-                animate.hide('#trigger2 .img-1');
-            },
-        }),
-        new Trigger({
-            id: '#trigger3',
-            active: false,
-            visible: true,
-            click: this.runScene3.bind(this),
-            mouseenter: (e, trigger) => {
-                trigger.__fuseAnimation = animate.fadeIn('#img11', {duration: FUSE_TIMEOUT});
-            },
-            mouseleave: (e, trigger) => {
-                trigger.__fuseAnimation.pause();
-                trigger.__fuseAnimation = null;
-                animate.hide('#img11');
-            },
-        }),
-    ]
 
     trainLightOff(selector) {
         var timeline = anime.timeline({autoplay: false});
@@ -318,54 +362,75 @@ export default class Controller {
             targets: {t: 0}, t: 0,
             duration: 25000,
             complete() {
-                elem.attr('visible', false);
+                elem.attr({visible: false});
             },
         })
     }
 
+    showLayer(selector) {
+        return $(selector).attr({visible: true});
+    }
+    hideLayer(selector) {
+        return $(selector).attr({visible: false});
+    }
+
+
+    // runScene1(e, trigger) {
+    //     this.showLayer('#layer1');
+    //     trigger.active = false;
+    //
+    //     var timeline = anime.timeline();
+    //
+    //     timeline
+    //     .add({
+    //         targets: {t:0}, t: 0,
+    //         duration: 3000,
+    //         begin(anim) {
+    //             console.log(anim, this);
+    //         }
+    //     })
+    //
+    //
+    // }
+
     runScene1(e, trigger) {
+        this.showLayer('#layer1');
         trigger.active = false;
 
-        var p1_open = this.openPortal('#portal1');
-
-        anime({
-            targets: '#bg_sound',
+        var timeline = anime.timeline();
+        timeline
+        .add({
+            targets: '#bg_music',
             volume: 0,
             duration: 3000,
             easing: 'linear',
             begin() {
-                this.__volume = $('#bg_sound')[0].getAttribute('sound').volume;
+                this.__volume = $('#bg_music')[0].getAttribute('sound').volume;
             },
             complete() {
-                $('#bg_sound')[0].components.sound.stopSound();
-                $('#bg_sound')[0].setAttribute('sound', 'volume', this.__volume);
+                $('#bg_music')[0].components.sound.stopSound();
+                $('#bg_music')[0].setAttribute('sound', 'volume', this.__volume);
             }
-        });
-
-        // fairy run
-        var fairyMesh = $('#fairy .mesh')[0];
-        var fairyParticles = $('#fairy .particles')[0];
-        var fairyFollow = fairyMesh.getAttribute('follow-path');
-        anime({
-            targets: fairyFollow,
-            position: 1,
-            // delay: 10000,
-            duration: 10000,
-            loop: 3,
+        })
+        .add({ // basic fadeIn
+            targets: '#img1-1',
+            opacity: 1,
+            offset: '-=3000',
+            duration: 500,
             easing: 'easeInOutQuad',
-            begin() {
-                fairyParticles.setAttribute('gpu-particle-system', 'spawnEnabled', true);
-            },
-            complete() {
-                fairyParticles.setAttribute('gpu-particle-system', 'spawnEnabled', false);
-            },
-            run() {
-                fairyMesh.setAttribute('follow-path', 'position', fairyFollow.position);
-            },
+            begin(anim) {
+                anim.animatables.forEach((v) => {
+                    v.target.setAttribute('visible');
+                });
+            }
         })
 
-        var timeline = anime.timeline();
-        timeline
+        .add({
+            targets: {t:0}, t:0,
+            begin: () => {
+                $('#train2').attr({visible: true})[0].emit('run');
+            },
+        })
         .add({
             targets: {t:0}, t:0,
             delay: 1000,
@@ -373,43 +438,76 @@ export default class Controller {
                 this.runRocket('#rocket1');
             },
         })
+
         .add({
             targets: {t:0}, t:0,
+            // delay: 1000,
+            duration: 700,
+            begin: () => {
+                this.triggers.get('#trigger1').hide();
+                var elem = $('#portal1')[0];
+                elem.setAttribute('visible', true);
+                elem.components['fx-dissolve'].show();
+            },
+        })
+        .add({
+            targets: '#fx-fire-1 .particles',
+            visible: true,
             delay: 2000,
-            begin() {
-                $('#fx-fire-1 .particles').each((k, v) => {
-                    v.setAttribute('gpu-particle-system', 'size', 600);
-                    v.setAttribute('gpu-particle-system', 'opacity', 0.2);
+            begin(anim) {
+                anim.animatables.forEach((v) => {
+                    v.target.setAttribute('gpu-particle-system', {
+                        size: 600,
+                        opacity: 0.2
+                    });
                 });
             },
         })
         .add({
             targets: {t:0}, t:0,
-            delay: 1000,
-            duration: p1_open.duration,
-            begin() {
-                p1_open.play();
-            },
-            complete() {
-                trigger.active = false;
-                trigger.spawnEnabled = false;
-                trigger.visible = false;
-                // trigger.hide();
+            complete(anim) {
+                $('#layer1-idle .trigger-group, #layer1 .trigger-group').attr({visible: false});
             }
         })
         .add({
             targets: {t:0}, t:0,
-            delay: this.debug ? 0 : 3000,
-            begin: () => {
-                this.closePortal('#portal1');
-            }
+            // delay: 1000,
+            duration: 1000,
+            begin() {
+                var elem = $('#portal1')[0];
+                elem.components['fx-dissolve'].hide().finished.then(() => {
+                    elem.setAttribute('visible', false);
+                });
+            },
         })
+
+        // {
+        //     // Rotation
+        //     let elems = $('#playerBox, #layer0 .platform');
+        //     let targets = _.map(elems, (v) => {
+        //         return v.getAttribute('rotation');
+        //     });
+        //
+        //     timeline.add({
+        //         targets,
+        //         y: '-=90',
+        //         duration: 11000,
+        //         easing: 'linear',
+        //         run() {
+        //             targets.forEach((v, k) => {
+        //                 elems[k].setAttribute('rotation', v);
+        //             });
+        //         }
+        //     });
+        // }
+        //
+        // timeline
 
         .add({ // rotate user
             targets: {t:0}, t:0,
             delay: 500,
             begin: () => {
-                var targets = $('#playerBox, #group1 .platform');
+                var targets = $('#playerBox, #layer0 .platform');
                 var rotation = _.map(targets, (v, k) => {
                     return v.getAttribute('rotation');
                 });
@@ -419,12 +517,10 @@ export default class Controller {
                     targets: rotation,
                     y: '-=90',
                     duration: 11000,
-                    // elasticity: 0,
                     easing: 'linear',
                     run() {
                         rotation.forEach((v, i) => {
-                            targets[i].setAttribute('rotation', `${v.x} ${v.y} ${v.z}`);
-                            // targets[i].object3D.rotation.y = math.toRad(v.y);
+                            targets[i].setAttribute('rotation', v);
                         });
                     },
                     complete() {
@@ -435,112 +531,81 @@ export default class Controller {
         })
 
         .add({
-            targets: {t:0}, t:0,
+            targets: {t:0}, t: 0,
             delay: 500,
             duration: 500,
-            begin: () => {
-                $('#train1')[0].emit('run');
-            }
-        })
-        .add({
-            targets: '#img2',
-            height: $('#img2').attr('height'),
-            opacity: 1,
-            delay: 2000,
-            duration: 500,
-            easing: 'easeInQuad',
-            begin() {
-                $('#img2 a-sound')[0].components.sound.playSound();
+            begin(anim) {
+                // $('#layer1-train').attr({visible: true});
+                $('#train1').attr({visible: true})[0].emit('run');
             }
         })
 
         .add({
-            targets: '#img3',
-            height: $('#img3').attr('height'),
+            targets: '#img1-2',
             opacity: 1,
             delay: 2000,
             duration: 500,
             easing: 'easeInQuad',
             begin() {
-                $('#img3 a-sound')[0].components.sound.playSound();
+                $('#img1-2').attr({visible: true});
             }
         })
+
         .add({
-            targets: '#img2',
-            opacity: 0,
-            height: { value: 0, delay: 1000, duration: 100 },
+            targets: '#img1-3',
+            opacity: 1,
             delay: 1000,
-            duration: 300,
-            easing: 'easeInQuad',
-        })
-        .add({
-            targets: '#img3',
-            opacity: 0,
-            height: { value: 0, delay: 2000, duration: 100 },
-            delay: 2000,
-            duration: 300,
-            easing: 'easeInQuad',
-        })
-
-        .add({
-            targets: '#img4',
-            height: $('#img4').attr('height'),
-            opacity: 1,
-            delay: 2000,
             duration: 500,
+            easing: 'easeInQuad',
             begin() {
-                $('#img4 a-sound')[0].components.sound.playSound();
+                $('#img1-3').attr({visible: true});
             }
         })
         .add({
-            targets: '#img4',
+            targets: '#img1-4',
+            opacity: 1,
+            delay: 1000,
+            duration: 500,
+            easing: 'easeInQuad',
+            begin() {
+                $('#img1-4').attr({visible: true});
+            }
+        })
+        .add({
+            targets: '#img1-5',
+            opacity: 1,
+            delay: 1000,
+            duration: 500,
+            easing: 'easeInQuad',
+            begin() {
+                $('#img1-5').attr({visible: true});
+            }
+        })
+
+        .add({
+            targets: '#img3',
             opacity: 0,
-            height: { value: 0, delay: 4500, duration: 100 },
             delay: 4000,
             duration: 500,
             easing: 'easeInQuad',
             begin: () => {
-                var trigger = _.find(this.triggers, {id: '#trigger2'});
+                $('#layer2-idle').attr({visible: true});
+                var trigger = this.triggers.get('#trigger2');
                 trigger.show();
             },
             complete: () => {
-                var trigger = _.find(this.triggers, {id: '#trigger2'});
+                var trigger = this.triggers.get('#trigger2');
                 trigger.active = true;
             }
         })
     }
 
+
     runScene2(e, trigger) {
-        trigger.active = false;
+        // trigger.active = false;
+        // $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: true});
 
         var t1_off = this.trainLightOff('#train1');
-
-        // fairy run
-        var fairyMesh = $('#fairy .mesh')[0];
-        var fairyParticles = $('#fairy .particles')[0];
-        var fairyFollow = fairyMesh.getAttribute('follow-path');
-        fairyMesh.setAttribute('follow-path', {
-            path: '#path3',
-            position: 0
-        });
-        anime({
-            targets: fairyFollow,
-            position: 1,
-            // delay: 10000,
-            duration: 10000,
-            loop: 3,
-            easing: 'easeInOutQuad',
-            begin() {
-                fairyParticles.setAttribute('gpu-particle-system', 'spawnEnabled', true);
-            },
-            complete() {
-                fairyParticles.setAttribute('gpu-particle-system', 'spawnEnabled', false);
-            },
-            run() {
-                fairyMesh.setAttribute('follow-path', 'position', fairyFollow.position);
-            },
-        })
-
 
         var timeline = anime.timeline();
         timeline
@@ -721,7 +786,7 @@ export default class Controller {
         trigger.active = false;
 
         // var p2_open = this.openPortal('#portal2');
-        $('#group2 .particle-snow')[0].setAttribute('gpu-particle-system', 'spawnEnabled', false);
+        // $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: false});
 
         var timeline = anime.timeline();
         timeline
@@ -814,7 +879,7 @@ export default class Controller {
             duration: 2000,
             easing: 'linear',
             begin() {
-                $('#bg_sound')[0].components.sound.playSound();
+                $('#bg_music')[0].components.sound.playSound();
             }
         })
     }
@@ -838,38 +903,5 @@ export default class Controller {
         var obj = $(selector)[0].object3D;
         var data = exporter.parse(obj);
         downloadFile(data, selector+'.obj');
-    }
-
-    // -- legacy code --
-    addImage(src) {
-        if (!src) src = this.photos[_.random(this.photos.length-1)]; //? test
-
-        var pos = [
-            _.random(-2, 2, true),
-            _.random(1.5, 3, true),
-            _.random(-5, 0, true)
-        ];
-
-        src = photoCtx(src);
-        var image = $('<a-image>').attr({
-            src: src,
-            position: pos.join(' '),
-        });
-
-        loadImage(src).then((img) => {
-            var factor = img.width / img.height;
-            var height = 2;
-            image.attr({
-                sizeFactor: factor,
-                width: factor * height,
-                height: height,
-            }).appendTo('#photos');
-            image[0].emit('fade-in zoom-in');
-            return image;
-        });
-
-        var anim = [fadeIn, zoomIn];
-        anim[_.random(anim.length-1)](image);
-        return image;
     }
 }

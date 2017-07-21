@@ -43,11 +43,16 @@ AFRAME.registerComponent('fx-dissolve', {
     hide() {
         var params = this.getAnimationParams();
         params.value = 1;
-        return anime(params);
+        var anim = anime(params);
+        // anim.finished.then(() => {
+        //     this.el.setAttribute('visible', false);
+        // });
+        return anim;
     },
     show() {
         var params = this.getAnimationParams();
         params.value = 0;
+        // this.el.setAttribute('visible', true);
         return anime(params);
     },
 });

@@ -13,7 +13,6 @@ block scene
         a-sky(color="#000")
         a-light.sky_light(type="ambient" color="#fff" intensity="0.2")
         a-light.sky_light(type="point" position="0 4 0" color="#fff" intensity="0.2")
-        a-entity.sky_weather.particle-snow(position="0 0 0" gpu-particle-system="preset: snow; maxParticles: 500; spawnRate: 50; texture: #tex-particle-1;")
 
 
     a-entity#world        
@@ -26,7 +25,7 @@ block scene
                     a-entity.a-path-point(position="1128 0 -45" geometry="primitive: box;")
                     a-entity.a-path-point(position="892 0 650" geometry="primitive: box;")
 
-                //- a-entity#fx-fire-1
+                a-entity#fx-fire-1
                     a-entity.particles(position="0 0.11 -1050" gpu-particle-system="maxParticles: 60; lifetime: 5; spawnRate: 7; easeIn: 0.3; easeOut: 0.5; opacity: 0.1; size: 300; color: #a11; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
                     a-entity.particles(position="0 0.11 -1050" gpu-particle-system="maxParticles: 60; lifetime: 3; spawnRate: 8; easeIn: 0.5; easeOut: 0.6; opacity: 0.1; size: 300; color: #e42; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
@@ -36,23 +35,14 @@ block scene
                 a-entity#fx-fire-3(position="806 0 -671")
                     a-entity.particles(look-at="0 0 0" gpu-particle-system="maxParticles: 100; lifetime: 5; spawnRate: 20; easeOut: 0.4; opacity: 0.1; size: 300; color: #911; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
-            a-entity.background
-                a-cylinder.forest(position="0 40 0" geometry="height: 270; radius: 1000; segmentsHeight: 1; thetaStart: 55; thetaLength: 145; openEnded: true;" src="#tex-bg-forest" repeat="2.5 0.9" shader="flat" transparent="true" side="back" color="#f00")
-                a-cylinder.forest(position="0 -70 0" geometry="height: 100; radius: 1000; segmentsHeight: 1; thetaStart: 55; thetaLength: 145; openEnded: true;" shader="flat" color="#000" side="back")
-                a-cylinder.town(position="0 50 0" geometry="height: 200; radius: 1000; segmentsHeight: 1; thetaStart: 288; thetaLength: 45; openEnded: true;" src="#tex-bg-piter" repeat="1 0.9" shader="flat" transparent="true" side="back" color="#f00")
-
             a-entity.items
-                a-light(position="0 5 0" type="point" distance="9" intensity="1")
-                a-box.platform(position="0 1 0" rotation="0 0 0" width="30" height="0.3" depth="5" _src="/assets/textures/wooden_floor.jpg" repeat="1 1" _color="#ccc" roughness="1")
+                a-light(position="0 5 0" type="point" distance="9" intensity="0.8")
+                a-box.platform(position="0 1 0" rotation="0 0 0" width="30" height="0.3" depth="5" src="/assets/textures/wooden_floor.jpg" repeat="7 1" _color="#ccc" roughness="1")
                 a-entity#trigger0.interactive(position="0 2 0" mixin="sphere trigger" geometry="radius: 0.7;" material="opacity: 0.1;")
-
-                
+                    
         a-entity#layer1-idle(visible="true")
             a-entity.items
-                //- a-image#ttt(position="-10 5 -20" look-at="0 0 0" src="#tex-photo-2" height="9" image-init=""
-                //-     fx-dissolve="alphaMap: url(/assets/textures/alphaMaps/portal.jpeg); amount: 0;"
-                //- )
-                a-entity.trigger-group(position="-100 3 0" look-at="0 0 0")
+                a-entity.trigger-group(position="-100 3 0" look-at="0 0 0" visible="true")
                     a-entity#trigger1.interactive(
                         __sound="src: #audio-click; volume: 50; on: click;"
                         mixin="sphere trigger debug"
@@ -61,76 +51,102 @@ block scene
 
                     a-text(position="-4 5 0" scale="12 12 12" value="START" color="#fff" shader="flat")
                 
-            
-        a-entity#layer1(visible="false")
-            a-path#railway1(position="0 0 0" line-geometry="" shader="line" _visible="false")
+        //- a-entity#layer1-train(visible="false")
+            a-path#railway1(position="0 0 0" line-geometry="" shader="line" visible="false")
                 a-entity.a-path-point(position="-314 0 -328" geometry="primitive: box;")
                 a-entity.a-path-point(position="491 0 -34" geometry="primitive: box;")
                 a-entity.a-path-point(position="-231 0 157" geometry="primitive: box;")
+            
+            a-entity#train1(scale="2.2 2.2 2.2" visible="false"
+                follow-path="path: #railway1; position: 0;"
+                __material="shader: flat; color: #000;" __common-material
+                gen-train="wagonMap: passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
+                __sound="src: #audio-sfx-1; volume: 90; loop: false; on: run;"
+            )
+                a-animation(begin="run" dur="11000" attribute="follow-path.position" to="0.6" easing="linear")
+                a-animation(begin="run2" dur="11000" attribute="follow-path.position" to="1" easing="ease-out-sine")
+            
+        a-entity#layer1(visible="false")
+            a-path#railway1(position="0 0 0" line-geometry="" shader="line" visible="false")
+                a-entity.a-path-point(position="-342 0 -174" geometry="primitive: box;")
+                a-entity.a-path-point(position="208 0 -274" geometry="primitive: box;")
+                a-entity.a-path-point(position="232 0 327" geometry="primitive: box;")
                 
-            a-path#railway2(position="0 0 0" line-geometry="" shader="line" _visible="false")
+            a-path#railway2(position="0 0 0" line-geometry="" shader="line" visible="false")
                 a-entity.a-path-point(position="-300 0 -4.4" geometry="primitive: box;")
                 a-entity.a-path-point(position="500 0 -4.4" geometry="primitive: box;")
             
             a-entity.items
-                a-entity.trigger-group(position="-100 0 0" look-at="0 0 0")
-                    a-image(position="0 16 0" height="9" image-init="" src="#tex-text-16" _opacity="0")
-                    a-image(position="0 1 0" height="7" image-init="" src="#tex-text-17" _opacity="0")
-
-                a-entity#train1(scale="2.2 2.2 2.2"
+                a-entity#train1(scale="2.2 2.2 2.2" visible="false"
                     follow-path="path: #railway1; position: 0;"
                     __material="shader: flat; color: #000;" __common-material
-                    gen-train="wagonMap: head,passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
+                    gen-train="wagonMap: passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
                     __sound="src: #audio-sfx-1; volume: 90; loop: false; on: run;"
                 )
                     a-animation(begin="run" dur="11000" attribute="follow-path.position" to="0.6" easing="linear")
                     a-animation(begin="run2" dur="11000" attribute="follow-path.position" to="1" easing="ease-out-sine")
                 
-                a-entity#train2(scale="2.2 2.2 2.2"
+                a-entity#train2(scale="2.2 2.2 2.2" visible="false"
                     follow-path="path: #railway2; position: 0;"
                     __material="shader: flat; color: #000;" __common-material
-                    gen-train="wagonMap: head,passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
+                    gen-train="wagonMap: passanger,passanger,passanger,generic,platform,platform,platform,tanker,tanker,tanker,tanker,passanger,passanger,passanger"
                     __sound="src: #audio-sfx-1; volume: 90; loop: false; on: run;"
                 )
-                    a-animation(begin="run" dur="11000" attribute="follow-path.position" to="1" easing="linear")
-
-                a-image#portal1(position="0 0 1" height="12" image-init="" src="#tex-photo-1" visible="false"
-                    fx-dissolve="alphaMap: url(/assets/textures/alphaMaps/portal.jpeg); amount: 0;"
+                    a-animation(begin="run" dur="4000" attribute="follow-path.position" to="1" easing="linear")
+                
+                a-image#portal1(position="-20 6 0" look-at="0 6 0" height="12" image-init="" src="#tex-photo-1" visible="false"
+                    fx-dissolve="alphaMap: #tex-fx-portal; amount: 1;"
                 )
+                    a-plane(position="0 0 -1" height="12.2" width="14.7" color="#fff" shader="flat" opacity="0" visible="false")
 
+                a-image#img1-1(position="-0 2.5 -1.7" height="0.3" image-init="" src="#tex-text-16" opacity="0" visible="false")
+                a-image#img1-2(position="-100 1 0" look-at="0 0 0" height="7" image-init="" src="#tex-text-17" opacity="0" visible="false")
 
-        a-entity#layer2-idle(visible="false" _scale="0 0 0")
+                a-image#img1-3(position="-121 7 -187" height="20" image-init="" src="#tex-text-1" opacity="0" visible="false")
+                a-image#img1-4(position="24 7 -314" height="20" image-init="" src="#tex-text-2" opacity="0" visible="false")
+                a-image#img1-5(position="107 7 -152" look-at="0 0 0" height="20" image-init="" src="#tex-text-3" opacity="0" visible="false")
+
+                a-entity#rocket1(position="-400 -20 -1200")
+                    a-entity.smoke(gpu-particle-system="spawnEnabled: false; maxParticles: 800; lifetime: 15; spawnRate: 40; easeIn: 0.03; easeOut: 0.6; opacity: 0.2; size: 100; color: #f66; positionSpread: 2 3 2; velocity: 5 0 0; velocitySpread: 6 0.5 0; texture: #tex-particle-2;")
+                    a-image.flare(position="0 0 0" src="#tex-particle-3" width="50" height="50" color="#fca" opacity="0.99" transparent="true" look-at="#player")
+
+        a-entity#layer2-idle(visible="false")
             a-entity.items
-                a-entity#trigger2.interactive(position="50 3 -100"
-                    mixin="sphere trigger debug" _visible="false"
-                    __sound="src: #audio-trigger2; volume: 50; on: click;"
-                )
-                    a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
+                a-entity.trigger-group(position="132 3 -188")
+                    a-entity#trigger2.interactive(
+                        mixin="sphere trigger debug" visible="false"
+                        __sound="src: #audio-trigger2; volume: 50; on: click;"
+                    )
+                        a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
+                    a-text(position="-4 5 0" scale="12 12 12" value="CONTINUE" color="#fff" shader="flat")
             
+        a-entity#layer2(visible="false")
+            //- a-entity.particle-snow(position="400 25 0" gpu-particle-system="spawnEnabled: false; preset: snow; maxParticles: 6000; spawnRate: 1000; lifetime: 6; size: 1.2; positionSpread: 0 50 30; velocity: -100 -10 0; texture: #tex-particle-1;")
             
-        a-entity#layer2(visible="false" _scale="0 0 0")
             a-entity.items
-                a-image(position="50 3 -100" look-at="0 0 0" height="12" image-init="" src="#tex-text-4" _opacity="0")
+                a-image#img2-1(position="114 14 -163" look-at="#playerBox" height="20" image-init="" src="#tex-text-4" opacity="0")
+                a-image#img2-2(position="208 7 -104" look-at="#playerBox" height="12" image-init="" src="#tex-text-5" opacity="0")
+                a-image#img2-3(position="278 7 -20" look-at="#playerBox" height="11" image-init="" src="#tex-text-6" opacity="0")
+                a-image#img2-4(position="211 4 45" look-at="#playerBox" height="10" image-init="" src="#tex-text-7" opacity="0")
+                a-image#img2-5(position="316 51 -40" look-at="#playerBox" rotation="0 -90 0" height="50" image-init="" src="#tex-text-8" opacity="0")
+                
 
-
-        a-entity#layer3-idle(visible="false" _scale="0 0 0")
+        a-entity#layer3-idle(visible="false")
             a-entity.items
-                a-entity#trigger3.interactive(position="100 3 50"
-                    mixin="sphere trigger debug" _visible="false"
-                    __sound="src: #audio-click; volume: 50; on: click;"
-                )
-                    a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
+                a-entity.trigger-group(position="175 3 175")
+                    a-entity#trigger3.interactive(
+                        mixin="sphere trigger debug" visible="false"
+                        __sound="src: #audio-click; volume: 50; on: click;"
+                    )
+                        a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
             
             
-        a-entity#layer3(visible="false" _scale="0 0 0")
-            a-path#railway3(position="0 0 0" line-geometry="" shader="line" _visible="false")
+        a-entity#layer3(visible="false")
+            a-path#railway3(position="0 0 0" line-geometry="" shader="line" visible="false")
                 a-entity.a-path-point(position="-300 0 4.4" geometry="primitive: box;")
                 a-entity.a-path-point(position="500 0 4.4" geometry="primitive: box;")
             
             a-entity.items
-                a-image(position="50 3 -100" look-at="0 0 0" height="12" image-init="" src="#tex-text-4" _opacity="0")
-
-                
                 a-entity#train3(scale="2.2 2.2 2.2"
                     follow-path="path: #railway3; position: 0;"
                     __material="shader: flat; color: #000;" __common-material
@@ -139,27 +155,42 @@ block scene
                 )
                     a-animation(begin="run" dur="11000" attribute="follow-path.position" to="1" easing="linear")
 
+                a-image#img3-1(position="115 25 115" look-at="#playerBox" height="12" image-init="" src="#tex-text-9" opacity="0")
+                a-image#img3-2(position="120 5 120" look-at="#playerBox" height="12" image-init="" src="#tex-text-10" opacity="0")
+                
+                a-image#img3-3(position="800 73 800" look-at="#playerBox" width="1000" image-init="" src="#tex-text-12" opacity="0")
+                a-image#img3-4(position="800 500 800" look-at="#playerBox" width="1000" image-init="" src="#tex-photo-6" opacity="0" color="#fff")
 
+                a-image#img3-5(position="0 5 8" rotation="0 180 0" width="20" image-init="" src="#tex-photo-3" opacity="0" color="#fff")
+                    a-sound(src="#audio-sfx-2" volume="7")
+                    a-sound(src="#audio-sfx-4" volume="20")
 
+                a-image#img3-6(position="0 6.8 7.8" rotation="0 180 0" width="9" image-init="" src="#tex-photo-4" opacity="0")
+                    a-sound(src="#audio-sfx-3" volume="7")
+            
+                        
+        a-entity#layer0-post
+            a-entity.background
+                a-cylinder.forest(position="0 40 0" geometry="height: 270; radius: 1000; segmentsHeight: 1; thetaStart: 72; thetaLength: 145; openEnded: true;" src="#tex-bg-forest" repeat="2.5 0.9" shader="flat" transparent="true" side="back" color="#000")
+                a-cylinder.forest(position="0 -70 0" geometry="height: 100; radius: 1000; segmentsHeight: 1; thetaStart: 72; thetaLength: 145; openEnded: true;" shader="flat" color="#000" side="back")
+                a-cylinder.town(position="0 50 0" geometry="height: 200; radius: 1000; segmentsHeight: 1; thetaStart: 22.43; thetaLength: 45; openEnded: true;" src="#tex-bg-piter" repeat="1 0.9" shader="flat" transparent="true" side="back" color="#000")
 
+        a-entity#layer1-post
+            a-entity.weather.particle-snow(position="0 0 0" gpu-particle-system="preset: snow; maxParticles: 500; spawnRate: 50; texture: #tex-particle-1;")
 
-
-
-
-
-
+        a-entity#layer2-post
+            a-entity.particle-snow(position="500 -20 0" gpu-particle-system="spawnEnabled: false; preset: snow; maxParticles: 5000; spawnRate: 500; lifetime: 10; size: 1.2; positionSpread: 0 30 100; velocity: -100 -0.1 0; texture: #tex-particle-1;")
 
 
     a-entity#music(volume="0.6")
-        a-sound#bg_music(sound="positional: false;" src="#audio-bg-1" volume="0.6" autoplay="true" loop="true")
+        a-sound#bg_music(sound="positional: false;" src="#audio-bg-1" volume="0.06" autoplay="true" loop="true")
         
     a-entity#sounds(volume="0.6")
-        
 
     a-entity#playerBox(position="0 1 0" rotation="0 20 0")
         a-camera#player(wasd-controls="acceleration: 650;" fov="75")
             a-entity(position="0 0 -2")
-                a-cursor(scale="0.5 0.5 0.5" material="color: #eee; opacity: 0.8; depthTest: false;" fuse="true" fuse-timeout="1500" raycaster="objects: .interactive;" cursor-events="" cursor-animation="")
+                a-cursor(scale="0.5 0.5 0.5" material="color: #eee; opacity: 0.8; depthTest: false;" fuse="true" fuse-timeout="150" raycaster="objects: .interactive;" cursor-events="" cursor-animation="")
 
             //- fov is 75, gui z is -0.7, when 1 is 100% width and about 95% height
             a-entity#gui(position="0 0 -0.07" scale="0.1 0.1 0.1")
