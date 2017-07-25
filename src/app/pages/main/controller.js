@@ -157,46 +157,52 @@ export default class Controller {
         });
         this.triggers.create({
             id: '#trigger1',
-            active: true,
+            active: false,
+            visible: false,
             click: this.runScene1.bind(this),
-            mouseenter: (e, trigger) => {
-                trigger.__fuseAnimation = animate.fadeIn('#trigger1 .img-1', {duration: FUSE_TIMEOUT});
-                this.guiHide('#messages');
-            },
-            mouseleave: (e, trigger) => {
-                trigger.__fuseAnimation.pause();
-                trigger.__fuseAnimation = null;
-                animate.hide('#trigger1 .img-1');
-            },
+            // mouseenter: (e, trigger) => {
+            //     trigger.__fuseAnimation = animate.fadeIn('#trigger1 .img-1', {duration: FUSE_TIMEOUT});
+            //     this.guiHide('#messages');
+            // },
+            // mouseleave: (e, trigger) => {
+            //     trigger.__fuseAnimation.pause();
+            //     trigger.__fuseAnimation = null;
+            // },
         });
         this.triggers.create({
             id: '#trigger2',
-            active: true,
-            visible: true,
+            active: false,
+            visible: false,
             click: this.runScene2.bind(this),
-            mouseenter: (e, trigger) => {
-                trigger.__fuseAnimation = animate.fadeIn('#trigger2 .img-1', {duration: FUSE_TIMEOUT});
-            },
-            mouseleave: (e, trigger) => {
-                trigger.__fuseAnimation.pause();
-                trigger.__fuseAnimation = null;
-                animate.hide('#trigger2 .img-1');
-            },
+            // mouseenter: (e, trigger) => {
+            //     trigger.__fuseAnimation = animate.fadeIn('#trigger2 .img-1', {duration: FUSE_TIMEOUT});
+            // },
+            // mouseleave: (e, trigger) => {
+            //     trigger.__fuseAnimation.pause();
+            //     trigger.__fuseAnimation = null;
+            //     animate.hide('#trigger2 .img-1');
+            // },
         });
         this.triggers.create({
             id: '#trigger3',
             active: false,
             visible: false,
             click: this.runScene3.bind(this),
-            mouseenter: (e, trigger) => {
-                trigger.__fuseAnimation = animate.fadeIn('#img11', {duration: FUSE_TIMEOUT});
-            },
-            mouseleave: (e, trigger) => {
-                trigger.__fuseAnimation.pause();
-                trigger.__fuseAnimation = null;
-                animate.hide('#img11');
-            },
+            // mouseenter: (e, trigger) => {
+            //     trigger.__fuseAnimation = animate.fadeIn('#img11', {duration: FUSE_TIMEOUT});
+            // },
+            // mouseleave: (e, trigger) => {
+            //     trigger.__fuseAnimation.pause();
+            //     trigger.__fuseAnimation = null;
+            //     animate.hide('#img11');
+            // },
         });
+
+        setTimeout(() => {
+            var trigger = this.triggers.get('#trigger1');
+            trigger.show();
+            trigger.active = true;
+        }, 3000);
 
         setTimeout(() => {
             this.messageService.create('MSG_TIP_TRIGGER')
@@ -374,9 +380,10 @@ export default class Controller {
 
 
     runScene1(e, trigger) {
+        trigger.active = false;
+        trigger.hide();
         $('#layer1').attr({visible: true});
         $('#layer1-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: true});
-        trigger.active = false;
 
         var timeline = anime.timeline();
         timeline
@@ -401,7 +408,6 @@ export default class Controller {
             duration: 500,
             easing: 'easeInQuad',
             complete() {
-                console.log('AAAAA 1-1', this, this.offset);
                 $('#img1-1').attr({visible: false});
             }
         })
@@ -409,23 +415,33 @@ export default class Controller {
         .add({
             targets: {t:0}, t:0,
             // delay: 1000,
-            duration: 700,
+            duration: 1500,
             begin: (anim) => {
-                this.triggers.get('#trigger1').hide();
                 var elem = $('#portal1')[0];
-                elem.setAttribute('visible', true);
-                elem.components['fx-dissolve'].show();
+                var component = elem.getAttribute('fx-dissolve');
+                anime({
+                    targets: component,
+                    amount: 0,
+                    duration: 1500,
+                    easing: 'easeInQuad',
+                    run() {
+                        elem.setAttribute('fx-dissolve', component);
+                    },
+                    begin() {
+                        elem.setAttribute('visible', true)
+                    },
+                })
             },
         })
 
-        .add({
+        .add({ // basic train run
             targets: {t:0}, t:0,
             begin() {
                 let elem = $('#train2')[0];
                 let component = elem.getAttribute('follow-path');
                 anime({
                     targets: component,
-                    position: 1,
+                    position: [0, 1],
                     duration: 8000,
                     easing: 'linear',
                     run() {
@@ -447,11 +463,22 @@ export default class Controller {
             delay: 2200,
             begin() {
                 var elem = $('#portal1')[0];
-                elem.components['fx-dissolve'].hide().finished.then(() => {
-                    elem.setAttribute('visible', false);
-                });
+                var component = elem.getAttribute('fx-dissolve');
+                anime({
+                    targets: component,
+                    amount: 1,
+                    duration: 700,
+                    easing: 'easeInQuad',
+                    run() {
+                        elem.setAttribute('fx-dissolve', component);
+                    },
+                    complete() {
+                        elem.setAttribute('visible', false);
+                    },
+                })
             },
         })
+
         .add({ // basic fadeIn
             targets: '#img1-2',
             opacity: 1,
@@ -530,12 +557,25 @@ export default class Controller {
         })
 
         .add({
-            targets: {t:0}, t: 0,
+            targets: {t:0}, t:0,
             delay: 500,
-            duration: 500,
-            begin(anim) {
-                $('#train1').attr({visible: true})[0].emit('run');
-            }
+            begin() {
+                let elem = $('#train1')[0];
+                let component = elem.getAttribute('follow-path');
+                anime({
+                    targets: component,
+                    position: [0, 0.6],
+                    duration: 11000,
+                    easing: 'linear',
+                    run() {
+                        component.position = +component.position;
+                        elem.setAttribute('follow-path', component);
+                    },
+                    begin() {
+                        elem.setAttribute('visible', true);
+                    }
+                })
+            },
         })
 
         // .add({
@@ -616,7 +656,7 @@ export default class Controller {
 
         .add({
             targets: {t:0}, t: 0,
-            delay: 1000,
+            delay: 6000,
             duration: 500,
             begin: (anim) => {
                 anim.trigger = this.triggers.get('#trigger2');
@@ -631,6 +671,7 @@ export default class Controller {
 
     runScene2(e, trigger) {
         trigger.active = false;
+        trigger.hide();
         $('#layer2').attr({visible: true});
 
         var timeline = anime.timeline();
@@ -658,29 +699,6 @@ export default class Controller {
             delay: 1000,
             begin: () => {
                 this.runRocket('#rocket2');
-            },
-        })
-
-        .add({
-            targets: {t:0}, t:0,
-            delay: 2000,
-            begin() {
-                $('#fx-fire-2 .particles, #fx-fire-3 .particles').each((k, v) => {
-                    v.setAttribute('gpu-particle-system', 'size', 400);
-                    v.setAttribute('gpu-particle-system', 'opacity', 0.2);
-                });
-            },
-        })
-
-        .add({
-            targets: '#img2-1',
-            opacity: 0,
-            easing: 'easeInQuad',
-            begin() {
-                trigger.hide();
-            },
-            complete() {
-                $('#img2-1').attr({visible: false});
             },
         })
 
@@ -714,23 +732,81 @@ export default class Controller {
         .add({
             targets: {t:0}, t:0,
             delay: 2000,
-            // duration: $('#train1 [begin=run2]').attr('dur'),
             begin() {
-                $('#train1')[0].emit('run2');
-                $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: true});
+                $('#fx-fire-2 .particles, #fx-fire-3 .particles').each((k, v) => {
+                    v.setAttribute('gpu-particle-system', {
+                        size: 600,
+                        opacity: 0.2,
+                        lifetime: 20
+                    });
+                });
+            },
+        })
 
-                // var t1_sound = $('#train1')[0].components.sound;
-                // anime({
-                //     targets: t1_sound,
-                //     volume: 0,
-                //     delay: +$('#train1 [begin=run2]').attr('dur'),
-                //     duration: 5000,
-                //     complete() {
-                //         t1_sound.stopSound();
-                //     }
-                // })
+        .add({
+            targets: '#img2-1',
+            opacity: 0,
+            easing: 'easeInQuad',
+            begin() {
+                trigger.hide();
+            },
+            complete() {
+                $('#img2-1').attr({visible: false});
+            },
+        })
+
+        .add({ // basic train run
+            targets: {t:0}, t:0,
+            delay: 2000,
+            begin() {
+                let elem = $('#train1')[0];
+                let component = elem.getAttribute('follow-path');
+                anime({
+                    targets: component,
+                    position: [0.6, 1],
+                    duration: 8000,
+                    easing: 'easeOutQuad',
+                    run() {
+                        component.position = +component.position;
+                        elem.setAttribute('follow-path', component);
+                    },
+                })
+            },
+        })
+
+        .add({
+            targets: {t:0}, t:0,
+            offset: '-=2000',
+            duration: 2000,
+            begin() {
+                $('#layer1-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: false});
+            },
+            complete() {
+                $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: true});
             }
         })
+
+        //
+        // .add({
+        //     targets: {t:0}, t:0,
+        //     delay: 2000,
+        //     // duration: $('#train1 [begin=run2]').attr('dur'),
+        //     begin() {
+        //         $('#train1')[0].emit('run2');
+        //         $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: true});
+        //
+        //         // var t1_sound = $('#train1')[0].components.sound;
+        //         // anime({
+        //         //     targets: t1_sound,
+        //         //     volume: 0,
+        //         //     delay: +$('#train1 [begin=run2]').attr('dur'),
+        //         //     duration: 5000,
+        //         //     complete() {
+        //         //         t1_sound.stopSound();
+        //         //     }
+        //         // })
+        //     }
+        // })
 
         .add({
             targets: '#img2-2',
@@ -788,14 +864,22 @@ export default class Controller {
             delay: 5000,
             duration: 200,
             easing: 'easeInQuad',
-            begin: () => {
-                var t1_off = this.trainLightOff('#train1');
-                t1_off.play();
-            },
             complete: (anim) => {
                 anim.trigger = this.triggers.get('#trigger3');
                 anim.trigger.show();
                 trigger.active = true;
+            }
+        })
+        .add({
+            targets: {t:0}, t: 0,
+            offset: '-=1500',
+            duration: 1000,
+            begin: () => {
+                var t1_off = this.trainLightOff('#train1');
+                t1_off.play();
+            },
+            complete() {
+                $('#train1').attr({visible: false});
             }
         })
 
@@ -809,7 +893,7 @@ export default class Controller {
         })
         .add({
             targets: {t:0}, t: 0,
-            delay: 1000,
+            delay: 6000,
             duration: 500,
             begin: (anim) => {
                 $('#layer3-idle').attr({visible: true});
@@ -825,6 +909,7 @@ export default class Controller {
 
     runScene3(e, trigger) {
         trigger.active = false;
+        trigger.hide();
         $('#layer3').attr({visible: true});
         $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: false});
 
@@ -835,9 +920,6 @@ export default class Controller {
             opacity: 0,
             delay: 2000,
             easing: 'easeInQuad',
-            begin() {
-                trigger.hide();
-            },
             complete() {
                 $('#img3-1').attr({visible: false});
             }
@@ -865,6 +947,7 @@ export default class Controller {
             targets: '#img3-3',
             opacity: 1,
             delay: 500,
+            duration: 200,
             easing: 'easeInQuad',
             begin() {
                 $('#img3-3').attr({visible: true});
