@@ -34,7 +34,6 @@ class Trigger {
         this.element = $(this.id)[0];
         this.particlesElem = $(this.element).find('.particles')[0];
         this.mesh = this.element.getObject3D('mesh');
-        console.log('TRIGG', this.id, this.mesh);
         // this.particlesElem = $(this.element).find('.particles')[0];
         if (options.active != null) this.active = options.active;
         if (options.visible != null) this.visible = options.visible;
@@ -50,7 +49,9 @@ class Trigger {
     }
 
     get active() { return this._active && this.visible; }
-    set active(v) { this._active = v; }
+    set active(v) {
+        this._active = v;
+    }
 
     get visible() { return this.element ? this.element.getAttribute('visible') : false }
     set visible(v) {
@@ -58,7 +59,6 @@ class Trigger {
             this.element.setAttribute('visible', v);
             this.mesh.visible = v;
             this.spawnEnabled = v;
-            console.log('vis', v, this.mesh, this.element);
         }
     }
 

@@ -8,6 +8,7 @@ AFRAME.registerComponent('cursor-animation', {
             scale: 0.5
         }
 
+        this.$el = $(this.el);
         this.el.addEventListener('mouseenter', this._mouseenterHandle = this.mouseenterHandle.bind(this));
         this.el.addEventListener('fusing', this._fusingHandle = this.fusingHandle.bind(this));
         this.el.addEventListener('click', this._clickHandle = this.clickHandle.bind(this));
@@ -29,6 +30,7 @@ AFRAME.registerComponent('cursor-animation', {
 
     mouseenterHandle() {
         if (this.activeAnimation) this.activeAnimation.pause();
+        // if (!this.$el.hasClass('interactive')) return;
         anime({
             targets: this.params,
             scale: 12,
@@ -40,6 +42,7 @@ AFRAME.registerComponent('cursor-animation', {
 
     fusingHandle() {
         if (this.activeAnimation) this.activeAnimation.pause();
+        // if (!this.$el.hasClass('interactive')) return;
         this.activeAnimation = anime({
             targets: this.params,
             thetaLength: 0,
@@ -51,6 +54,7 @@ AFRAME.registerComponent('cursor-animation', {
 
     clickHandle() {
         if (this.activeAnimation) this.activeAnimation.pause();
+        // if (!this.$el.hasClass('interactive')) return;
         this.activeAnimation = anime({
             targets: this.params,
             thetaLength: 360,
@@ -67,6 +71,7 @@ AFRAME.registerComponent('cursor-animation', {
 
     mouseleaveHandle() {
         if (this.activeAnimation) this.activeAnimation.pause();
+        // if (!this.$el.hasClass('interactive')) return;
         this.activeAnimation = anime({
             targets: this.params,
             thetaLength: 360,
