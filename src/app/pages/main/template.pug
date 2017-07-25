@@ -11,8 +11,8 @@ block scene
 
     a-entity#global
         a-sky(color="#000")
-        a-light.sky_light(type="ambient" color="#fff" intensity="0.2")
-        a-light.sky_light(type="point" position="0 4 0" color="#fff" intensity="0.2")
+        a-light.sky_light(type="ambient" color="#fff" intensity="0")
+        a-light.sky_light(type="point" position="0 4 0" color="#fff" intensity="0")
 
     a-entity#world-pre
         a-entity#layer0-pre
@@ -29,10 +29,10 @@ block scene
                     a-entity.particles(gpu-particle-system="maxParticles: 60; lifetime: 3; spawnRate: 8; easeIn: 0.5; easeOut: 0.6; opacity: 0.1; size: 300; color: #e42; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
                 a-entity#fx-fire-2(position="1000 0 -1400" look-at="0 0 0")
-                    a-entity.particles(gpu-particle-system="maxParticles: 500; lifetime: 3; spawnRate: 10; easeOut: 0.4; opacity: 0.1; size: 300; color: #e25822; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+                    a-entity.particles(gpu-particle-system="maxParticles: 500; lifetime: 3; spawnRate: 10; easeOut: 0.4; opacity: 0.1; size: 300; color: #e25822; positionSpread: 1200 10 1; velocity: 50 30 0; acceleration: 0 10 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
 
                 a-entity#fx-fire-3(position="1500 0 -1300" look-at="0 0 0")
-                    a-entity.particles(gpu-particle-system="maxParticles: 500; lifetime: 5; spawnRate: 20; easeOut: 0.4; opacity: 0.1; size: 300; color: #911; positionSpread: 1200 10 1; velocity: 40 20 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
+                    a-entity.particles(gpu-particle-system="maxParticles: 500; lifetime: 5; spawnRate: 20; easeOut: 0.4; opacity: 0.1; size: 300; color: #911; positionSpread: 1200 10 1; velocity: 50 30 0; acceleration: 0 10 0; accelerationSpread: 0 20 20; texture: #tex-particle-1;")
             
         a-entity#layer1-pre
             a-entity#rocket1(position="-400 -20 -1200")
@@ -109,11 +109,11 @@ block scene
                     a-plane(position="0 0 -1" height="12.2" width="14.7" color="#fff" shader="flat" opacity="0" visible="false")
 
                 a-image#img1-3(position="-121 7 -187" height="20" image-init="" src="#tex-text-1" opacity="0" visible="false")
-                a-image#img1-4(position="-18 11.2 -351" height="30" image-init="" src="#tex-text-2" opacity="0" visible="false")
+                a-image#img1-4(position="-18 12.7 -351" height="30" image-init="" src="#tex-text-2" opacity="0" visible="false")
                 a-image#img1-2(position="-2 2.5 -1.7" rotation="0 11 0" height="0.4" image-init="" src="#tex-text-16" opacity="0" visible="false")
 
                 a-box(position="-481 4 -147" rotation="0 10 0" width="330" height="8" depth="50" color="black" shader="flat")
-                a-box(position="171 4 -239" look-at="0 0 0" width="200" height="8" depth="1" color="black" shader="flat")
+                a-box(position="171 4 -239" look-at="0 0 0" width="230" height="8" depth="1" color="black" shader="flat")
 
 
         a-entity#layer2-idle(visible="false")
@@ -165,15 +165,17 @@ block scene
                 )
                     a-animation(begin="run" dur="11000" attribute="follow-path.position" to="1" easing="linear")
 
-                a-image#img3-2(position="120 5 120" look-at="#playerBox" height="12" image-init="" src="#tex-text-10" opacity="0")
-                a-image#img3-4(position="0 4 8" rotation="0 180 0" width="20" image-init="" src="#tex-photo-3" opacity="0" color="#fff")
+                a-image#img3-2(position="120 5 120" look-at="#playerBox" height="12" image-init="" src="#tex-text-10" opacity="0" visible="false")
+                a-image#img3-4(position="0 4 8" rotation="0 180 0" width="20" image-init="" src="#tex-photo-3" color="#fff" opacity="0" visible="false")
                     a-sound(src="#audio-sfx-2" volume="7")
                     a-sound(src="#audio-sfx-4" volume="20")
 
-                a-image#img3-5(position="0 5.8 7.8" rotation="0 180 0" width="9" image-init="" src="#tex-photo-4" opacity="0")
+                a-image#img3-5(position="0 5.8 7.8" rotation="0 180 0" width="9" image-init="" src="#tex-photo-4" opacity="0" visible="false")
                     a-sound(src="#audio-sfx-3" volume="7")
             
-                a-image#img3-6(position="800 500 800" look-at="#playerBox" width="1000" image-init="" src="#tex-photo-6" opacity="0" color="#fff")
+                a-image#img3-6(position="800 500 800" look-at="#playerBox" width="1000" image-init="" src="#tex-photo-6" color="#fff" _opacity="0" visible="false"
+                    fx-dissolve="alphaMap: #tex-fx-burnout; amount: 1;"
+                )
 
                         
         //- a-entity#layer0-post

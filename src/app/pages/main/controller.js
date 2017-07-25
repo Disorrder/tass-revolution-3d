@@ -735,9 +735,9 @@ export default class Controller {
             begin() {
                 $('#fx-fire-2 .particles, #fx-fire-3 .particles').each((k, v) => {
                     v.setAttribute('gpu-particle-system', {
-                        size: 600,
+                        size: 500,
                         opacity: 0.2,
-                        lifetime: 20
+                        lifetime: 15
                     });
                 });
             },
@@ -911,7 +911,7 @@ export default class Controller {
         trigger.active = false;
         trigger.hide();
         $('#layer3').attr({visible: true});
-        $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: false});
+        $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: true});
 
         var timeline = anime.timeline();
         timeline
@@ -971,6 +971,7 @@ export default class Controller {
             targets: '#img3-3',
             opacity: 0,
             delay: 2000,
+            duration: 200,
             easing: 'easeInQuad',
             complete() {
                 $('#img3-3').attr({visible: false});
@@ -1015,12 +1016,37 @@ export default class Controller {
             }
         })
         .add({
-            targets: '#img3-6, #img3-9',
+            targets: {t:0}, t: 0,
+            // offset: 0,
+            duration: 3000,
+            // easing: 'easeInQuad',
+            begin() {
+                var elem = $('#img3-6')[0];
+                var component = elem.getAttribute('fx-dissolve');
+                console.log('SFDHJKLKh', elem, component);
+                anime({
+                    targets: component,
+                    amount: 0,
+                    duration: 3000,
+                    easing: 'easeInQuad',
+                    run() {
+                        elem.setAttribute('fx-dissolve', component);
+                    },
+                    begin() {
+                        elem.setAttribute('visible', true);
+                    }
+                })
+            }
+        })
+        .add({
+            targets: '#img3-9',
             opacity: 1,
+            offset: '-=3000',
             duration: 3000,
             easing: 'easeInQuad',
             begin() {
-                $('#img3-6, #img3-9').attr({visible: true});
+                $('#img3-9').attr({visible: true});
+                $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: false});
             }
         })
     }
