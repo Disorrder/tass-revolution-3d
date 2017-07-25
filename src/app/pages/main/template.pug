@@ -66,15 +66,15 @@ block scene
                 a-entity.trigger-group(position="-100 3 0" look-at="0 0 0" visible="true")
                     a-entity#trigger1.interactive(
                         __sound="src: #audio-click; volume: 50; on: click;"
-                        mixin="sphere trigger"
+                        mixin="sphere trigger" geometry="radius: 30;"
                     )
                         a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: true;")
 
-                    a-text(position="-4 5 0" scale="12 12 12" value="START" color="#fff" shader="flat")
-                    a-image#img1-1(_position="-100 1 0" look-at="0 0 0" height="7" image-init="" src="#tex-text-17" opacity="1" _visible="false")
+                        a-text(position="-3 15 0" scale="40 40 40" value="1" color="#fff" shader="flat")
+                    a-image#img1-1(_position="-100 1 0" look-at="0 0 0" height="7" image-init="" src="#tex-text-17" opacity="1")
                     
             
-        a-entity#layer1(visible="false")
+        a-entity#layer1(_visible="false")
             a-path#railway1(position="0 0 0" line-geometry="" shader="line" visible="false")
                 a-entity.a-path-point(position="-342 0 -174" geometry="primitive: box;")
                 a-entity.a-path-point(position="208 0 -274" geometry="primitive: box;")
@@ -92,7 +92,7 @@ block scene
                     __sound="src: #audio-sfx-1; volume: 90; loop: false; on: run;"
                 )
                     a-animation(begin="run" dur="11000" attribute="follow-path.position" from="0" to="0.6" easing="linear")
-                    a-animation(begin="run2" dur="11000" attribute="follow-path.position" from="0.6" to="1" easing="ease-out-sine")
+                    a-animation(begin="run2" dur="8000" attribute="follow-path.position" from="0.6" to="1" easing="ease-out-sine")
                 
                 a-entity#train2(scale="2.2 2.2 2.2" visible="false"
                     follow-path="path: #railway2; position: 0;"
@@ -108,26 +108,28 @@ block scene
                     a-plane(position="0 0 -1" height="12.2" width="14.7" color="#fff" shader="flat" opacity="0" visible="false")
 
                 a-image#img1-3(position="-121 7 -187" height="20" image-init="" src="#tex-text-1" opacity="0" visible="false")
-                a-image#img1-4(position="-18 7 -351" height="30" image-init="" src="#tex-text-2" opacity="0" visible="false")
-                a-image#img1-5(position="107 7 -152" look-at="0 0 0" height="20" image-init="" src="#tex-text-3" opacity="0" visible="false")
+                a-image#img1-4(position="-18 11.2 -351" height="30" image-init="" src="#tex-text-2" opacity="0" visible="false")
                 a-image#img1-2(position="-0 2.5 -1.7" height="0.3" image-init="" src="#tex-text-16" opacity="0" visible="false")
 
                 a-box(position="-481 4 -147" rotation="0 10 0" width="330" height="8" depth="50" color="black" shader="flat")
                 a-box(position="171 4 -239" look-at="0 0 0" width="200" height="8" depth="1" color="black" shader="flat")
 
+
         a-entity#layer2-idle(_visible="false")
             a-entity.items
                 a-entity.trigger-group(position="132 3 -188")
-                    a-entity#trigger2.interactive(
-                        mixin="sphere trigger" visible="false"
+                    a-entity#trigger2.interactive(visible="false"
+                        mixin="sphere trigger" geometry="radius: 80;"
                         __sound="src: #audio-trigger2; volume: 50; on: click;"
                     )
-                        a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
-                    a-text(position="-4 15 0" scale="12 12 12" value="CONTINUE" color="#fff" shader="flat")
-                    a-image#img2-1(position="31 5 -41" look-at="#playerBox" height="40" image-init="" src="#tex-text-4" opacity="0" visible="false")
+                        a-entity.particles(scale="5 7 1" mixin="trigger-particles" gpu-particle-system="spawnEnabled: false; size: 3;")
+                        a-text(position="0 30 0" scale="60 60 60" value="2" color="#fff" shader="flat" opacity="2")
             
+                a-image#img1-5(position="107 7 -152" look-at="0 0 0" height="20" image-init="" src="#tex-text-3" opacity="0" visible="false")
+        
         a-entity#layer2(visible="false")
             a-entity.items
+                a-image#img2-1(position="163 8 -230" look-at="#playerBox" height="40" image-init="" src="#tex-text-4" opacity="0" visible="false")
                 a-image#img2-2(position="208 7 -104" look-at="#playerBox" height="12" image-init="" src="#tex-text-5" opacity="0" visible="false")
                 a-image#img2-3(position="278 7 -20" look-at="#playerBox" height="11" image-init="" src="#tex-text-6" opacity="0" visible="false")
                 a-image#img2-4(position="211 4 45" look-at="#playerBox" height="10" image-init="" src="#tex-text-7" opacity="0" visible="false")
@@ -143,6 +145,7 @@ block scene
                         __sound="src: #audio-click; volume: 50; on: click;"
                     )
                         a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
+                        a-text(position="7 8 0" scale="60 60 60" rotation="0 217 0" value="3" color="#fff" shader="flat" opacity="2")
                 
                 //- a-image#img3-1(position="115 25 115" look-at="#playerBox" height="12" image-init="" src="#tex-text-9" opacity="0")
             
@@ -162,11 +165,11 @@ block scene
                     a-animation(begin="run" dur="11000" attribute="follow-path.position" to="1" easing="linear")
 
                 a-image#img3-2(position="120 5 120" look-at="#playerBox" height="12" image-init="" src="#tex-text-10" opacity="0")
-                a-image#img3-4(position="0 4.5 8" rotation="0 180 0" width="20" image-init="" src="#tex-photo-3" opacity="0" color="#fff")
+                a-image#img3-4(position="0 4 8" rotation="0 180 0" width="20" image-init="" src="#tex-photo-3" opacity="0" color="#fff")
                     a-sound(src="#audio-sfx-2" volume="7")
                     a-sound(src="#audio-sfx-4" volume="20")
 
-                a-image#img3-5(position="0 6.3 7.8" rotation="0 180 0" width="9" image-init="" src="#tex-photo-4" opacity="0")
+                a-image#img3-5(position="0 5.8 7.8" rotation="0 180 0" width="9" image-init="" src="#tex-photo-4" opacity="0")
                     a-sound(src="#audio-sfx-3" volume="7")
             
                 a-image#img3-6(position="800 500 800" look-at="#playerBox" width="1000" image-init="" src="#tex-photo-6" opacity="0" color="#fff")
@@ -190,7 +193,7 @@ block scene
         
     a-entity#sounds(volume="0.6")
 
-    a-entity#playerBox(position="0 1 0" rotation="0 20 0")
+    a-entity#playerBox(position="0 1 0" rotation="0 70 0")
         a-camera#player(wasd-controls="acceleration: 650;" fov="75")
             a-entity(position="0 0 -2")
                 a-cursor(scale="0.5 0.5 0.5" material="color: #eee; opacity: 0.8; depthTest: false;" fuse="true" fuse-timeout="2000" raycaster="objects: .interactive;" cursor-events="" cursor-animation="")

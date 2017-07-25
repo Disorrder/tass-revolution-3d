@@ -171,8 +171,8 @@ export default class Controller {
         });
         this.triggers.create({
             id: '#trigger2',
-            active: false,
-            visible: false,
+            active: true,
+            visible: true,
             click: this.runScene2.bind(this),
             mouseenter: (e, trigger) => {
                 trigger.__fuseAnimation = animate.fadeIn('#trigger2 .img-1', {duration: FUSE_TIMEOUT});
@@ -255,7 +255,10 @@ export default class Controller {
         trainLightMtl = _.uniq(trainLightMtl);
 
         var trainLightColors = trainLightMtl.map((v) => {
-            return {color: '#'+v.emissive.getHexString()}
+            return {
+                color: '#'+v.color.getHexString(),
+                emissive: '#'+v.emissive.getHexString()
+            }
         });
 
         timeline.add({
@@ -263,9 +266,11 @@ export default class Controller {
             delay: 0,
             elasticity: 0,
             color: '#000',
+            emissive: '#000',
             update() {
                 trainLightMtl.forEach((v, k) => {
-                    v.emissive.set(trainLightColors[k].color);
+                    v.color.set(trainLightColors[k].color);
+                    v.emissive.set(trainLightColors[k].emissive);
                 })
             }
         });
@@ -437,7 +442,6 @@ export default class Controller {
             },
         })
 
-        timeline
         .add({
             targets: {t:0}, t:0,
             delay: 2200,
@@ -455,7 +459,6 @@ export default class Controller {
             duration: 500,
             easing: 'easeInQuad',
             begin() {
-                console.log('AAAAA 1-2', this, this.offset);
                 $('#img1-2').attr({visible: true});
             }
         })
@@ -479,18 +482,6 @@ export default class Controller {
             }
         })
 
-
-        // .add({
-        //     targets: {t:0}, t:0,
-        //     // delay: 1000,
-        //     duration: 700,
-        //     begin: (anim) => {
-        //         this.triggers.get('#trigger1').hide();
-        //         var elem = $('#portal1')[0];
-        //         elem.setAttribute('visible', true);
-        //         elem.components['fx-dissolve'].show();
-        //     },
-        // })
         .add({
             targets: '#fx-fire-1 .particles',
             visible: true,
@@ -578,16 +569,6 @@ export default class Controller {
                 $('#img1-4').attr({visible: true});
             }
         })
-        .add({
-            targets: '#img1-5',
-            opacity: 1,
-            delay: 2000,
-            duration: 500,
-            easing: 'easeInQuad',
-            begin() {
-                $('#img1-5').attr({visible: true});
-            }
-        })
 
         // .add({
         //     targets: '#img1-2',
@@ -600,8 +581,21 @@ export default class Controller {
         // })
 
         .add({
+            targets: '#img1-5',
+            opacity: 1,
+            delay: 1000,
+            duration: 500,
+            easing: 'easeInQuad',
+            begin() {
+                $('#layer2-idle').attr({visible: true});
+                $('#img1-5').attr({visible: true});
+            }
+        })
+
+        .add({
             targets: '#img1-3',
             opacity: 0,
+            delay: 1000,
             duration: 500,
             easing: 'easeInQuad',
             complete() {
@@ -619,6 +613,28 @@ export default class Controller {
                 $('#img1-4').attr({visible: false});
             }
         })
+
+        .add({
+            targets: {t:0}, t: 0,
+            delay: 1000,
+            duration: 500,
+            begin: (anim) => {
+                anim.trigger = this.triggers.get('#trigger2');
+                anim.trigger.show();
+            },
+            complete: (anim) => {
+                anim.trigger.active = true;
+            }
+        })
+    }
+
+
+    runScene2(e, trigger) {
+        trigger.active = false;
+        $('#layer2').attr({visible: true});
+
+        var timeline = anime.timeline();
+        timeline
         .add({
             targets: '#img1-5',
             opacity: 0,
@@ -629,20 +645,6 @@ export default class Controller {
                 $('#img1-5').attr({visible: false});
             }
         })
-
-        .add({
-            targets: {t:0}, t: 0,
-            delay: 1000,
-            duration: 500,
-            begin: (anim) => {
-                $('#layer2-idle').attr({visible: true});
-                anim.trigger = this.triggers.get('#trigger2');
-                anim.trigger.show();
-            },
-            complete: (anim) => {
-                anim.trigger.active = true;
-            }
-        })
         .add({
             targets: '#img2-1',
             opacity: 1,
@@ -651,17 +653,6 @@ export default class Controller {
                 $('#img2-1').attr({visible: true});
             },
         })
-    }
-
-
-    runScene2(e, trigger) {
-        trigger.active = false;
-        $('#layer2').attr({visible: true});
-
-        // var t1_off = this.trainLightOff('#train1');
-
-        var timeline = anime.timeline();
-        timeline
         .add({
             targets: {t:0}, t:0,
             delay: 1000,
@@ -669,6 +660,18 @@ export default class Controller {
                 this.runRocket('#rocket2');
             },
         })
+
+        .add({
+            targets: {t:0}, t:0,
+            delay: 2000,
+            begin() {
+                $('#fx-fire-2 .particles, #fx-fire-3 .particles').each((k, v) => {
+                    v.setAttribute('gpu-particle-system', 'size', 400);
+                    v.setAttribute('gpu-particle-system', 'opacity', 0.2);
+                });
+            },
+        })
+
         .add({
             targets: '#img2-1',
             opacity: 0,
@@ -678,16 +681,6 @@ export default class Controller {
             },
             complete() {
                 $('#img2-1').attr({visible: false});
-            },
-        })
-        .add({
-            targets: {t:0}, t:0,
-            delay: 2000,
-            begin() {
-                $('#fx-fire-2 .particles, #fx-fire-3 .particles').each((k, v) => {
-                    v.setAttribute('gpu-particle-system', 'size', 400);
-                    v.setAttribute('gpu-particle-system', 'opacity', 0.2);
-                });
             },
         })
 
@@ -780,8 +773,8 @@ export default class Controller {
             targets: '#img2-5',
             visible: true,
             opacity: 1,
-            delay: 2000,
-            duration: 1000,
+            delay: 3000,
+            duration: 100,
             easing: 'easeInQuad',
             begin() {
                 $('#img2-5').attr({visible: true});
@@ -793,8 +786,12 @@ export default class Controller {
             targets: '#img2-2, #img2-3, #img2-4, #img2-5',
             opacity: 0,
             delay: 5000,
-            duration: 1000,
+            duration: 200,
             easing: 'easeInQuad',
+            begin: () => {
+                var t1_off = this.trainLightOff('#train1');
+                t1_off.play();
+            },
             complete: (anim) => {
                 anim.trigger = this.triggers.get('#trigger3');
                 anim.trigger.show();
