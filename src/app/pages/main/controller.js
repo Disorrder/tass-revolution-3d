@@ -17,7 +17,7 @@ var photoNames = photoCtx.keys();
 var settings = {
     sfx: {
         musicVolume: 0.6,
-        soundVolume: 0.3
+        soundVolume: 0.4
     }
 }
 
@@ -183,42 +183,18 @@ export default class Controller {
             active: false,
             visible: false,
             click: this.runScene1.bind(this),
-            // mouseenter: (e, trigger) => {
-            //     trigger.__fuseAnimation = animate.fadeIn('#trigger1 .img-1', {duration: FUSE_TIMEOUT});
-            //     this.guiHide('#messages');
-            // },
-            // mouseleave: (e, trigger) => {
-            //     trigger.__fuseAnimation.pause();
-            //     trigger.__fuseAnimation = null;
-            // },
         });
         this.triggers.create({
             id: '#trigger2',
-            active: true,
-            visible: true,
+            active: false,
+            visible: false,
             click: this.runScene2.bind(this),
-            // mouseenter: (e, trigger) => {
-            //     trigger.__fuseAnimation = animate.fadeIn('#trigger2 .img-1', {duration: FUSE_TIMEOUT});
-            // },
-            // mouseleave: (e, trigger) => {
-            //     trigger.__fuseAnimation.pause();
-            //     trigger.__fuseAnimation = null;
-            //     animate.hide('#trigger2 .img-1');
-            // },
         });
         this.triggers.create({
             id: '#trigger3',
             active: false,
             visible: false,
             click: this.runScene3.bind(this),
-            // mouseenter: (e, trigger) => {
-            //     trigger.__fuseAnimation = animate.fadeIn('#img11', {duration: FUSE_TIMEOUT});
-            // },
-            // mouseleave: (e, trigger) => {
-            //     trigger.__fuseAnimation.pause();
-            //     trigger.__fuseAnimation = null;
-            //     animate.hide('#img11');
-            // },
         });
 
         setTimeout(() => {
@@ -441,9 +417,25 @@ export default class Controller {
             offset: '-=5000',
             duration: 500,
             easing: 'easeInQuad',
-            complete() {
-                $('#img1-1').attr({visible: false});
-            }
+            begin() {
+                var elem = $('#img1-1')[0];
+                var component = elem.getAttribute('fx-dissolve');
+                anime({
+                    targets: component,
+                    amount: 1,
+                    duration: 1000,
+                    easing: 'easeInQuad',
+                    run() {
+                        elem.setAttribute('fx-dissolve', component);
+                    },
+                    complete() {
+                        elem.setAttribute('visible', false);
+                    }
+                });
+            },
+            // complete() {
+            //     $('#img1-1').attr({visible: false});
+            // }
         })
 
         .add({
@@ -544,9 +536,25 @@ export default class Controller {
             opacity: 0,
             duration: 500,
             easing: 'easeInQuad',
-            complete() {
-                $('#img1-2').attr({visible: false});
-            }
+            begin: () => {
+                var elem = $('#img1-2')[0];
+                var component = elem.getAttribute('fx-dissolve');
+                anime({
+                    targets: component,
+                    amount: 1,
+                    duration: 1500,
+                    easing: 'easeInQuad',
+                    run() {
+                        elem.setAttribute('fx-dissolve', component);
+                    },
+                    complete() {
+                        elem.setAttribute('visible', false);
+                    }
+                });
+            },
+            // complete() {
+            //     $('#img1-2').attr({visible: false});
+            // }
         })
 
         .add({
@@ -604,8 +612,8 @@ export default class Controller {
                 let component = elem.getAttribute('follow-path');
                 anime({
                     targets: component,
-                    position: [0, settings.sfx.musicVolume],
-                    duration: 11000,
+                    position: [0, 0.6],
+                    duration: 10000,
                     easing: 'linear',
                     run() {
                         component.position = +component.position;
@@ -615,22 +623,8 @@ export default class Controller {
                         elem.setAttribute('visible', true);
                     }
                 });
-                setTimeout(() => {
-                    this.playSound({src: '#audio-train-2', volume: settings.sfx.soundVolume * 0.5});
-                }, 3000);
             },
         })
-
-        // .add({
-        //     targets: '#img1-2',
-        //     opacity: 1,
-        //     delay: 2000,
-        //     duration: 500,
-        //     easing: 'easeInQuad',
-        //     begin() {
-        //         $('#img1-2').attr({visible: true});
-        //     }
-        // })
 
         .add({
             targets: '#img1-3',
@@ -654,16 +648,6 @@ export default class Controller {
                 this.playSound({src: '#audio-img-4', volume: settings.sfx.soundVolume * 0.4});
             }
         })
-
-        // .add({
-        //     targets: '#img1-2',
-        //     opacity: 0,
-        //     duration: 500,
-        //     easing: 'easeInQuad',
-        //     complete() {
-        //         $('#img1-2').attr({visible: false});
-        //     }
-        // })
 
         .add({
             targets: '#img1-5',
@@ -860,29 +844,6 @@ export default class Controller {
             }
         })
 
-
-        //
-        // .add({
-        //     targets: {t:0}, t:0,
-        //     delay: 2000,
-        //     // duration: $('#train1 [begin=run2]').attr('dur'),
-        //     begin() {
-        //         $('#train1')[0].emit('run2');
-        //         $('#layer2-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: true});
-        //
-        //         // var t1_sound = $('#train1')[0].components.sound;
-        //         // anime({
-        //         //     targets: t1_sound,
-        //         //     volume: 0,
-        //         //     delay: +$('#train1 [begin=run2]').attr('dur'),
-        //         //     duration: 5000,
-        //         //     complete() {
-        //         //         t1_sound.stopSound();
-        //         //     }
-        //         // })
-        //     }
-        // })
-
         .add({
             targets: '#img2-2',
             opacity: 1,
@@ -1046,8 +1007,27 @@ export default class Controller {
             easing: 'easeInQuad',
             begin: () => {
                 $('#img3-4').attr({visible: true});
-                $('#train3').attr({visible: true})[0].emit('run');
-                this.playSound({src: '#audio-img-2', volume: settings.sfx.soundVolume});
+                let elem = $('#train3')[0];
+                let component = elem.getAttribute('follow-path');
+                anime({
+                    targets: component,
+                    position: [0, 1],
+                    duration: 11000,
+                    easing: 'linear',
+                    run() {
+                        component.position = +component.position;
+                        elem.setAttribute('follow-path', component);
+                    },
+                    begin() {
+                        elem.setAttribute('visible', true);
+                    },
+                    complete() {
+                        elem.setAttribute('visible', false);
+                    }
+                });
+                setTimeout(() => {
+                    this.playSound({src: '#audio-train-2', volume: settings.sfx.soundVolume * 0.5});
+                }, 5000);
             }
         })
 
@@ -1098,15 +1078,15 @@ export default class Controller {
         .add({
             targets: {t:0}, t: 0,
             // offset: 0,
-            duration: 3000,
+            duration: 4000,
             // easing: 'easeInQuad',
-            begin() {
+            begin: () => {
                 var elem = $('#img3-6')[0];
                 var component = elem.getAttribute('fx-dissolve');
                 anime({
                     targets: component,
                     amount: 0,
-                    duration: 3000,
+                    duration: 4000,
                     easing: 'easeInQuad',
                     run() {
                         elem.setAttribute('fx-dissolve', component);
@@ -1114,14 +1094,15 @@ export default class Controller {
                     begin() {
                         elem.setAttribute('visible', true);
                     }
-                })
+                });
+                this.playSound({src: '#audio-petrograd', volume: settings.sfx.soundVolume});
             }
         })
         .add({
             targets: '#img3-9',
             opacity: 1,
-            offset: '-=3000',
-            duration: 3000,
+            offset: '-=4000',
+            duration: 4000,
             easing: 'easeInQuad',
             begin() {
                 $('#img3-9').attr({visible: true});

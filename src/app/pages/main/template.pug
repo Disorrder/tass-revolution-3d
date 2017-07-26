@@ -72,7 +72,9 @@ block scene
                         a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: true;")
 
                         a-text(position="-3 15 0" scale="40 40 40" value="1" color="#fff" shader="flat")
-                    a-image#img1-1(_position="-100 1 0" look-at="0 0 0" height="7" image-init="" src="#tex-text-17" opacity="1")
+                    a-image#img1-1(_position="-100 1 0" look-at="0 0 0" height="7" image-init="" src="#tex-text-17" opacity="1"
+                        fx-dissolve="alphaMap: #tex-fx-stripes; amount: 0;"
+                    )
                     
             
         a-entity#layer1(visible="false")
@@ -109,14 +111,16 @@ block scene
                     a-plane(position="0 0 -1" height="12.2" width="14.7" color="#fff" shader="flat" opacity="0" visible="false")
 
                 a-image#img1-3(position="-121 7 -187" height="20" image-init="" src="#tex-text-1" opacity="0" visible="false")
-                a-image#img1-4(position="-18 12.7 -351" height="30" image-init="" src="#tex-text-2" opacity="0" visible="false")
-                a-image#img1-2(position="-2 2.5 -1.7" rotation="0 11 0" height="0.4" image-init="" src="#tex-text-16" opacity="0" visible="false")
+                a-image#img1-4(position="-18 12.7 -450" height="35" image-init="" src="#tex-text-2" opacity="0" visible="false")
+                a-image#img1-2(position="-2 2.5 -1.7" rotation="0 11 0" height="0.4" image-init="" src="#tex-text-16" opacity="0" visible="false"
+                    fx-dissolve="alphaMap: #tex-fx-burnout; amount: 0;"
+                )
 
                 a-box(position="-481 4 -147" rotation="0 10 0" width="330" height="8" depth="50" color="black" shader="flat")
                 a-box(position="171 4 -239" look-at="0 0 0" width="230" height="8" depth="1" color="black" shader="flat")
 
 
-        a-entity#layer2-idle(_visible="false")
+        a-entity#layer2-idle(visible="false")
             a-entity.items
                 a-entity.trigger-group(position="132 3 -188")
                     a-entity#trigger2.interactive(visible="false"
@@ -148,8 +152,6 @@ block scene
                         a-entity.particles(mixin="trigger-particles" gpu-particle-system="spawnEnabled: false;")
                         a-text(position="7 8 0" scale="60 60 60" rotation="0 217 0" value="3" color="#fff" shader="flat" opacity="2")
                 
-                //- a-image#img3-1(position="115 25 115" look-at="#playerBox" height="12" image-init="" src="#tex-text-9" opacity="0")
-            
             
         a-entity#layer3(visible="false")
             a-path#railway3(position="0 0 0" line-geometry="" shader="line" visible="false")
@@ -178,12 +180,6 @@ block scene
                 )
 
                         
-        //- a-entity#layer0-post
-            //- a-entity.background
-                a-cylinder.forest(position="0 40 0" geometry="height: 270; radius: 1000; segmentsHeight: 1; thetaStart: 72; thetaLength: 145; openEnded: true;" src="#tex-bg-forest" repeat="2.5 0.9" shader="flat" transparent="true" side="back" color="#000")
-                a-cylinder.forest(position="0 -70 0" geometry="height: 100; radius: 1000; segmentsHeight: 1; thetaStart: 72; thetaLength: 145; openEnded: true;" shader="flat" color="#000" side="back")
-                a-cylinder.town(position="0 50 0" geometry="height: 200; radius: 1000; segmentsHeight: 1; thetaStart: 22.43; thetaLength: 45; openEnded: true;" src="#tex-bg-piter" repeat="1 0.9" shader="flat" transparent="true" side="back" color="#000")
-
     a-entity#world-post
         a-entity#layer1-post
             a-entity.particle-snow(position="0 0 0" gpu-particle-system="spawnEnabled: false; preset: snow; maxParticles: 500; spawnRate: 50; texture: #tex-particle-1;")
@@ -197,8 +193,6 @@ block scene
         a-sound#bg_music-3(sound="positional: false;" src="#audio-bg-3" volume="0.6" autoplay="false" loop="true")
         
     a-entity#sounds(volume="0.6")
-        //- a-sound#bg_music(sound="positional: false;" src="#audio-bg-1" volume="0.6" autoplay="true" loop="true")
-        
 
     a-entity#playerBox(position="0 1 0" rotation="0 70 0")
         a-camera#player(wasd-controls="acceleration: 650;" fov="75")
