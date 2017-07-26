@@ -116,7 +116,7 @@ block scene
                 a-box(position="171 4 -239" look-at="0 0 0" width="230" height="8" depth="1" color="black" shader="flat")
 
 
-        a-entity#layer2-idle(visible="false")
+        a-entity#layer2-idle(_visible="false")
             a-entity.items
                 a-entity.trigger-group(position="132 3 -188")
                     a-entity#trigger2.interactive(visible="false"
@@ -192,9 +192,13 @@ block scene
             a-entity.particle-snow(position="500 5 0" gpu-particle-system="spawnEnabled: false; preset: snow; maxParticles: 5000; spawnRate: 500; lifetime: 10; size: 1.2; positionSpread: 0 40 150; velocity: -200 -10 0; _velocitySpread: 100 0 4; texture: #tex-particle-1;")
 
     a-entity#music(volume="0.6")
-        a-sound#bg_music(sound="positional: false;" src="#audio-bg-1" volume="0.06" autoplay="true" loop="true")
+        a-sound#bg_music(sound="positional: false;" src="#audio-bg-1" volume="0.6" autoplay="true" loop="true")
+        a-sound#bg_music-2(sound="positional: false;" src="#audio-bg-2" volume="0.6" autoplay="false" loop="true")
+        a-sound#bg_music-3(sound="positional: false;" src="#audio-bg-3" volume="0.6" autoplay="false" loop="true")
         
     a-entity#sounds(volume="0.6")
+        //- a-sound#bg_music(sound="positional: false;" src="#audio-bg-1" volume="0.6" autoplay="true" loop="true")
+        
 
     a-entity#playerBox(position="0 1 0" rotation="0 70 0")
         a-camera#player(wasd-controls="acceleration: 650;" fov="75")
