@@ -652,7 +652,7 @@ export default class Controller {
         .add({
             targets: '#img1-5',
             opacity: 1,
-            delay: 1000,
+            delay: 2500,
             duration: 500,
             easing: 'easeInQuad',
             begin: () => {
@@ -864,7 +864,7 @@ export default class Controller {
             easing: 'easeInQuad',
             begin: () => {
                 $('#img2-3').attr({visible: true});
-                this.playSound({src: '#audio-img-6', volume: settings.sfx.soundVolume});
+                this.playSound({src: '#audio-img-5', volume: settings.sfx.soundVolume * 1.2});
             }
         })
 
@@ -877,7 +877,7 @@ export default class Controller {
             easing: 'easeInQuad',
             begin: () => {
                 $('#img2-4').attr({visible: true});
-                this.playSound({src: '#audio-img-5', volume: settings.sfx.soundVolume});
+                this.playSound({src: '#audio-img-5', volume: settings.sfx.soundVolume * 1.4});
             }
         })
 
@@ -1003,10 +1003,12 @@ export default class Controller {
         .add({
             targets: '#img3-4',
             opacity: 1,
-            delay: 1000,
+            delay: 2500,
             easing: 'easeInQuad',
             begin: () => {
                 $('#img3-4').attr({visible: true});
+                this.playSound({src: '#audio-img-2', volume: settings.sfx.soundVolume});
+
                 let elem = $('#train3')[0];
                 let component = elem.getAttribute('follow-path');
                 anime({
@@ -1112,6 +1114,7 @@ export default class Controller {
         .add({
             targets: '#bg_music',
             volume: [0, settings.sfx.musicVolume],
+            delay: 2000,
             duration: 3000,
             easing: 'linear',
             begin() {
