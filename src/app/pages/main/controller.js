@@ -614,7 +614,7 @@ export default class Controller {
                 anime({
                     targets: component,
                     position: [0, 0.6],
-                    duration: 10000,
+                    duration: 12000,
                     easing: 'linear',
                     run() {
                         component.position = +component.position;
@@ -1115,6 +1115,7 @@ export default class Controller {
             easing: 'linear',
             begin() {
                 $('#bg_music')[0].components.sound.playSound();
+                $('#layer1-post .particle-snow')[0].setAttribute('gpu-particle-system', {spawnEnabled: true});
             },
         })
     }
