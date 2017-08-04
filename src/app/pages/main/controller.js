@@ -52,7 +52,7 @@ class Trigger {
         ['click', 'mouseenter', 'mouseleave'].forEach((event) => {
             this[event] = options[event];
             this.element.addEventListener(event, (e) => {
-                // console.log(this.id, event, e, this.active, this._active, this.visible);
+                console.log(this.id, event, e, this.active, this._active, this.visible);
                 if (!this.active) return;
                 if (this[event]) this[event](e, this);
             });
@@ -70,6 +70,7 @@ class Trigger {
 
     get visible() { return this.element ? this.element.getAttribute('visible') : false }
     set visible(v) {
+        console.log('set vis', this.id, v);
         if (this.element) {
             this.element.setAttribute('visible', v);
             this.mesh.visible = v;
@@ -899,12 +900,7 @@ export default class Controller {
             opacity: 0,
             delay: 5000,
             duration: 200,
-            easing: 'easeInQuad',
-            complete: (anim) => {
-                anim.trigger = this.triggers.get('#trigger3');
-                anim.trigger.show();
-                trigger.active = true;
-            }
+            easing: 'easeInQuad'
         })
         .add({
             targets: {t:0}, t: 0,
