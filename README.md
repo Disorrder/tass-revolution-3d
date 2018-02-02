@@ -13,14 +13,8 @@ Without `sudo` on Windows
  - `sudo npm i` (each time after pull)
 
 ## Dev run
-`sudo? npm run server`
+`sudo? npm run dev`
 If browser didn't open automatically, console will show you address to open
 
 ## Production build
 `sudo npm run build-prod`
-
-### Fastest demo
-not implemented
-
-### Dedicated run
-not implemented

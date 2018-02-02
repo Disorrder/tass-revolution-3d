@@ -18,6 +18,7 @@
     "file-loader": "^0.11.2",
     "fontgen-loader": "^0.2.1",
     "html-webpack-plugin": "^2.29.0",
+    "http-server": "^0.11.1",
     "nib": "^1.1.2",
     "nodemon": "^1.11.0",
     "open-browser-webpack-plugin": "0.0.5",
@@ -40,7 +41,7 @@
     "aframe-mouse-cursor-component": "^0.5.1",
     "aframe-particle-system-component": "^1.0.10",
     "aframe-video-shader": "^0.1.8",
-    "animejs": "git+https://github.com/Disorrder/anime.git#Disorrder-patch-1",
+    "anime": "^0.1.2",
     "bootstrap": "^3.3.7",
     "dat.gui": "^0.6.1",
     "datguivr": "^0.1.6",
@@ -53,12 +54,15 @@
   },
   "scripts": {
     "//postinstall": "bower install",
+    "dev": "webpack-dev-server --progress",
     "server": "webpack-dev-server --progress",
     "build": "webpack",
     "build-prod": "NODE_ENV=production npm run build",
     "build-prod-win": "set NODE_ENV=production && npm run build",
     "start": "npm run build",
-    "api": "nodemon api"
+    "api": "nodemon api",
+    "heroku-postbuild": "npm run build",
+    "heroku-start": "http-server .build -p $PORT -r -o"
   },
   "engine": {
     "node": ">=6.6.0"
