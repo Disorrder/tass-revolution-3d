@@ -41,7 +41,7 @@
     "aframe-mouse-cursor-component": "^0.5.1",
     "aframe-particle-system-component": "^1.0.10",
     "aframe-video-shader": "^0.1.8",
-    "anime": "^0.1.2",
+    "animejs": "^2.2.0",
     "bootstrap": "^3.3.7",
     "dat.gui": "^0.6.1",
     "datguivr": "^0.1.6",
